@@ -20,15 +20,13 @@ class PromptTemplate:
         return text
 
 
-def preprocess_data(sotopia_data_dir, exclude_zero_reward=True):
+def preprocess_data(sotopia_data_dir, file_list, data_type):
     finetune_data_list = []
 
-    for conv_file in os.listdir(sotopia_data_dir):
+    # for conv_file in os.listdir(sotopia_data_dir):
+    for conv_file in file_list:
         with open(os.path.join(sotopia_data_dir, conv_file), 'r') as f:
             file_dict = json.load(f)
-            reward = file_dict["rewards"]
-            if exclude_zero_reward and reward[0] == 0.0:
-                continue
 
             msg_list = file_dict["messages"]
             sys_msg, human_msg_list, agent_msg_list = "", [], []
@@ -63,18 +61,29 @@ def preprocess_data(sotopia_data_dir, exclude_zero_reward=True):
             finetune_data_list.append(PromptTemplate().define_INST_prompt(
                 sys_msg, human_msg_list, agent_msg_list))
 
-    if exclude_zero_reward:
-        with open("./multiturn-data-no-zero-reward.jsonl", 'w') as f:
-            for data in finetune_data_list:
-                f.write(json.dumps({"text": data}))
-                f.write('\n')
-    else:
-        with open("./multiturn-data-all.jsonl", 'w') as f:
-            for data in finetune_data_list:
-                f.write(json.dumps({"text": data}))
-                f.write('\n')
+    with open(f"./multiturn-data-{data_type}-clean.jsonl", 'w') as f:
+        for data in finetune_data_list:
+            f.write(json.dumps({"text": data}))
+            f.write('\n')
+
+
+def split_by_difficulty(sotopia_data_dir):
+    hard_env_set = set(['01H7VFHNV13MHN97GAH73E3KM8', '01H7VFHN5WVC5HKKVBHZBA553R', '01H7VFHNN7XTR99319DS8KZCQM', '01H7VFHN9W0WAFZCBT09PKJJNK', '01H7VFHPDZVVCDZR3AARA547CY', '01H7VFHPQQQY6H4DNC6NBQ8XTG', '01H7VFHPQQQY6H4DNC6NBQ8XTG', '01H7VFHN7WJK7VWVRZZTQ6DX9T', '01H7VFHN7A1ZX5KSMT2YN9RXC4', '01H7VFHPS5WJW2694R1MNC8JFY',
+                        '01H7VFHPS5WJW2694R1MNC8JFY', '01H7VFHNN7XTR99319DS8KZCQM', '01H7VFHQ11NAMZS4A2RDGDB01V', '01H7VFHQ11NAMZS4A2RDGDB01V', '01H7VFHPSWGDGEYRP63H2DJKV0', '01H7VFHPSWGDGEYRP63H2DJKV0', '01H7VFHNF4G18PC9JHGRC8A1R6', '01H7VFHNNYH3W0VRWVY178K2TK', '01H7VFHP8AN5643B0NR0NP00VE', '01H7VFHN7A1ZX5KSMT2YN9RXC4'])
+
+    hard_file_list, easy_file_list = [], []
+    for conv_file in os.listdir(sotopia_data_dir):
+        with open(os.path.join(sotopia_data_dir, conv_file), 'r') as f:
+            file_dict = json.load(f)
+            env = file_dict["environment"]
+            if file_dict["tag"] != "gpt-4_gpt-4_v0.0.1_clean":
+                continue
+            if env in hard_env_set:
+                hard_file_list.append(conv_file)
+            else:
+                easy_file_list.append(conv_file)
 
 
 if __name__ == "__main__":
     sotopia_data_dir = "../../../sotopia-data/"
-    preprocess_data(sotopia_data_dir, exclude_zero_reward=True)
+    split_by_difficulty(sotopia_data_dir)
