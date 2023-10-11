@@ -22,4 +22,4 @@ deepspeed fastchat/train/train_lora.py \
     --tf32 True \
     --model_max_length 2048 \
     --q_lora True \
-    --deepspeed playground/deepspeed_config_s2.json
+    --deepspeed ./deepspeed_config_s2.json
