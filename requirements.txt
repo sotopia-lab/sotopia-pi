@@ -1,12 +1,8 @@
 pandas
-lxml
 openai
 langchain
 tiktoken
 rich
-jinja2
-git+https://github.com/ProKil/PettingZoo.git
-redis-om
 pandas-stubs
 types-tqdm
 peft

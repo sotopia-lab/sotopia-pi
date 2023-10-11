@@ -25,4 +25,4 @@ jobs:
         mypy --version
         # Run this mypy instance against our main package.
         mypy --install-types --non-interactive sotopia
-        mypy --strict .
+        mypy --no-incremental --strict .
