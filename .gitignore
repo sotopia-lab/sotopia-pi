@@ -10,6 +10,7 @@ dist
 *.log.*
 *.json
 llm_ft/checkpoints/*
+llm_ft/*_checkpoints/*
 !**/dummy_conversation.json
 !playground/deepspeed_config_s2.json
 !playground/deepspeed_config_s3.json
