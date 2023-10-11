@@ -26,6 +26,9 @@ checkpoints_flant5_3b
 *.pkl
 *.csv
 tests/state_of_the_union.txt
+*.bin
+*.model
 
 # Build
 build
+!dummy_file

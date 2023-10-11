@@ -1,5 +1,5 @@
-torchrun --nproc_per_node=4 --master_port=20001 fastchat/train/train_mem.py \
-    --model_name_or_path ./vicuna-7b  \
+torchrun --nproc_per_node=1 --master_port=20001 ./fastchat/train/train_lora.py \
+    --model_name_or_path ./vicuna-7b-1.5  \
     --data_path data/dummy_conversation.json \
     --bf16 True \
     --output_dir output_vicuna \
