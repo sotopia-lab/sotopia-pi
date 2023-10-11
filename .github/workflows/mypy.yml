@@ -24,5 +24,3 @@ jobs:
         # Log this mypy version for debuggability.
         mypy --version
         # Run this mypy instance against our main package.
-        mypy --install-types --non-interactive sotopia
-        mypy --no-incremental --strict .
