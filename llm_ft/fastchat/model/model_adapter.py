@@ -32,9 +32,6 @@ from fastchat.modules.awq import AWQConfig, load_awq_quantized
 from fastchat.conversation import Conversation, get_conv_template
 from fastchat.model.compression import load_compress_model
 from fastchat.model.llama_condense_monkey_patch import replace_llama_with_condense
-from fastchat.model.model_chatglm import generate_stream_chatglm
-from fastchat.model.model_codet5p import generate_stream_codet5p
-from fastchat.model.model_falcon import generate_stream_falcon
 from fastchat.model.monkey_patch_non_inplace import (
     replace_llama_attn_with_non_inplace_operations,
 )
@@ -326,13 +323,7 @@ def get_generate_stream_function(model: torch.nn.Module, model_path: str):
     is_codet5p = "codet5p" in model_type
     is_peft = "peft" in model_type
 
-    if is_chatglm:
-        return generate_stream_chatglm
-    elif is_falcon:
-        return generate_stream_falcon
-    elif is_codet5p:
-        return generate_stream_codet5p
-    elif peft_share_base_weights and is_peft:
+    if peft_share_base_weights and is_peft:
         # Return a curried stream function that loads the right adapter
         # according to the model_name available in this context.  This ensures
         # the right weights are available.

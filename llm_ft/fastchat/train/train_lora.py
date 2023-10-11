@@ -34,9 +34,6 @@ from fastchat.train.train import (
     make_supervised_data_module,
 )
 
-from fastchat.train.llama_flash_attn_monkey_patch import (
-    replace_llama_attn_with_flash_attn,
-)
 
 
 @dataclass
@@ -111,9 +108,6 @@ def train():
         training_args,
         lora_args,
     ) = parser.parse_args_into_dataclasses()
-
-    if training_args.flash_attn:
-        replace_llama_attn_with_flash_attn()
 
     device_map = None
     world_size = int(os.environ.get("WORLD_SIZE", 1))
