@@ -1,11 +1,11 @@
 from vllm import LLM, SamplingParams
 from vllm.model_executor.adapters import lora
 
-# Create an LLM.
-llm = LLM(model="../llm_ft/vicuna-7b-1.5", gpu_memory_utilization=0.05)
+# Create an LLM, need to change gpu memory utilization based on our need
+llm = LLM(model="../llm_ft/vicuna-7b-1.5", gpu_memory_utilization=0.5)
 
 # Add LoRA adapter
-lora.LoRAModel.from_pretrained(llm.llm_engine.workers[0].model, "../llm_ft/checkpoints/checkpoint-1200")
+lora.LoRAModel.from_pretrained(llm.llm_engine.workers[0].model, "../llm_ft/vicuna_checkpoints/checkpoint-1200")
 
 prompts = [
     "Hello, my name is",
