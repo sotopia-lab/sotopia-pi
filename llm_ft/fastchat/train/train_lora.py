@@ -34,7 +34,7 @@ from fastchat.train.train import (
     make_supervised_data_module,
 )
 
-
+access_token = "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"
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):
@@ -137,6 +137,7 @@ def train():
         )
         if lora_args.q_lora
         else None,
+        token=access_token,
     )
     lora_config = LoraConfig(
         r=lora_args.lora_r,
@@ -176,6 +177,7 @@ def train():
         model_max_length=training_args.model_max_length,
         padding_side="right",
         use_fast=False,
+        token=access_token,
     )
     tokenizer.pad_token = tokenizer.unk_token
 

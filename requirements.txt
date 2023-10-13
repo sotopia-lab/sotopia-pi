@@ -17,3 +17,9 @@ names
 together
 pydantic==1.10.12
 deepspeed
+bitsandbytes
+scipy
+
+# for llama2
+sentencepiece
+protobuf
