@@ -4,17 +4,18 @@ deepspeed fastchat/train/train_lora.py \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
     --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial.json \
+    --shuffle True \
     --bf16 True \
     --output_dir ./checkpoints \
     --num_train_epochs 3 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 1 \
+    --gradient_accumulation_steps 8 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 1200 \
     --save_total_limit 6 \
-    --learning_rate 2e-5 \
+    --learning_rate 5e-5 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
@@ -22,4 +23,5 @@ deepspeed fastchat/train/train_lora.py \
     --tf32 True \
     --model_max_length 2048 \
     --q_lora True \
-    --deepspeed ./deepspeed_config_s2.json
+    --deepspeed ./deepspeed_config.json \
+    --hf_access_token "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"

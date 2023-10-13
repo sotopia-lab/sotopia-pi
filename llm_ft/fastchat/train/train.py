@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 import json
 import math
 import pathlib
+import random
 from typing import Dict, Optional, Sequence
 
 import numpy as np
@@ -36,6 +37,7 @@ IGNORE_TOKEN_ID = LabelSmoother.ignore_index
 @dataclass
 class ModelArguments:
     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
+    hf_access_token: Optional[str] = field(default=None)
 
 
 @dataclass
@@ -47,6 +49,7 @@ class DataArguments:
         default=None, metadata={"help": "Path to the evaluation data."}
     )
     lazy_preprocess: bool = False
+    shuffle: bool = True
 
 
 @dataclass
@@ -224,13 +227,18 @@ def make_supervised_data_module(
     rank0_print("Loading data...")
 
     train_json = json.load(open(data_args.data_path, "r"))
+    if data_args.shuffle: random.shuffle(train_json)
+    
     train_dataset = dataset_cls(train_json, tokenizer=tokenizer)
 
     if data_args.eval_data_path:
         eval_json = json.load(open(data_args.eval_data_path, "r"))
+        if data_args.shuffle: random.shuffle(train_json)
+        
         eval_dataset = dataset_cls(eval_json, tokenizer=tokenizer)
     else:
         eval_dataset = None
+    
 
     return dict(train_dataset=train_dataset, eval_dataset=eval_dataset)
 

@@ -23,3 +23,6 @@ scipy
 # for llama2
 sentencepiece
 protobuf
+
+# train
+wandb
