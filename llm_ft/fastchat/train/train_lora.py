@@ -20,6 +20,11 @@ import logging
 import pathlib
 import typing
 import os
+import sys
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+root_directory = os.path.join(current_directory, '..', '..')
+sys.path.append(root_directory)
 
 from deepspeed import zero
 from deepspeed.runtime.zero.partition_parameters import ZeroParamStatus

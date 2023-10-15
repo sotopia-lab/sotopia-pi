@@ -3,14 +3,14 @@ deepspeed fastchat/train/train_lora.py \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
-    --data_path ./data/dummy_convs_haofei.json \
-    --shuffle False \
+    --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial.json \
+    --shuffle True \
     --bf16 True \
-    --output_dir ./checkpoint \
-    --num_train_epochs 2 \
+    --output_dir ./checkpoint-shuffle \
+    --num_train_epochs 3 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 8 \
+    --gradient_accumulation_steps 32 \
     --evaluation_strategy "no" \
     --save_strategy "epoch" \
     --save_total_limit 6 \
@@ -19,12 +19,15 @@ deepspeed fastchat/train/train_lora.py \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
-    --tf32 True \
     --model_max_length 2048 \
-    --q_lora True \
-    --deepspeed ./deepspeed_config.json \
-    --hf_access_token "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"
+    --q_lora False \
+    --deepspeed ./deepspeed_config_s3.json \
+    --hf_access_token "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" \
+    --tf32 True \
+    --flash_attn True \
 
 # Possible other options
+# --flash_attn True \
+# --tf32 True \
 # --save_strategy "steps" \ 
 # --save_steps 1200 \
