@@ -54,16 +54,19 @@ class BaseModelAdapter:
 
     def load_model(self, model_path: str, from_pretrained_kwargs: dict):
         revision = from_pretrained_kwargs.get("revision", "main")
+        print(from_pretrained_kwargs)
         try:
             tokenizer = AutoTokenizer.from_pretrained(
                 model_path,
                 use_fast=self.use_fast_tokenizer,
                 revision=revision,
                 trust_remote_code=True,
+                token=None if not "token" in from_pretrained_kwargs else from_pretrained_kwargs["token"]
             )
         except TypeError:
             tokenizer = AutoTokenizer.from_pretrained(
-                model_path, use_fast=False, revision=revision, trust_remote_code=True
+                model_path, use_fast=False, revision=revision, trust_remote_code=True,
+                token=None if not "token" in from_pretrained_kwargs else from_pretrained_kwargs["token"]
             )
         try:
             model = AutoModelForCausalLM.from_pretrained(
@@ -154,6 +157,7 @@ def load_model(
     awq_config: Optional[AWQConfig] = None,
     revision: str = "main",
     debug: bool = False,
+    hf_access_token: Optional[str|None] = None,
 ):
     """Load a model from Hugging Face."""
     # get model adapter
@@ -280,6 +284,9 @@ def load_model(
 
     if dtype is not None:  # Overwrite dtype if it is provided in the arguments.
         kwargs["torch_dtype"] = dtype
+        
+    if hf_access_token:
+        kwargs["token"] = hf_access_token
 
     # Load model
     model, tokenizer = adapter.load_model(model_path, kwargs)
