@@ -34,7 +34,6 @@ from fastchat.train.train import (
     make_supervised_data_module,
 )
 
-# access_token = "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"
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):

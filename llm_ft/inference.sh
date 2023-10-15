@@ -1,1 +1,1 @@
-python3 -m fastchat.serve.cli --model-path ./checkpoints/checkpoint-1200/
+python3 -m fastchat.serve.cli --model-path ./checkpoint/checkpoint-124
