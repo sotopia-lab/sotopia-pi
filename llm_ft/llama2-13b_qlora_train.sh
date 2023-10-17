@@ -1,4 +1,4 @@
-deepspeed fastchat/train/train_lora.py \
+deepspeed --num_gpus=1 fastchat/train/train_lora.py \
     --model_name_or_path meta-llama/Llama-2-13b-chat-hf \
     --lora_r 8 \
     --lora_alpha 16 \
@@ -24,10 +24,13 @@ deepspeed fastchat/train/train_lora.py \
     --deepspeed ./deepspeed_config_s2.json \
     --hf_access_token "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" \
     --tf32 True \
-    --flash_attn True 
+    --flash_attn True \
+    --abort_long_seq True \
 
 # Possible other options
 # --flash_attn True \
 # --tf32 True \
 # --save_strategy "steps" \ 
 # --save_steps 1200 \
+# --abort_long_seq True \
+# --lazy_preprocess True \
