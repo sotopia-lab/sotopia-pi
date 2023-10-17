@@ -3,11 +3,11 @@ deepspeed fastchat/train/train_lora.py \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
-    --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial.json \
+    --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial-speak-drop-long.json \
     --shuffle True \
     --bf16 True \
-    --output_dir ./checkpoint-shuffle \
-    --num_train_epochs 3 \
+    --output_dir ./checkpoint-shuffle-speak-drop-long \
+    --num_train_epochs 4 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps 32 \
@@ -20,11 +20,11 @@ deepspeed fastchat/train/train_lora.py \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --model_max_length 2048 \
-    --q_lora False \
-    --deepspeed ./deepspeed_config_s3.json \
+    --q_lora True \
+    --deepspeed ./deepspeed_config_s2.json \
     --hf_access_token "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" \
     --tf32 True \
-    --flash_attn True \
+    --flash_attn True 
 
 # Possible other options
 # --flash_attn True \
