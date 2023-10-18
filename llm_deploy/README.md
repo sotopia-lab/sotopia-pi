@@ -61,6 +61,8 @@ squeue -l
 nvidia-smi
 # quit slurm jobs
 scancel job_id
+# connect to compute node directly
+ssh -J babel babel-x-xx
 ```
 
 ### Host vLLM instance and run inference on server
