@@ -1,9 +1,9 @@
 deepspeed fastchat/train/train_lora.py \
-    --model_name_or_path ./vicuna-7b-1.5 \
+    --model_name_or_path ./Mistral-7B-v0.1 \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
-    --data_path ./data/dummy_conversation.json \
+    --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial.json \
     --bf16 True \
     --output_dir ./checkpoints \
     --num_train_epochs 3 \
@@ -13,7 +13,7 @@ deepspeed fastchat/train/train_lora.py \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 1200 \
-    --save_total_limit 100 \
+    --save_total_limit 6 \
     --learning_rate 2e-5 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
