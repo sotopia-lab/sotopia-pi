@@ -504,3 +504,82 @@ def chat_loop(
                     conv.messages.pop()
 
                 reload_conv(conv)
+
+
+
+def run_inference(
+    inp: str,
+    model: AutoModelForCausalLM,
+    tokenizer: AutoTokenizer,
+    model_path: str,
+    device: str,
+    num_gpus: int,
+    max_gpu_memory: str,
+    dtype: Optional[torch.dtype],
+    load_8bit: bool,
+    cpu_offloading: bool,
+    conv_template: Optional[str],
+    conv_system_msg: Optional[str],
+    temperature: float,
+    repetition_penalty: float,
+    max_new_tokens: int,
+    chatio: ChatIO,
+    gptq_config: Optional[GptqConfig] = None,
+    awq_config: Optional[AWQConfig] = None,
+    exllama_config: Optional[ExllamaConfig] = None,
+    revision: str = "main",
+    judge_sent_end: bool = True,
+    debug: bool = True,
+    history: bool = True,
+):
+    generate_stream_func = get_generate_stream_function(model, model_path)
+
+    model_type = str(type(model)).lower()
+    is_t5 = "t5" in model_type
+    is_codet5p = "codet5p" in model_type
+
+    # Hardcode T5's default repetition penalty to be 1.2
+    if is_t5 and repetition_penalty == 1.0:
+        repetition_penalty = 1.2
+
+    # Set context length
+    context_len = get_context_length(model.config)
+
+    # Chat
+    def new_chat():
+        if conv_template:
+            conv = get_conv_template(conv_template)
+        else:
+            conv = get_conversation_template(model_path)
+        if conv_system_msg is not None:
+            conv.set_system_message(conv_system_msg)
+        return conv
+
+    def reload_conv(conv):
+        """
+        Reprints the conversation from the start.
+        """
+        for message in conv.messages[conv.offset :]:
+            chatio.prompt_for_output(message[0])
+            chatio.print_output(message[1])
+
+    conv = new_chat()
+
+    conv.append_message(conv.roles[0], inp)
+    conv.append_message(conv.roles[1], None)
+    prompt = conv.get_prompt()
+
+    if is_codet5p:  # codet5p is a code completion model.
+        prompt = inp
+
+    input_ids = tokenizer.encode(prompt, return_tensors="pt").to(device)
+    output_ids = model.generate(
+        input_ids=input_ids,
+        temperature=temperature,
+        repetition_penalty=repetition_penalty,
+        max_new_tokens=max_new_tokens,
+        stop_token_ids=conv.stop_token_ids,
+    )
+    newly_generated_tokens = output_ids[0][input_ids.shape[1]:]
+    generated_text = tokenizer.decode(newly_generated_tokens, skip_special_tokens=True)
+    return generated_text
