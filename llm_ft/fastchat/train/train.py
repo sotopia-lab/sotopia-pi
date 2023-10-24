@@ -122,15 +122,6 @@ def preprocess(
         max_length=tokenizer.model_max_length,
         truncation=True,
     ).input_ids
-    # print(input_ids.size())
-    # input_ids = []
-    # over_flow_count = 0
-    # for conv in conversations:
-    #     input_ids.append(tokenizer(conv, return_tensors="pt", padding=False, truncation=False).input_ids)
-    #     if input_ids[-1].size()[1] > 2048:
-    #         over_flow_count += 1
-    # print(over_flow_count)
-    # print(len(input_ids))
     targets = input_ids.clone()
 
     assert conv.sep_style == SeparatorStyle.ADD_COLON_TWO

@@ -54,7 +54,6 @@ class BaseModelAdapter:
 
     def load_model(self, model_path: str, from_pretrained_kwargs: dict):
         revision = from_pretrained_kwargs.get("revision", "main")
-        print(from_pretrained_kwargs)
         try:
             tokenizer = AutoTokenizer.from_pretrained(
                 model_path,
