@@ -236,6 +236,7 @@ def main(args):
             judge_sent_end=args.judge_sent_end,
             debug=args.debug,
             history=not args.no_history,
+            hf_access_token = args.hf_access_token,
         )
     except KeyboardInterrupt:
         print("exit...")
@@ -280,6 +281,9 @@ if __name__ == "__main__":
         "--debug",
         action="store_true",
         help="Print useful debug information (e.g., prompts)",
+    )
+    parser.add_argument(
+        "--hf-access-token", type=str, default=None, help="Optional access token for Hugging Face."
     )
     args = parser.parse_args()
     main(args)
