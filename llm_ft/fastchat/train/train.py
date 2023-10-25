@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 import json
 import math
 import pathlib
+import random
 from typing import Dict, Optional, Sequence
 
 import numpy as np
@@ -36,6 +37,7 @@ IGNORE_TOKEN_ID = LabelSmoother.ignore_index
 @dataclass
 class ModelArguments:
     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
+    hf_access_token: Optional[str] = field(default=None)
 
 
 @dataclass
@@ -47,6 +49,8 @@ class DataArguments:
         default=None, metadata={"help": "Path to the evaluation data."}
     )
     lazy_preprocess: bool = False
+    shuffle: bool = True
+    abort_long_seq: bool = False
 
 
 @dataclass
@@ -83,6 +87,7 @@ def trainer_save_model_safe(trainer: transformers.Trainer):
 def preprocess(
     sources,
     tokenizer: transformers.PreTrainedTokenizer,
+    abort_long_seq: bool = False,
 ) -> Dict:
     conv = get_conversation_template("vicuna")
     roles = {"human": conv.roles[0], "gpt": conv.roles[1]}
@@ -100,7 +105,15 @@ def preprocess(
             assert role == conv.roles[j % 2], f"{i}"
             conv.append_message(role, sentence["value"])
         conversations.append(conv.get_prompt())
-
+    
+    if abort_long_seq:
+        new_conversation = []
+        for temp_conv in conversations:
+            token_len = tokenizer(temp_conv, return_tensors="pt", padding=False, truncation=False).input_ids.size()[1]
+            if token_len <= tokenizer.model_max_length: new_conversation.append(temp_conv)
+        conversation = new_conversation
+        print(f"Aborted conversations longer than {tokenizer.model_max_length}; Now have {len(conversation)} conversations")
+    
     # Tokenize conversations
     input_ids = tokenizer(
         conversations,
@@ -151,7 +164,6 @@ def preprocess(
                     f"WARNING: tokenization mismatch: {cur_len} vs. {total_len}."
                     f" (ignored)"
                 )
-
     return dict(
         input_ids=input_ids,
         labels=targets,
@@ -162,12 +174,12 @@ def preprocess(
 class SupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
 
-    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer):
+    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer, abort_long_seq: bool = False):
         super(SupervisedDataset, self).__init__()
 
         rank0_print("Formatting inputs...")
         sources = [example["conversations"] for example in raw_data]
-        data_dict = preprocess(sources, tokenizer)
+        data_dict = preprocess(sources, tokenizer, abort_long_seq=abort_long_seq)
 
         self.input_ids = data_dict["input_ids"]
         self.labels = data_dict["labels"]
@@ -187,9 +199,10 @@ class SupervisedDataset(Dataset):
 class LazySupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
 
-    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer):
+    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer, abort_long_seq: bool = False):
         super(LazySupervisedDataset, self).__init__()
         self.tokenizer = tokenizer
+        self.abort_long_seq = abort_long_seq
 
         rank0_print("Formatting inputs...Skip in lazy mode")
         self.tokenizer = tokenizer
@@ -224,13 +237,18 @@ def make_supervised_data_module(
     rank0_print("Loading data...")
 
     train_json = json.load(open(data_args.data_path, "r"))
-    train_dataset = dataset_cls(train_json, tokenizer=tokenizer)
+    if data_args.shuffle: random.shuffle(train_json)
+    
+    train_dataset = dataset_cls(train_json, tokenizer=tokenizer, abort_long_seq = data_args.abort_long_seq)
 
     if data_args.eval_data_path:
         eval_json = json.load(open(data_args.eval_data_path, "r"))
-        eval_dataset = dataset_cls(eval_json, tokenizer=tokenizer)
+        if data_args.shuffle: random.shuffle(train_json)
+        
+        eval_dataset = dataset_cls(eval_json, tokenizer=tokenizer, abort_long_seq = data_args.abort_long_seq)
     else:
         eval_dataset = None
+    
 
     return dict(train_dataset=train_dataset, eval_dataset=eval_dataset)
 
