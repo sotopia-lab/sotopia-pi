@@ -27,8 +27,6 @@ You are at Turn #{turn_number}. Your available action types are
 Note: You can "leave" this conversation if 1. you have achieved your social goals, 2. this conversation makes you uncomfortable, 3. you find it uninteresting/you lose your patience, 4. or for other reasons you want to leave.
 
 Please only generate a JSON string including the action type and the argument.
-Your action should follow the given format:
-{format_instructions}
 """
 
 #PYDANTIC_FORMAT_INSTRUCTIONS.format(schema=schema_str)
@@ -37,6 +35,22 @@ the object {\"foo\": [\"bar\", \"baz\"]} is a well-formatted instance of the sch
 \nHere is the output schema:\n```\n{\"description\": \"An interface for messages.\\nThere is only one required method: to_natural_language\", \"properties\": {\"action_type\": {\"title\": \"Action Type\", \"description\": \"whether to speak at this turn or choose to not do anything\", \"enum\": [\"none\", \"speak\", \"non-verbal communication\", \"action\", \"leave\"], \"type\": \"string\"}, \"argument\": {\"title\": \"Argument\", \"description\": \"the utterance if choose to speak, the expression or gesture if choose non-verbal communication, or the physical action if choose action\", \"type\": \"string\"}}, \"required\": [\"action_type\", \"argument\"]}\n```\u001b[0m"""
 
 
+PROMPT_TEMPLATE_W_FORMAT="""Prompt after formatting:\nImagine you are {agent}, your task is to act/speak as {agent} would, keeping in mind {agent}'s social goal.
+You can find {agent}'s background and goal in the 'Here is the context of the interaction' field.
+Note that {agent}'s secret and goal is only visible to you.
+You should try your best to achieve {agent}'s goal in a way that align with their character traits.
+Additionally, maintaining the conversation's naturalness and realism is essential (e.g., do not repeat what other people has already said before).
+{history}.
+You are at Turn #{turn_number}. Your available action types are
+{action_list}.
+Note: You can "leave" this conversation if 1. you have achieved your social goals, 2. this conversation makes you uncomfortable, 3. you find it uninteresting/you lose your patience, 4. or for other reasons you want to leave.
+
+Please only generate a JSON string including the action type and the argument.
+Your action should follow the given format:
+\nAs an example, for the schema {\"properties\": {\"foo\": {\"title\": \"Foo\", \"description\": \"a list of strings\", \"type\": \"array\", \"items\": {\"type\": \"string\"}}}, \"required\": [\"foo\"]}
+the object {\"foo\": [\"bar\", \"baz\"]} is a well-formatted instance of the schema. The object {\"properties\": {\"foo\": [\"bar\", \"baz\"]}} is not well-formatted.
+\nHere is the output schema:\n```\n{\"description\": \"An interface for messages.\\nThere is only one required method: to_natural_language\", \"properties\": {\"action_type\": {\"title\": \"Action Type\", \"description\": \"whether to speak at this turn or choose to not do anything\", \"enum\": [\"none\", \"speak\", \"non-verbal communication\", \"action\", \"leave\"], \"type\": \"string\"}, \"argument\": {\"title\": \"Argument\", \"description\": \"the utterance if choose to speak, the expression or gesture if choose non-verbal communication, or the physical action if choose action\", \"type\": \"string\"}}, \"required\": [\"action_type\", \"argument\"]}\n```\u001b[0m
+"""
 # static
 ACTION_LIST = "none action speak non-verbal communication leave" #" ".join(ActionType)
 
@@ -101,10 +115,11 @@ def generate_result(msg):
         
     return str_result
 
-def reverse_episode_log(epilog, later_speak=False):
+def reverse_episode_log(epilog, later_speak=False, include_format=False):
     episode_msg = epilog.messages
     # per episode
     agent_model = epilog.models[1]
+    promt_template = PROMPT_TEMPLATE_W_FORMAT if include_format else PROMPT_TEMPLATE
 
     if len(episode_msg) > 0:
         init_loop = episode_msg[0]
@@ -139,9 +154,9 @@ def reverse_episode_log(epilog, later_speak=False):
         if i%2 == turn_div:  
             # take alternative turns as we always want to predict one agent, not both
             next_turn = i
-            prompt = PROMPT_TEMPLATE.format(
+            prompt = promt_template.format(
                     agent=speaker, history=dial_history, turn_number=next_turn, 
-                    action_list=ACTION_LIST, format_instructions=FORMAT_TEMPLATE)
+                    action_list=ACTION_LIST)
             turn_dic["prompt"] = prompt   
             turn_dic['result'] = str_result
             prompt_result_instances.append(turn_dic)
