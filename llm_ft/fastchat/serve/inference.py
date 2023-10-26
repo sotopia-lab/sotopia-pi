@@ -308,6 +308,7 @@ def chat_loop(
     judge_sent_end: bool = True,
     debug: bool = True,
     history: bool = True,
+    hf_access_token: Optional[str|None] = None,
 ):
     # Model
     model, tokenizer = load_model(
@@ -322,6 +323,7 @@ def chat_loop(
         awq_config=awq_config,
         revision=revision,
         debug=debug,
+        hf_access_token=hf_access_token,
     )
     generate_stream_func = get_generate_stream_function(model, model_path)
 
