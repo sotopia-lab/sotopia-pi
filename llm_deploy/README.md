@@ -98,7 +98,27 @@ curl http://localhost:8000/v1/completions \
 ```
 
 ### Access deployed babel server on a local machine
-TODO
+1. Construct ssh tunnel between babel login node and babel compute node with hosted model
+```bash
+ssh -N -L 7662:localhost:8000 username@babel-x-xx
+```
+The above command creates a localhost:7662 server on bable login node which connects to localhost:8000 on compute node.
+
+2. Construct ssh tunnel between local machine and babel login node
+```bash
+ssh -N -L 8001:localhost:7662 username@<mycluster>
+```
+The above command creates a localhost:8001 server on your local machine which connects to localhost:7662 on babel login node.
+
+3. Call hosted model on local machine
+```bash
+curl http://localhost:8001/v1/models
+```
+If the above command runs successfully, you should be able to use REST API on your local machine.
+
+4. (optional) If you fail in building the ssh tunnel, you may add `-v` to the ssh command to see what went wrong.
+
+
 
 
 ### Userful resource links for babel
