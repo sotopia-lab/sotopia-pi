@@ -29,7 +29,8 @@ from transformers import Trainer
 from transformers.trainer_pt_utils import LabelSmoother
 
 from fastchat.conversation import SeparatorStyle
-from fastchat.model.model_adapter import get_conversation_template
+# from fastchat.model.model_adapter import get_conversation_template
+from fastchat.conversation import get_conv_template
 
 IGNORE_TOKEN_ID = LabelSmoother.ignore_index
 
@@ -50,7 +51,7 @@ class DataArguments:
     )
     lazy_preprocess: bool = False
     shuffle: bool = True
-    abort_long_seq: bool = False
+    drop_long_seq: bool = False
 
 
 @dataclass
@@ -87,9 +88,9 @@ def trainer_save_model_safe(trainer: transformers.Trainer):
 def preprocess(
     sources,
     tokenizer: transformers.PreTrainedTokenizer,
-    abort_long_seq: bool = False,
+    drop_long_seq: bool = False,
 ) -> Dict:
-    conv = get_conversation_template("vicuna")
+    conv = get_conv_template("sotopia")
     roles = {"human": conv.roles[0], "gpt": conv.roles[1]}
 
     # Apply prompt templates
@@ -106,13 +107,13 @@ def preprocess(
             conv.append_message(role, sentence["value"])
         conversations.append(conv.get_prompt())
     
-    if abort_long_seq:
+    if drop_long_seq:
         new_conversation = []
         for temp_conv in conversations:
             token_len = tokenizer(temp_conv, return_tensors="pt", padding=False, truncation=False).input_ids.size()[1]
             if token_len <= tokenizer.model_max_length: new_conversation.append(temp_conv)
         conversation = new_conversation
-        print(f"Aborted conversations longer than {tokenizer.model_max_length}; Now have {len(conversation)} conversations")
+        print(f"Dropping conversations longer than {tokenizer.model_max_length}; Now have {len(conversation)} conversations")
     
     # Tokenize conversations
     input_ids = tokenizer(
@@ -174,12 +175,12 @@ def preprocess(
 class SupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
 
-    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer, abort_long_seq: bool = False):
+    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer, drop_long_seq: bool = False):
         super(SupervisedDataset, self).__init__()
 
         rank0_print("Formatting inputs...")
         sources = [example["conversations"] for example in raw_data]
-        data_dict = preprocess(sources, tokenizer, abort_long_seq=abort_long_seq)
+        data_dict = preprocess(sources, tokenizer, drop_long_seq=drop_long_seq)
 
         self.input_ids = data_dict["input_ids"]
         self.labels = data_dict["labels"]
@@ -199,10 +200,10 @@ class SupervisedDataset(Dataset):
 class LazySupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
 
-    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer, abort_long_seq: bool = False):
+    def __init__(self, raw_data, tokenizer: transformers.PreTrainedTokenizer, drop_long_seq: bool = False):
         super(LazySupervisedDataset, self).__init__()
         self.tokenizer = tokenizer
-        self.abort_long_seq = abort_long_seq
+        self.drop_long_seq = drop_long_seq
 
         rank0_print("Formatting inputs...Skip in lazy mode")
         self.tokenizer = tokenizer
@@ -239,13 +240,13 @@ def make_supervised_data_module(
     train_json = json.load(open(data_args.data_path, "r"))
     if data_args.shuffle: random.shuffle(train_json)
     
-    train_dataset = dataset_cls(train_json, tokenizer=tokenizer, abort_long_seq = data_args.abort_long_seq)
+    train_dataset = dataset_cls(train_json, tokenizer=tokenizer, drop_long_seq = data_args.drop_long_seq)
 
     if data_args.eval_data_path:
         eval_json = json.load(open(data_args.eval_data_path, "r"))
         if data_args.shuffle: random.shuffle(train_json)
         
-        eval_dataset = dataset_cls(eval_json, tokenizer=tokenizer, abort_long_seq = data_args.abort_long_seq)
+        eval_dataset = dataset_cls(eval_json, tokenizer=tokenizer, drop_long_seq = data_args.drop_long_seq)
     else:
         eval_dataset = None
     

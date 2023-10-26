@@ -1,16 +1,16 @@
 deepspeed --num_gpus=1 fastchat/train/train_lora.py \
-    --model_name_or_path meta-llama/Llama-2-13b-chat-hf \
+    --model_name_or_path meta-llama/Llama-2-13b-hf \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
-    --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial-speak-drop-long.json \
+    --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial.json \
     --shuffle True \
     --bf16 True \
-    --output_dir ./checkpoint-shuffle-speak-drop-long \
-    --num_train_epochs 4 \
+    --output_dir ./checkpoint-shuffle-drop-long \
+    --num_train_epochs 20 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 32 \
+    --gradient_accumulation_steps 16 \
     --evaluation_strategy "no" \
     --save_strategy "epoch" \
     --save_total_limit 6 \
@@ -25,12 +25,12 @@ deepspeed --num_gpus=1 fastchat/train/train_lora.py \
     --hf_access_token "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" \
     --tf32 True \
     --flash_attn True \
-    --abort_long_seq True \
+    --drop_long_seq True \
 
 # Possible other options
 # --flash_attn True \
 # --tf32 True \
 # --save_strategy "steps" \ 
 # --save_steps 1200 \
-# --abort_long_seq True \
+# --drop_long_seq True \
 # --lazy_preprocess True \
