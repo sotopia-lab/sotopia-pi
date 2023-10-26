@@ -25,8 +25,6 @@ Additionally, maintaining the conversation's naturalness and realism is essentia
 You are at Turn #{turn_number}. Your available action types are
 {action_list}.
 Note: You can "leave" this conversation if 1. you have achieved your social goals, 2. this conversation makes you uncomfortable, 3. you find it uninteresting/you lose your patience, 4. or for other reasons you want to leave.
-
-Please only generate a JSON string including the action type and the argument.
 """
 
 #PYDANTIC_FORMAT_INSTRUCTIONS.format(schema=schema_str)
