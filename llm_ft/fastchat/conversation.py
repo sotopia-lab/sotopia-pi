@@ -980,6 +980,15 @@ register_conv_template(
     )
 )
 
+register_conv_template(
+    Conversation(
+        name="sotopia-llama-2",
+        roles=("Agent1", "Agent2"),
+        sep_style=SeparatorStyle.LLAMA2,
+        sep=" ",
+        sep2=" </s><s>",
+    )
+)
 
 if __name__ == "__main__":
     print("Vicuna template:")

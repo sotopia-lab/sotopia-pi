@@ -6,7 +6,7 @@ deepspeed --num_gpus=1 fastchat/train/train_lora.py \
     --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial.json \
     --shuffle True \
     --bf16 True \
-    --output_dir ./checkpoint-shuffle-drop-long \
+    --output_dir ./checkpoint-shuffle \
     --num_train_epochs 20 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
@@ -25,7 +25,7 @@ deepspeed --num_gpus=1 fastchat/train/train_lora.py \
     --hf_access_token "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" \
     --tf32 True \
     --flash_attn True \
-    --drop_long_seq True \
+    --template "llama-2"
 
 # Possible other options
 # --flash_attn True \

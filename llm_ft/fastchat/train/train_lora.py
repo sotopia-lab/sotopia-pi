@@ -112,8 +112,6 @@ def train():
         training_args,
         lora_args,
     ) = parser.parse_args_into_dataclasses()
-    
-    print(data_args)
 
     device_map = None
     world_size = int(os.environ.get("WORLD_SIZE", 1))
