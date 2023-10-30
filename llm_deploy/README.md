@@ -7,7 +7,7 @@ Go to the vllm dir and pip install -e .
 To notice https://github.com/vllm-project/vllm/issues/1283, need to modify the config file to "== 2.0.1" and the pytorch version if facing with CUDA version error.
 
 
-## Deploy finetuned model on babel via vLLM
+## Deploy finetuned model on babel via FastChat API server
 ### Login with SSH key
 1. Add public ed25519 key to server
 ```bash
@@ -45,17 +45,25 @@ conda create --name myenv
 conda activate myenv
 # conda deactivate
 ```
-2. Install vllm packages
+2. Install vllm packages (deprecated)
 ```bash
 conda install pip
 pip install vllm
 ```
-3. Submit gpu request and open a new terminal
+3. Install fastchat packages
+```bash
+conda install pip
+git clone https://github.com/lm-sys/FastChat.git
+cd FastChat
+pip3 install --upgrade pip
+pip3 install "fschat[model_worker,webui]"
+```
+4. Submit gpu request and open a new terminal
 ```bash
 srun --gres=gpu:1 --time=1-00:00:00 --mem=80G --pty $SHELL
 conda activate myenv
 ```
-4. Useful commands for checking gpu jobs
+5. Useful commands for checking gpu jobs
 ```bash
 # check slurm status
 squeue -l
@@ -67,12 +75,46 @@ scancel job_id
 ssh -J babel babel-x-xx
 ```
 
-### Host vLLM instance and run inference on server
+### Install cuda-toolkit (deprecated)
+Due to the issue with vllm: https://github.com/vllm-project/vllm/issues/1283, we need to use cuda-toolkit=11.7.0 that is compatible with Pytorch 2.0.1.
+1. Install cuda-toolkit=11.7.0 on conda environment
+```bash
+conda install -c "nvidia/label/cuda-11.7.0" cuda-toolkit
+```
+2. Check cuda-toolkit version
+```bash
+nvcc -V
+```
+
+### Host FastChat API server
+1. Implement the following python commands in three separate terminal windows:
+```bash
+python3 -m fastchat.serve.controller
+python3 -m fastchat.serve.model_worker --model-path model-checkpoint
+python3 -m fastchat.serve.openai_api_server --host localhost --port 8000
+```
+2. Call model checkpoint API
+```bash
+curl http://localhost:8000/v1/completions \
+     -H "Content-Type: application/json" \
+     -d '{
+         "model": "model-checkpoint",
+         "prompt": "San Francisco is a",
+         "max_tokens": 7,
+         "temperature": 0
+     }'
+```
+*Sample output:*
+```JSON
+{"id":"cmpl-GGvKBiZFdFLzPq2HdtuxbC","object":"text_completion","created":1698692212,"model":"checkpoint-4525","choices":[{"index":0,"text":"city that is known for its icon","logprobs":null,"finish_reason":"length"}],"usage":{"prompt_tokens":5,"total_tokens":11,"completion_tokens":6}}
+```
+
+### Host vLLM instance and run inference on server (deprecated)
 1. Start vLLM surver with model checkpoint
 ```bash
 python -m vllm.entrypoints.openai.api_server --model model_checkpoint/
 ```
-1. Call model checkpoint API
+2. Call model checkpoint API
 ```bash
 curl http://localhost:8000/v1/models
 ```
@@ -80,12 +122,12 @@ curl http://localhost:8000/v1/models
 ```JSON
 {"object":"list","data":[{"id":"Mistral-7B-Instruct-v0.1/","object":"model","created":1697599903,"owned_by":"vllm","root":"Mistral-7B-Instruct-v0.1/","parent":null,"permission":[{"id":"modelperm-d415ecf6362a4f818090eb6428e0cac9","object":"model_permission","created":1697599903,"allow_create_engine":false,"allow_sampling":true,"allow_logprobs":true,"allow_search_indices":false,"allow_view":true,"allow_fine_tuning":false,"organization":"*","group":null,"is_blocking":false}]}]}
 ```
-2. Inference model checkpoint API
+3. Inference model checkpoint API
 ```bash
 curl http://localhost:8000/v1/completions \
      -H "Content-Type: application/json" \
      -d '{
-         "model": "model_checkpoint/",
+         "model": "model_checkpoint",
          "prompt": "San Francisco is a",
          "max_tokens": 7,
          "temperature": 0
