@@ -7,6 +7,7 @@ Go to the vllm dir and pip install -e .
 To notice https://github.com/vllm-project/vllm/issues/1283, need to modify the config file to "== 2.0.1" and the pytorch version if facing with CUDA version error.
 
 
+
 ## Deploy finetuned model on babel via FastChat API server
 ### Login with SSH key
 1. Add public ed25519 key to server
@@ -158,6 +159,7 @@ curl http://localhost:8001/v1/models
 If the above command runs successfully, you should be able to use REST API on your local machine.
 
 4. (optional) If you fail in building the ssh tunnel, you may add `-v` to the ssh command to see what went wrong.
+
 
 
 

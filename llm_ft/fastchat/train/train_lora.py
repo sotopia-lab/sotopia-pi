@@ -20,6 +20,11 @@ import logging
 import pathlib
 import typing
 import os
+import sys
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+root_directory = os.path.join(current_directory, '..', '..')
+sys.path.append(root_directory)
 
 from deepspeed import zero
 from deepspeed.runtime.zero.partition_parameters import ZeroParamStatus
@@ -33,7 +38,6 @@ from fastchat.train.train import (
     ModelArguments,
     make_supervised_data_module,
 )
-
 
 
 @dataclass
@@ -137,6 +141,7 @@ def train():
         )
         if lora_args.q_lora
         else None,
+        token=None if not model_args.hf_access_token else model_args.hf_access_token,
     )
     lora_config = LoraConfig(
         r=lora_args.lora_r,
@@ -176,6 +181,7 @@ def train():
         model_max_length=training_args.model_max_length,
         padding_side="right",
         use_fast=False,
+        token=None if not model_args.hf_access_token else model_args.hf_access_token,
     )
     tokenizer.pad_token = tokenizer.unk_token
 
