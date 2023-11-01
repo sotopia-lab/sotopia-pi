@@ -3,7 +3,7 @@ deepspeed --num_gpus=1 fastchat/train/train_lora.py \
     --lora_r 8 \
     --lora_alpha 16 \
     --lora_dropout 0.05 \
-    --data_path ./data/fastchat-ft-gpt4-gpt4-easy-2-side-partial.json \
+    --data_path ./data/fastchat-ft-gp4-gpt4-easy-truncated.json \
     --shuffle True \
     --bf16 True \
     --output_dir ./checkpoint-shuffle \
@@ -25,7 +25,7 @@ deepspeed --num_gpus=1 fastchat/train/train_lora.py \
     --hf_access_token "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" \
     --tf32 True \
     --flash_attn True \
-    --template "llama-2"
+    --template "sotopia-llama-2"
 
 # Possible other options
 # --flash_attn True \

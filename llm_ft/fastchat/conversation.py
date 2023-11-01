@@ -983,10 +983,10 @@ register_conv_template(
 register_conv_template(
     Conversation(
         name="sotopia-llama-2",
-        roles=("Agent1", "Agent2"),
-        sep_style=SeparatorStyle.LLAMA2,
+        roles=("PROMPT", "RESPONSE"),
+        sep_style=SeparatorStyle.ADD_COLON_TWO,
         sep=" ",
-        sep2=" </s><s>",
+        sep2="</s>",
     )
 )
 
