@@ -7,12 +7,5 @@ class Person(JsonModel):
 # Create an instance of your model
 person = Person(name="John", age=30)
 
-# Save to Redis
+# Save to Redis with a specific key
 person.save()
-
-# Retrieve from Redis
-retrieved_person = Person.load(person.id)
-
-# Print the retrieved data
-print(retrieved_person.name)  # Output: John
-print(retrieved_person.age)   # Output: 30

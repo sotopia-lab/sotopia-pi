@@ -9,13 +9,11 @@ from sotopia.database.persistent_profile import (
     AgentProfile,
     EnvironmentProfile,
     RelationshipProfile,
-    RelationshipType,
 )
 from sotopia.database.env_agent_combo_storage import EnvAgentComboStorage
 from sotopia.samplers import ConstraintBasedSampler
 from sotopia.messages import AgentAction, Observation
 from sotopia.agents import LLMAgent
-import redis
 
 
 
@@ -41,16 +39,13 @@ def retrieve_agent_by_first_name(first_name: str) -> AgentProfile:
 
 
 def add_env_profile(**kwargs: dict[str, Any]) -> None:
-    import pdb; pdb.set_trace()
     env_profile = EnvironmentProfile(**kwargs)
-    env_profile.save(r)
-    import pdb; pdb.set_trace()
+    env_profile.save()
 
 
 def add_env_profiles(env_profiles: list[dict[str, Any]]) -> None:
     for env_profile in env_profiles:
         add_env_profile(**env_profile)
-        import pdb; pdb.set_trace()
 
 
 def add_relationship_profile(**kwargs: dict[str, Any]) -> None:
@@ -90,9 +85,13 @@ def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
     sampler = ConstraintBasedSampler[Observation, AgentAction](
         env_candidates=[env_id]
     )
-    env_agent_combo_list = list(
-        sampler.sample(agent_classes=[LLMAgent] * 2, replacement=False)
-    )
+    try:
+        env_agent_combo_list = list(
+            sampler.sample(agent_classes=[LLMAgent] * 2, replacement=False)
+        )
+    except:
+        return
+    print(len(env_agent_combo_list))
     for env, agent in env_agent_combo_list:
         EnvAgentComboStorage(
             env_id=env.profile.pk,
@@ -111,7 +110,6 @@ if __name__ == "__main__":
     df = pd.read_csv(sys.argv[1])
     type = sys.argv[2]
     if type == "agent":
-        import pdb; pdb.set_trace()
         agents = cast(list[dict[str, Any]], df.to_dict(orient="records"))
         for agent in agents:
             agent["age"] = int(agent["age"])
@@ -120,18 +118,8 @@ if __name__ == "__main__":
                 "schwartz_personal_values"
             ].split(",")
         add_agents_to_database(agents)
+        Migrator().run()
     elif type == "environment":
-        pks = EnvironmentProfile.all_pks()
-        '''
-        df = df[
-            (
-                df["Xuhui"].astype(float).fillna(0)
-                + df["Leena"].astype(float).fillna(0)
-                + df["Hao"].astype(float).fillna(0)
-            )
-            > 1
-        ]
-        '''
         df = df[
             [
                 "codename",
@@ -146,19 +134,17 @@ if __name__ == "__main__":
         envs = cast(list[dict[str, Any]], df.to_dict(orient="records"))
         for env in envs:
             env["agent_goals"] = ast.literal_eval(env["agent_goals"])
-            # check env['relationship'] is int
             assert isinstance(env["relationship"], int)
-
-        add_env_profiles(envs)
         Migrator().run()
     elif type == "relationship":
-        import pdb; pdb.set_trace()
         relationships = cast(
             list[dict[str, Any]], df.to_dict(orient="records")
         )
         for relationship in relationships:
-            relationship["relationship"] = relationship_map(
-                relationship["relationship"]
-            )
+            assert isinstance(relationship["relationship"], int)
         add_relationship_profiles(relationships)
         Migrator().run()
+    elif type == 'agentenvcombo':
+        env_ids = list(EnvironmentProfile.all_pks())
+        for env_id in env_ids:
+            sample_env_agent_combo_and_push_to_db(env_id)
