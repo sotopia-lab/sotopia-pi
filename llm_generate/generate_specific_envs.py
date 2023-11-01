@@ -130,5 +130,6 @@ async def generate_craigslist_bargains_envs() -> tuple[str, list[str]]:
 
 
 if __name__ == '__main__':
-    scenario, goals = asyncio.run(generate_mutual_friend_envs())
-    import pdb; pdb.set_trace()
+    for i in range(10):
+        scenario, goals = asyncio.run(generate_mutual_friend_envs())
+        import pdb; pdb.set_trace()
