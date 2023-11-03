@@ -1,4 +1,4 @@
-deepspeed --num_gpus=1 fastchat/train/train_lora.py \
+deepspeed --num_gpus=4 fastchat/train/train_lora.py \
     --model_name_or_path meta-llama/Llama-2-13b-hf \
     --lora_r 8 \
     --lora_alpha 16 \
@@ -20,12 +20,13 @@ deepspeed --num_gpus=1 fastchat/train/train_lora.py \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --model_max_length 2048 \
-    --q_lora True \
+    --q_lora False \
     --deepspeed ./deepspeed_config_s2.json \
     --hf_access_token "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" \
     --tf32 True \
     --flash_attn True \
-    --template "sotopia-llama-2"
+    --template "sotopia-llama-2" \
+    # --gradient_checkpointing True
 
 # Possible other options
 # --flash_attn True \
