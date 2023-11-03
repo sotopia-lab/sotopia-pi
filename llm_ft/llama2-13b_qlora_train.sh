@@ -19,14 +19,14 @@ deepspeed --num_gpus=4 fastchat/train/train_lora.py \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
-    --model_max_length 2048 \
-    --q_lora False \
+    --model_max_length 4096 \
+    --q_lora True \
     --deepspeed ./deepspeed_config_s2.json \
     --hf_access_token "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" \
     --tf32 True \
     --flash_attn True \
     --template "sotopia-llama-2" \
-    # --gradient_checkpointing True
+    --gradient_checkpointing True
 
 # Possible other options
 # --flash_attn True \
