@@ -80,11 +80,11 @@ ssh -J babel babel-x-xx
 
 ### Install cuda-toolkit (optional)
 Due to the issue with vllm: https://github.com/vllm-project/vllm/issues/1283, we need to use cuda-toolkit=11.7.0 that is compatible with Pytorch 2.0.1.
-1. Install cuda-toolkit=11.7.0 on conda environment
+Install cuda-toolkit=11.7.0 on conda environment
 ```bash
 conda install -c "nvidia/label/cuda-11.7.0" cuda-toolkit
 ```
-2. Check cuda-toolkit version
+Check cuda-toolkit version
 ```bash
 nvcc -V
 ```
@@ -161,6 +161,7 @@ curl http://localhost:8001/v1/models
 If the above command runs successfully, you should be able to use REST API on your local machine.
 
 (optional) If you fail in building the ssh tunnel, you may add `-v` to the ssh command to see what went wrong.
+
 
 
 
