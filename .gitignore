@@ -20,6 +20,7 @@ llm_ft/checkpoints/*
 llm_ft/*_checkpoints/*
 !**/dummy_conversation.json
 !llm_ft/deepspeed_config_s2.json
+!llm_rl/data/*.json
 
 # Editor
 .idea
