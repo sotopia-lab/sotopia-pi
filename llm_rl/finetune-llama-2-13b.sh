@@ -27,7 +27,7 @@ deepspeed src/train_bash.py \
     --save_strategy "epoch" \
     --save_total_limit 5 \
     --learning_rate 5e-5 \
-    --num_train_epochs 10.0 \
+    --num_train_epochs 15.0 \
     --plot_loss \
     --bf16 \
     --deepspeed ./deepspeed_config_s2.json \
