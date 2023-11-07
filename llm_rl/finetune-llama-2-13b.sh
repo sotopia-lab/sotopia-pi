@@ -1,0 +1,29 @@
+python3 src/train_bash.py \
+    --stage sft \
+    --model_name_or_path meta-llama/Llama-2-13b \
+    --cache_dir ./cache \
+    --quantization_bit 4 \
+    --quantization_type nf4 \
+    --double_quantization \
+    --flash_attn True \
+    --gradient_checkpointing True \
+    --hf_auth_token "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" \
+    --do_train \
+    --dataset alpaca_gpt4_en \
+    --cutoff_len 4096 \
+    --template default \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --output_dir ./llama2-13b-sft \
+    --overwrite_cache \
+    --per_device_train_batch_size 8 \
+    --gradient_accumulation_steps 32 \
+    --lr_scheduler_type cosine \
+    --logging_steps 1 \
+    --save_strategy "epoch" \
+    --save_total_limit 5 \
+    --learning_rate 5e-5 \
+    --num_train_epochs 5.0 \
+    --plot_loss \
+    --fp16 \
+    --deepspeed ./deepspeed_config_s2.json \

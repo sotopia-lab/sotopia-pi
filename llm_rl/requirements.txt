@@ -18,3 +18,5 @@ pydantic
 fastapi
 sse-starlette
 matplotlib
+py-cpuinfo
+deepspeed

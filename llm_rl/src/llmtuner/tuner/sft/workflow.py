@@ -27,6 +27,9 @@ def run_sft(
     dataset = get_dataset(model_args, data_args)
     model, tokenizer = load_model_and_tokenizer(model_args, finetuning_args, training_args.do_train, stage="sft")
     dataset = preprocess_dataset(dataset, tokenizer, data_args, training_args, stage="sft")
+    
+    if training_args.gradient_checkpointing:
+        model.enable_input_require_grads()
 
     if training_args.predict_with_generate:
         tokenizer.padding_side = "left" # use left-padding in generation
