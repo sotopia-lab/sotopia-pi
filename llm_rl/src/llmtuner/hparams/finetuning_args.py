@@ -83,6 +83,10 @@ class FinetuningArguments:
         default=0,
         metadata={"help": "The alpha parameter to control the noise magnitude in NEFTune."}
     )
+    wandb_token: Optional[str|None] = field(
+        default=None,
+        metadata={"help": "The login api token for wandb."}
+    )
 
     def __post_init__(self):
         if isinstance(self.lora_target, str): # support custom target modules/layers of LoRA

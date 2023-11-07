@@ -10,6 +10,7 @@ from llmtuner.extras.ploting import plot_loss
 from llmtuner.tuner.core import load_model_and_tokenizer
 from llmtuner.tuner.sft.metric import ComputeMetrics
 from llmtuner.tuner.sft.trainer import CustomSeq2SeqTrainer
+from llmtuner.tuner.core.utils import is_first_node
 
 if TYPE_CHECKING:
     from transformers import TrainerCallback
@@ -47,6 +48,8 @@ def run_sft(
         generation_num_beams=data_args.eval_num_beams or training_args.generation_num_beams
     ))
     training_args = Seq2SeqTrainingArguments(**training_args_dict)
+    if is_first_node():
+        training_args.report_to = ["wandb"]
 
     # Initialize our Trainer
     trainer = CustomSeq2SeqTrainer(

@@ -9,9 +9,15 @@ if TYPE_CHECKING:
     from transformers.modeling_utils import PreTrainedModel
     from llmtuner.hparams import FinetuningArguments
 
+import torch.distributed as dist
+import os
 
 logger = get_logger(__name__)
 
+def is_first_node():
+    world_rank = dist.get_rank()
+    local_rank = int(os.environ['LOCAL_RANK'])
+    return world_rank == local_rank == 0
 
 def find_all_linear_modules(
     model: "PreTrainedModel",
