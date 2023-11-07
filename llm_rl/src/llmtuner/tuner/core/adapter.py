@@ -89,7 +89,6 @@ def init_adapter(
                 lora_alpha=finetuning_args.lora_alpha,
                 lora_dropout=finetuning_args.lora_dropout,
                 target_modules=target_modules,
-                bias=finetuning_args.lora_bias,
                 modules_to_save=finetuning_args.additional_target
             )
             model = get_peft_model(model, lora_config)

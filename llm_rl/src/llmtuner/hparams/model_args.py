@@ -1,4 +1,3 @@
-from torch import float16, bfloat16, float32
 from typing import Literal, Optional
 from dataclasses import dataclass, field
 
@@ -75,21 +74,9 @@ class ModelArguments:
         default=None,
         metadata={"help": "Path to the directory to save the exported model."}
     )
-    qlora_compute_dtype: Optional[str] = field(
-        default="fp32",
-        metadata={"help": "The compute_dtype option from bitsandbytes."}
-    )
-    use_custom_callback: Optional[bool] = field(
-        default=False,
-        metadata={"help": "Whether enable custom callbacks."}
-    )
-    call_back_save_epochs: Optional[int] = field(
-        default=1,
-        metadata={"help": "The number of epochs before each call back save."}
-    )
-    
 
     def __post_init__(self):
+        self.compute_dtype = None
         self.model_max_length = None
 
         if self.split_special_tokens and self.use_fast_tokenizer:
@@ -104,10 +91,3 @@ class ModelArguments:
         if self.use_auth_token == True and self.hf_auth_token is not None:
             from huggingface_hub.hf_api import HfFolder # lazy load
             HfFolder.save_token(self.hf_auth_token)
-            
-        if self.qlora_compute_dtype == "bf16":
-            self.compute_dtype = bfloat16
-        elif self.qlora_compute_dtype == "fp16":
-            self.compute_dtype = float16
-        else:
-            self.compute_dtype = float32

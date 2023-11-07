@@ -38,7 +38,7 @@ class PairwiseTrainer(Trainer):
         See: https://github.com/huggingface/transformers/blob/v4.30.2/src/transformers/trainer.py#L3509
         """
         # Compute rewards
-        _, _, values = model(**inputs, output_hidden_states=True, return_dict=True) # (lm_logits, loss, value)
+        _, _, values = model(**inputs, output_hidden_states=True, return_dict=True)
         if values.size(0) != inputs["input_ids"].size(0): # adapt to chatglm2
             values = torch.transpose(values, 0, 1)
 

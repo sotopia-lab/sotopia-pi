@@ -9,9 +9,6 @@ from llmtuner.tuner.rm import run_rm
 from llmtuner.tuner.ppo import run_ppo
 from llmtuner.tuner.dpo import run_dpo
 
-from llmtuner.tuner.core.utils import is_first_node
-import wandb
-
 if TYPE_CHECKING:
     from transformers import TrainerCallback
 
@@ -22,10 +19,7 @@ logger = get_logger(__name__)
 def run_exp(args: Optional[Dict[str, Any]] = None, callbacks: Optional[List["TrainerCallback"]] = None):
     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
     callbacks = [LogCallback()] if callbacks is None else callbacks
-    if is_first_node():
-        wandb.login(key=finetuning_args.wandb_token)
-        wandb.init(project=finetuning_args.wandb_project, tags=[*finetuning_args.wandb_tags] if finetuning_args.wandb_tags else None)
-    
+
     if finetuning_args.stage == "pt":
         run_pt(model_args, data_args, training_args, finetuning_args, callbacks)
     elif finetuning_args.stage == "sft":

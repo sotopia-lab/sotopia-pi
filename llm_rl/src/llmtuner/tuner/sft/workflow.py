@@ -10,8 +10,6 @@ from llmtuner.extras.ploting import plot_loss
 from llmtuner.tuner.core import load_model_and_tokenizer
 from llmtuner.tuner.sft.metric import ComputeMetrics
 from llmtuner.tuner.sft.trainer import CustomSeq2SeqTrainer
-from llmtuner.tuner.core.utils import is_first_node
-from llmtuner.tuner.sft.custom_callback import SaveModelCallback
 
 if TYPE_CHECKING:
     from transformers import TrainerCallback
@@ -29,11 +27,6 @@ def run_sft(
     dataset = get_dataset(model_args, data_args)
     model, tokenizer = load_model_and_tokenizer(model_args, finetuning_args, training_args.do_train, stage="sft")
     dataset = preprocess_dataset(dataset, tokenizer, data_args, training_args, stage="sft")
-    
-    if training_args.gradient_checkpointing:
-        model.enable_input_require_grads()
-        model.gradient_checkpointing_enable()
-        model.config.use_cache = False
 
     if training_args.predict_with_generate:
         tokenizer.padding_side = "left" # use left-padding in generation
@@ -51,11 +44,6 @@ def run_sft(
         generation_num_beams=data_args.eval_num_beams or training_args.generation_num_beams
     ))
     training_args = Seq2SeqTrainingArguments(**training_args_dict)
-    if is_first_node():
-        training_args.report_to = ["wandb"]
-        
-    if model_args.use_custom_callback:
-        callbacks.append(SaveModelCallback(model_args.call_back_save_epochs, training_args.output_dir))
 
     # Initialize our Trainer
     trainer = CustomSeq2SeqTrainer(

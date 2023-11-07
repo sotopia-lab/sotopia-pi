@@ -1,4 +1,3 @@
-from typing import List
 import json
 from typing import Literal, Optional
 from dataclasses import asdict, dataclass, field
@@ -52,10 +51,6 @@ class FinetuningArguments:
                   Phi-1.5 choices: [\"Wqkv\", \"out_proj\", \"fc1\", \"fc2\"], \
                   LLaMA-2, InternLM, XVERSE choices: the same as LLaMA."}
     )
-    lora_bias: Optional[str] = field(
-        default="none",
-        metadata={"help": "The lora_bias option from bitsandbytes."}
-    )
     additional_target: Optional[str] = field(
         default=None,
         metadata={"help": "Name(s) of modules apart from LoRA layers to be set as trainable and saved in the final checkpoint."}
@@ -87,18 +82,6 @@ class FinetuningArguments:
     neft_alpha: Optional[float] = field(
         default=0,
         metadata={"help": "The alpha parameter to control the noise magnitude in NEFTune."}
-    )
-    wandb_token: Optional[str] = field(
-        default=None,
-        metadata={"help": "The login api token for wandb."}
-    )
-    wandb_project: Optional[str] = field(
-        default=None,
-        metadata={"help": "The project name for the current wandb log."}
-    )
-    wandb_tags: Optional[List[str]] = field(
-        default=None,
-        metadata={"help": "The tag for the current wandb run."}
     )
 
     def __post_init__(self):
