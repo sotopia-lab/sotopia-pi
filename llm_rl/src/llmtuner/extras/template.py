@@ -513,7 +513,6 @@ register_template(
     sep=[]
 )
 
-
 r"""
 Supports: https://huggingface.co/ziqingyang/chinese-alpaca-2-7b
           https://huggingface.co/ziqingyang/chinese-alpaca-2-13b
