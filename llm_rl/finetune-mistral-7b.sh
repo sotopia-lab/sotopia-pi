@@ -9,7 +9,7 @@ deepspeed src/train_bash.py \
     --wandb_tags "['mistral-7b']" \
     --use_fast_tokenizer False \
     --do_train \
-    --num_train_epochs 5.0 \
+    --num_train_epochs 15.0 \
     --per_device_train_batch_size 1 \
     --gradient_accumulation_steps 32 \
     --finetuning_type lora \
