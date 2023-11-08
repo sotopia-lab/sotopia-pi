@@ -3,21 +3,18 @@ deepspeed src/train_bash.py \
     --model_name_or_path meta-llama/Llama-2-13b-hf \
     --dataset fastchat-sft \
     --dataset_dir ./data/ \
-    --val_size 0.1 \
-    --cutoff_len 2110 \
+    --cutoff_len 4096 \
     --template llama2-sotopia \
     --wandb_project "llama-factory-sft" \
-    --wandb_tags "['llama-2-13b-hf-2k']" \
+    --wandb_tags "['llama-2-13b-hf']" \
     --use_fast_tokenizer False \
     --do_train \
     --num_train_epochs 15.0 \
     --per_device_train_batch_size 8 \
-    --gradient_accumulation_steps 8 \
+    --gradient_accumulation_steps 4 \
     --finetuning_type lora \
     --lora_target q_proj,v_proj \
-    --lora_rank 8 \
-    --lora_alpha 16 \
-    --lora_dropout 0.05 \
+    --qlora_compute_dtype bf16 \
     --learning_rate 5e-5 \
     --lr_scheduler_type cosine \
     --weight_decay 0. \
@@ -33,9 +30,6 @@ deepspeed src/train_bash.py \
     --output_dir ./llama2-13b-sft_cache \
     --overwrite_output_dir \
     --logging_steps 1 \
-    --evaluation_strategy "steps" \
-    --per_device_eval_batch_size 32 \
-    --eval_accumulation_steps 32 \
     --save_strategy "epoch" \
     --save_total_limit 5 \
     --use_auth_token True \
@@ -44,3 +38,10 @@ deepspeed src/train_bash.py \
     --deepspeed ./deepspeed_config_s2.json
 
     # --dataset alpaca_gpt4_en \
+    # --val_size 0.1 \
+    # --evaluation_strategy "steps" \
+    # --per_device_eval_batch_size 32 \
+    # --eval_accumulation_steps 32 \
+    # --lora_rank 8 \
+    # --lora_alpha 16 \
+    # --lora_dropout 0.05 \
