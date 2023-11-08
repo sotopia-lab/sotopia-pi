@@ -87,6 +87,14 @@ class FinetuningArguments:
         default=None,
         metadata={"help": "The login api token for wandb."}
     )
+    wandb_project: Optional[str|None] = field(
+        default=None,
+        metadata={"help": "The project name for the current wandb log."}
+    )
+    wandb_tags: Optional[list[str]|None] = field(
+        default=None,
+        metadata={"help": "The tag for the current wandb run."}
+    )
 
     def __post_init__(self):
         if isinstance(self.lora_target, str): # support custom target modules/layers of LoRA
