@@ -1,13 +1,13 @@
 deepspeed src/train_bash.py \
     --stage sft \
     --model_name_or_path meta-llama/Llama-2-13b-hf \
-    --dataset sotopia_easy_sft \
+    --dataset fastchat-sft \
     --dataset_dir ./data/ \
     --val_size 0.1 \
-    --cutoff_len 4096 \
+    --cutoff_len 2110 \
     --template llama2-sotopia \
     --wandb_project "llama-factory-sft" \
-    --wandb_tags "['llama-2-13b-hf']" \
+    --wandb_tags "['llama-2-13b-hf-2k']" \
     --use_fast_tokenizer False \
     --do_train \
     --num_train_epochs 15.0 \
@@ -24,10 +24,10 @@ deepspeed src/train_bash.py \
     --warmup_ratio 0.03 \
     --quantization_bit 4 \
     --quantization_type nf4 \
-    --double_quantization \
+    --double_quantization True \
     --flash_attn True \
     --gradient_checkpointing True \
-    --bf16 \
+    --bf16 True \
     --cache_dir ./model_cache \
     --overwrite_cache \
     --output_dir ./llama2-13b-sft_cache \

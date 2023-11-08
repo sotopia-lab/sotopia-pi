@@ -91,3 +91,4 @@ class ModelArguments:
         if self.use_auth_token == True and self.hf_auth_token is not None:
             from huggingface_hub.hf_api import HfFolder # lazy load
             HfFolder.save_token(self.hf_auth_token)
+        
