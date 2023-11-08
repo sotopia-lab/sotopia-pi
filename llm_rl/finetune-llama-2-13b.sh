@@ -10,8 +10,8 @@ deepspeed src/train_bash.py \
     --use_fast_tokenizer False \
     --do_train \
     --num_train_epochs 15.0 \
-    --per_device_train_batch_size 8 \
-    --gradient_accumulation_steps 4 \
+    --per_device_train_batch_size 1 \
+    --gradient_accumulation_steps 32 \
     --finetuning_type lora \
     --lora_target q_proj,v_proj \
     --qlora_compute_dtype bf16 \
