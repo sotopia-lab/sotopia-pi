@@ -499,6 +499,19 @@ register_template(
     sep=[]
 )
 
+register_template(
+    name="llama2-sotopia",
+    prefix=[
+        "{{system}}"
+    ],
+    prompt=[
+        "[INST] {{query}} [/INST]"
+    ],
+    system=(
+        ""
+    ),
+    sep=[]
+)
 
 r"""
 Supports: https://huggingface.co/ziqingyang/chinese-alpaca-2-7b
