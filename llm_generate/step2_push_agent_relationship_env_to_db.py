@@ -135,6 +135,7 @@ if __name__ == "__main__":
         for env in envs:
             env["agent_goals"] = ast.literal_eval(env["agent_goals"])
             assert isinstance(env["relationship"], int)
+        add_env_profiles(envs)
         Migrator().run()
     elif type == "relationship":
         relationships = cast(
