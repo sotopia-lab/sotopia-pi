@@ -17,4 +17,10 @@ uvicorn
 pydantic
 fastapi
 sse-starlette
+packaging
 matplotlib
+py-cpuinfo
+deepspeed
+bitsandbytes>=0.39.0
+flash-attn
+wandb

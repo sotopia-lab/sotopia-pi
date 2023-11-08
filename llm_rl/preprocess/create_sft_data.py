@@ -22,6 +22,6 @@ def join_json_files(directory_path):
                 joined_data.append(new_data)
     return joined_data
 
-joined_data = join_json_files("./GPT4-4_Redis_Easy_No_Slide_No_Filter_Format/")
-with open("../data/GPT4-4_Redis_Easy_No_Slide_No_Filter_Format.json", "w") as f:
+joined_data = join_json_files("./GPT4-4_Redis_Easy_No_Slide/")
+with open("../data/GPT4-4_Redis_Easy_No_Slide.json", "w") as f:
     json.dump(joined_data, f)

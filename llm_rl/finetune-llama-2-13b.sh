@@ -1,8 +1,9 @@
 deepspeed src/train_bash.py \
     --stage sft \
     --model_name_or_path meta-llama/Llama-2-13b-hf \
-    --dataset fastchat-sft \
+    --dataset sotopia_easy_sft \
     --dataset_dir ./data/ \
+    --val_size 0.1 \
     --cutoff_len 4096 \
     --template llama2-sotopia \
     --wandb_project "llama-factory-sft" \
@@ -10,26 +11,31 @@ deepspeed src/train_bash.py \
     --use_fast_tokenizer False \
     --do_train \
     --num_train_epochs 15.0 \
-    --per_device_train_batch_size 1 \
-    --gradient_accumulation_steps 32 \
+    --per_device_train_batch_size 8 \
+    --gradient_accumulation_steps 8 \
     --finetuning_type lora \
     --lora_target q_proj,v_proj \
-    --qlora_compute_dtype bf16 \
+    --lora_rank 8 \
+    --lora_alpha 16 \
+    --lora_dropout 0.05 \
     --learning_rate 5e-5 \
     --lr_scheduler_type cosine \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --quantization_bit 4 \
     --quantization_type nf4 \
-    --double_quantization True \
+    --double_quantization \
     --flash_attn True \
     --gradient_checkpointing True \
-    --bf16 True \
+    --bf16 \
     --cache_dir ./model_cache \
     --overwrite_cache \
     --output_dir ./llama2-13b-sft_cache \
     --overwrite_output_dir \
     --logging_steps 1 \
+    --evaluation_strategy "steps" \
+    --per_device_eval_batch_size 32 \
+    --eval_accumulation_steps 32 \
     --save_strategy "epoch" \
     --save_total_limit 5 \
     --use_auth_token True \
@@ -38,10 +44,3 @@ deepspeed src/train_bash.py \
     --deepspeed ./deepspeed_config_s2.json
 
     # --dataset alpaca_gpt4_en \
-    # --val_size 0.1 \
-    # --evaluation_strategy "steps" \
-    # --per_device_eval_batch_size 32 \
-    # --eval_accumulation_steps 32 \
-    # --lora_rank 8 \
-    # --lora_alpha 16 \
-    # --lora_dropout 0.05 \
