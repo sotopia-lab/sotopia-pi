@@ -24,7 +24,7 @@ def run_exp(args: Optional[Dict[str, Any]] = None, callbacks: Optional[List["Tra
     callbacks = [LogCallback()] if callbacks is None else callbacks
     if is_first_node():
         wandb.login(key=finetuning_args.wandb_token)
-        wandb.init(project=finetuning_args.wandb_project, tags=[*finetuning_args.wandb_tags])
+        wandb.init(project=finetuning_args.wandb_project, tags=[*finetuning_args.wandb_tags] if finetuning_args.wandb_tags else None)
     
     if finetuning_args.stage == "pt":
         run_pt(model_args, data_args, training_args, finetuning_args, callbacks)

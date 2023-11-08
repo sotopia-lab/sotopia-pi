@@ -1,4 +1,8 @@
 {
+  "fastchat-sft": {
+    "file_name": "fastchat-ft-gp4-gpt4-easy-truncated.json",
+    "file_sha1": ""
+  },
   "sotopia_easy_sft": {
     "file_name": "GPT4-4_Redis_Easy_No_Slide.json",
     "file_sha1": ""
