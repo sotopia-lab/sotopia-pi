@@ -8,40 +8,35 @@ import rich
 from pydantic import BaseModel
 
 from sotopia.database import EnvironmentProfile
-from sotopia.generation_utils.generate import agenerate_env_profile
-
-random.seed(41)
-
-env_borrowMoney = EnvironmentProfile.find(
-    EnvironmentProfile.codename == "borrow_money"
-).all()[0]
-env_roadtrip = EnvironmentProfile.find(
-    EnvironmentProfile.codename == "take_turns"
-).all()[0]
-env_prisonerDillema = EnvironmentProfile.find(
-    EnvironmentProfile.codename == "prison_dilemma"
-).all()[0]
-
-examples = f"{env_borrowMoney.json()}\n\n{env_roadtrip.json()}\n\n{env_prisonerDillema.json()}"
-
-ins_prompts = pd.read_csv("./inspirational_prompt_for_env.csv")
-prompts = ins_prompts["prompt"].tolist()
+from generate import agenerate_env_profile
 
 T = TypeVar("T", bound=BaseModel)
-
 
 def pydantics_to_csv(filename: str, data: list[T]) -> None:
     pd.DataFrame([item.dict() for item in data]).to_csv(filename, index=False)
 
 
+random.seed(41)
+
+envs = EnvironmentProfile.find().all()
+ins_prompts = pd.read_csv("./inspirational_prompt_for_env.csv")
+prompts = [prompt.strip().replace('\"', '') for prompt in ins_prompts["prompt"].tolist()]
+
+# randomly choose 3 prompts
+sampled_examples = []
+for i in range(len(prompts)):
+    sampled_envs = random.sample(envs, 5)
+    sampled_examples.append(f"{sampled_envs[0].json()}\n\n{sampled_envs[1].json()}\n\n{sampled_envs[2].json()}\n\n{sampled_envs[3].json()}\n\n{sampled_envs[4].json()}")
+
 backgrounds = []
-for prompt in tqdm(prompts):
+for prompt, sampled_example in tqdm(zip(prompts, sampled_examples)):
     rich.print(prompt)
     background, prompt_full = asyncio.run(
         agenerate_env_profile(
             model_name="gpt-4",
             inspiration_prompt=prompt,
-            examples=examples,
+            examples=sampled_example,
+            temperature=1.5,
         )
     )
     rich.print(background)

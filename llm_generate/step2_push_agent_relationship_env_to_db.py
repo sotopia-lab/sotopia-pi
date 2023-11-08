@@ -63,8 +63,8 @@ def add_relationship_profiles(
 def delete_all_agents() -> None:
     pks = AgentProfile.all_pks()
     pks_list = list(pks)
-    for id in pks:
-        AgentProfile.delete(id)
+    #for id in pks:
+    #    AgentProfile.delete(id)
 
 
 def delete_all_env_profiles() -> None:
