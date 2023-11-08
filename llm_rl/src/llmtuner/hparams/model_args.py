@@ -1,3 +1,4 @@
+from torch import float16, bfloat16, float32
 from typing import Literal, Optional
 from dataclasses import dataclass, field
 
@@ -74,9 +75,21 @@ class ModelArguments:
         default=None,
         metadata={"help": "Path to the directory to save the exported model."}
     )
+    bf16: Optional[bool] = field(
+        default=False,
+        metadata={"help": "Whether the model uses bf16"}
+    )
+    fp16: Optional[bool] = field(
+        default=False,
+        metadata={"help": "Whether the model uses fp16"}
+    )
 
     def __post_init__(self):
-        self.compute_dtype = None
+        self.compute_dtype = (
+            float16
+            if self.fp16
+            else (bfloat16 if self.bf16 else float32)
+        )
         self.model_max_length = None
 
         if self.split_special_tokens and self.use_fast_tokenizer:

@@ -24,8 +24,7 @@ deepspeed src/train_bash.py \
     --double_quantization \
     --flash_attn True \
     --gradient_checkpointing True \
-    --bf16 \
-    --tf32 True \
+    --bf16 True \
     --cache_dir ./model_cache \
     --overwrite_cache \
     --output_dir ./mistral-7b-sft_cache \

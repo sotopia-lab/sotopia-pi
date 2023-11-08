@@ -27,7 +27,7 @@ deepspeed src/train_bash.py \
     --double_quantization \
     --flash_attn True \
     --gradient_checkpointing True \
-    --bf16 \
+    --bf16 True \
     --cache_dir ./model_cache \
     --overwrite_cache \
     --output_dir ./llama2-13b-sft_cache \
