@@ -7,7 +7,7 @@ CUDA_VISIBLE_DEVICES=0 python src/train_bash.py \
     --finetuning_type lora \
     --lora_target q_proj,v_proj \
     --resume_lora_training False \
-    --output_dir ./llama-2-13b-rm \
+    --output_dir ./llama-2-13b-rm_cache \
     --per_device_train_batch_size 8 \
     --gradient_accumulation_steps 8 \
     --lr_scheduler_type cosine \
