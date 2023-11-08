@@ -320,6 +320,7 @@ def generate(
             "format_instructions"
         ] = output_parser.get_format_instructions()
     result = chain.predict([logging_handler], **input_values)
+    import pdb; pdb.set_trace()
     try:
         parsed_result = output_parser.parse(result)
     except KeyboardInterrupt:
@@ -423,11 +424,12 @@ async def agenerate_env_profile(
     """
     return await agenerate(
         model_name=model_name,
-        template="""Please generate scenarios and goals based on the examples below as well as the inspirational prompt, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
+        template="""Please generate scenarios and goals following the examples below. 
         Examples:
         {examples}
+        Additionally, generate creative scenarios based on one or more inspirational prompt. The scenario and social goal is motivated by them but not very related to those prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
         Inspirational prompt: {inspiration_prompt}
-        Please use the following format:
+        Please use the following format and follow that format strictly:
         {format_instructions}
         """,
         input_values=dict(
