@@ -1,3 +1,4 @@
+from typing import List
 import json
 from typing import Literal, Optional
 from dataclasses import asdict, dataclass, field
@@ -83,15 +84,15 @@ class FinetuningArguments:
         default=0,
         metadata={"help": "The alpha parameter to control the noise magnitude in NEFTune."}
     )
-    wandb_token: Optional[str|None] = field(
+    wandb_token: Optional[str] = field(
         default=None,
         metadata={"help": "The login api token for wandb."}
     )
-    wandb_project: Optional[str|None] = field(
+    wandb_project: Optional[str] = field(
         default=None,
         metadata={"help": "The project name for the current wandb log."}
     )
-    wandb_tags: Optional[list[str]|None] = field(
+    wandb_tags: Optional[List[str]] = field(
         default=None,
         metadata={"help": "The tag for the current wandb run."}
     )

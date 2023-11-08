@@ -15,8 +15,8 @@ import os
 logger = get_logger(__name__)
 
 def is_first_node():
-    world_rank = dist.get_rank()
-    local_rank = int(os.environ['LOCAL_RANK'])
+    world_rank = dist.get_rank() if torch.distributed.is_initialized() else 0
+    local_rank = int(os.environ['LOCAL_RANK']) if 'LOCAL_RANK' in os.environ else 0
     return world_rank == local_rank == 0
   
 def find_all_linear_modules(

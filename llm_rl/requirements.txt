@@ -17,6 +17,7 @@ uvicorn
 pydantic
 fastapi
 sse-starlette
+packaging
 matplotlib
 py-cpuinfo
 deepspeed
