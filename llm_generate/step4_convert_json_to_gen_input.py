@@ -42,25 +42,25 @@ def get_agent_info(agent1_pk, agent2_pk, env_pk, agent_dict, env_dict):
     agent2_goal = env_dict[env_pk]['agent_goals'][1].replace('<extra_info>', '')
 
     agent1_info = {
-        'agent1_name': agent1_name,
-        'agent1_age': agent1_age,
-        'agent1_occupation': agent1_occupation,
-        'agent1_gender': agent1_gender,
-        'agent1_public_info': agent1_public_info,
-        'agent1_personality_and_values': agent1_personality_and_values,
-        'agent1_secret': agent1_secret,
-        'agent1_goal': agent1_goal,
+        'agent_name': agent1_name,
+        'agent_age': agent1_age,
+        'agent_occupation': agent1_occupation,
+        'agent_gender': agent1_gender,
+        'agent_public_info': agent1_public_info,
+        'agent_personality_and_values': agent1_personality_and_values,
+        'agent_secret': agent1_secret,
+        'agent_goal': agent1_goal,
     }
 
     agent2_info = {
-        'agent2_name': agent2_name,
-        'agent2_age': agent2_age,
-        'agent2_occupation': agent2_occupation,
-        'agent2_gender': agent2_gender,
-        'agent2_public_info': agent2_public_info,
-        'agent2_personality_and_values': agent2_personality_and_values,
-        'agent2_secret': agent2_secret,
-        'agent2_goal': agent2_goal,
+        'agent_name': agent2_name,
+        'agent_age': agent2_age,
+        'agent_occupation': agent2_occupation,
+        'agent_gender': agent2_gender,
+        'agent_public_info': agent2_public_info,
+        'agent_personality_and_values': agent2_personality_and_values,
+        'agent_secret': agent2_secret,
+        'agent_goal': agent2_goal,
     }
     return agent1_info, agent2_info
 
@@ -93,22 +93,22 @@ def fill_template(agent1_info, agent2_info, scenario):
     )
 
     prompt = prompt_template.format(
-        agent1_name=agent1_info['agent1_name'],
-        agent1_age=agent1_info['agent1_age'],
-        agent1_gender=agent1_info['agent1_gender'],
-        agent1_occupation=agent1_info['agent1_occupation'],
+        agent1_name=agent1_info['agent_name'],
+        agent1_age=agent1_info['agent_age'],
+        agent1_gender=agent1_info['agent_gender'],
+        agent1_occupation=agent1_info['agent_occupation'],
         agent1_pronoun=agent1_pronoun,
-        agent1_public_info=agent1_info['agent1_public_info'],
-        agent1_personality_and_values=agent1_info['agent1_personality_and_values'],
-        agent1_secret=agent1_info['agent1_secret'],
-        agent1_goal=agent1_info['agent1_goal'],
-        agent2_name=agent2_info['agent2_name'],
-        agent2_age=agent2_info['agent2_age'],
-        agent2_gender=agent2_info['agent2_gender'],
-        agent2_occupation=agent2_info['agent2_occupation'],
+        agent1_public_info=agent1_info['agent_public_info'],
+        agent1_personality_and_values=agent1_info['agent_personality_and_values'],
+        agent1_secret=agent1_info['agent_secret'],
+        agent1_goal=agent1_info['agent_goal'],
+        agent2_name=agent2_info['agent_name'],
+        agent2_age=agent2_info['agent_age'],
+        agent2_gender=agent2_info['agent_gender'],
+        agent2_occupation=agent2_info['agent_occupation'],
         agent2_pronoun=agent2_pronoun,
-        agent2_public_info=agent2_info['agent2_public_info'],
-        agent2_personality_and_values=agent2_info['agent2_personality_and_values'],
+        agent2_public_info=agent2_info['agent_public_info'],
+        agent2_personality_and_values=agent2_info['agent_personality_and_values'],
         scenario=scenario
     )
 
@@ -138,9 +138,7 @@ for key, data in all_json_data.items():
         agent1_info, agent2_info = get_agent_info(agent_ids[0], agent_ids[1], env_id, agent_dict, env_dict)
         full_prompt = fill_template(agent1_info, agent2_info, env_dict[env_id]['scenario'])
         full_prompts.append({'text': full_prompt})
-
-        agent1_info, agent2_info = get_agent_info(agent_ids[1], agent_ids[0], env_id, agent_dict, env_dict)
-        full_prompt = fill_template(agent1_info, agent2_info, env_dict[env_id]['scenario'])
+        full_prompt = fill_template(agent2_info, agent1_info, env_dict[env_id]['scenario'])
         full_prompts.append({'text': full_prompt})
 
 print('Total number of prompts: ', len(full_prompts))
