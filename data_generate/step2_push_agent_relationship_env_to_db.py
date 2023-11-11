@@ -15,7 +15,6 @@ from sotopia.samplers import ConstraintBasedSampler
 from sotopia.messages import AgentAction, Observation
 from sotopia.agents import LLMAgent
 
-agent_env_combo_num = 0
 
 
 def add_agent_to_database(**kwargs: dict[str, Any]) -> None:
@@ -92,9 +91,7 @@ def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
         )
     except:
         return
-    global agent_env_combo_num
-    agent_env_combo_num += len(env_agent_combo_list)
-    print(agent_env_combo_num)
+    print(len(env_agent_combo_list))
     for env, agent in env_agent_combo_list:
         EnvAgentComboStorage(
             env_id=env.profile.pk,

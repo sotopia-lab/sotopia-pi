@@ -38,11 +38,8 @@ def get_agent_info(agent1_pk, agent2_pk, env_pk, agent_dict, env_dict):
     agent1_secret = agent_dict[agent1_pk]['secret']
     agent2_secret = agent_dict[agent2_pk]['secret']
 
-    agent1_goal = env_dict[env_pk]['agent_goals'][0].replace('<extra_info>', '').replace('</extra_info>', '')
-    agent2_goal = env_dict[env_pk]['agent_goals'][1].replace('<extra_info>', '').replace('</extra_info>', '')
-
-    agent1_goal = agent1_goal.replace('Agent1', agent1_name).replace('Agent2', agent2_name).replace('agent2', agent2_name).replace('agent1', agent1_name)
-    agent2_goal = agent2_goal.replace('Agent2', agent2_name).replace('Agent1', agent1_name).replace('agent1', agent1_name).replace('agent2', agent2_name)
+    agent1_goal = env_dict[env_pk]['agent_goals'][0].replace('<extra_info>', '')
+    agent2_goal = env_dict[env_pk]['agent_goals'][1].replace('<extra_info>', '')
 
     agent1_info = {
         'agent_name': agent1_name,
@@ -95,10 +92,6 @@ def fill_template(agent1_info, agent2_info, scenario):
         "Conversation Starts:\n.\nYou are at Turn #0."
     )
 
-    scenario = scenario.replace('agent2', agent2_info['agent_name']).replace('agent1', agent1_info['agent_name'])
-    scenario = scenario.replace('Agent2', agent2_info['agent_name']).replace('Agent1', agent1_info['agent_name'])
-
-
     prompt = prompt_template.format(
         agent1_name=agent1_info['agent_name'],
         agent1_age=agent1_info['agent_age'],
@@ -120,6 +113,8 @@ def fill_template(agent1_info, agent2_info, scenario):
     )
 
     return prompt + format_instruction
+
+
 
 
 with open('redis_json_data.json', 'r') as f:
