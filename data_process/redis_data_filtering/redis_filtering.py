@@ -95,7 +95,7 @@ def goal_filter_per_env_agent(episodes):
             env_tpls.append((episodes[agent1_rank[i]], 0))
             env_tpls.append((episodes[agent2_rank[i]], 1))
         else:
-            if goal_score['agent1'][agent1_rank[i]] >= min(GOAL_KEEP_THRESHOD, agent1_avg) and (goal_score['agent2'][agent2_rank[i]] >= min(KEEP_THRESHOD, agent2_avg)):
+            if goal_score['agent1'][agent1_rank[i]] >= min(GOAL_KEEP_THRESHOD, agent1_avg) and (goal_score['agent2'][agent2_rank[i]] >= min(GOAL_KEEP_THRESHOD, agent2_avg)):
                 env_tpls.append((episodes[agent1_rank[i]], 0))
                 env_tpls.append((episodes[agent1_rank[i]], 1))
                 
