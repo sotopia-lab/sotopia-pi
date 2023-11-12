@@ -74,6 +74,7 @@ def load_model_and_tokenizer(
         padding_side="right", # training with left-padded tensors in fp16 precision may cause overflow
         **config_kwargs
     )
+    tokenizer.pad_token = tokenizer.unk_token
 
     if finetuning_args.finetuning_type != "lora" and model_args.checkpoint_dir is not None:
         model_to_load = model_args.checkpoint_dir[0]

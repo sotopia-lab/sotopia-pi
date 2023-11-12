@@ -31,6 +31,8 @@ def run_sft(
     
     if training_args.gradient_checkpointing:
         model.enable_input_require_grads()
+        model.gradient_checkpointing_enable()
+        model.config.use_cache = False
 
     if training_args.predict_with_generate:
         tokenizer.padding_side = "left" # use left-padding in generation
