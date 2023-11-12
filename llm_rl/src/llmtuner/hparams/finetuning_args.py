@@ -52,6 +52,10 @@ class FinetuningArguments:
                   Phi-1.5 choices: [\"Wqkv\", \"out_proj\", \"fc1\", \"fc2\"], \
                   LLaMA-2, InternLM, XVERSE choices: the same as LLaMA."}
     )
+    lora_bias: Optional[str] = field(
+        default="none",
+        metadata={"help": "The lora_bias option from bitsandbytes."}
+    )
     additional_target: Optional[str] = field(
         default=None,
         metadata={"help": "Name(s) of modules apart from LoRA layers to be set as trainable and saved in the final checkpoint."}
