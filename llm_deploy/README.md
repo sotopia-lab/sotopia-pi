@@ -171,3 +171,74 @@ If the above command runs successfully, you should be able to use REST API on yo
 3. https://hpc.lti.cs.cmu.edu/wiki/index.php?title=Training_Material
 4. https://hpc.lti.cs.cmu.edu/wiki/index.php?title=Connecting_to_the_Cluster#Copying_Data_to_Compute_Nodes
 
+# Deploy LLM on Babel (easy version)
+
+We provide a detailed step by step instruction on how to deploy LLM on babel server.
+
+#### Useful Commands
+
+`squeue` to check the status of your current job ID
+
+`scancel [ID]` to cancel your current job ID
+
+`sinfo` to check all the compute nodes
+
+#### How to deploy
+
+1. `ssh <name>@babel.lti.cs.cmu.edu` to log in into the server to the login node
+
+2. `conda activate [webarena]` to activate the current conda environment that your sbatch job wants to do
+
+3. ```bash
+   sbatch --gres=gpu:1 -t 72:00:00 -c4 --mem=80g --mail-type=ALL --mail-user=<andrew_id>@cs.cmu.edu -e <dir>/logs/out.err -o <dir>/logs/out.log <dir>/FastChat/run.sh
+   ```
+
+   run sbatch.sh in the FastChat directory
+
+4. ```bash
+   #!/bin/bash
+   
+   # Starting the controller
+   python3 -m fastchat.serve.controller &
+   
+   # Starting the model worker with the specified model path
+   python3 -m fastchat.serve.model_worker --model-path ./model-checkpoint &
+   
+   # Starting the OpenAI API server on host 0.0.0.0 and port 8000
+   python3 -m fastchat.serve.openai_api_server --host 0.0.0.0 --port 8000
+   ```
+
+		In the FastChat directory. The host needs to be **0.0.0.0** instead of localhost.
+
+5. After running that, on our local machine:
+
+   ```bash
+   ssh -L 8001:10.1.1.36:8000 <name>@babel.lti.cs.cmu.edu
+   ```
+
+   10.1.1.36 is the compute node for our machine (which could be got using `ifconfig` command on the compute node when `ssh babel-2-13` into that), 8000 is the port it exports and 8001 is the localhost port that we want to use. After running that, it would automatically jump to the babel-login node so that but we need to make it open when we are trying to call the model.
+
+6. After having tested that, we could curl on them:
+
+   ```bash
+   curl http://localhost:8001/v1/models
+   ```
+
+   to check the status of the model.
+
+   We could curl on requesting the model:
+
+   ```
+   curl http://localhost:8001/v1/completions \                 
+        -H "Content-Type: application/json" \
+        -d '{
+            "model": "webarena-mistral-7b-ckpt",
+            "prompt": "San Francisco is a",
+            "max_tokens": 7,
+            "temperature": 0
+        }'
+   ```
+
+
+
+Therefore, the sbatch could remain for at most 3 days. And during the calling of our models, we need to keep the ssh -L running and call it using curl.
