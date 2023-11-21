@@ -26,3 +26,19 @@ Link: <https://github.com/RedisJSON/RedisJSON>
 The default version for redis could be 7.2.x. However, to deploy it on tiger, we need to use the 6.2.x version of redis. Therefore, the command line could be:
 
 `docker run -p 6379:6379 --name redis-stack-old redis/redis-stack:6.2.6-v10` instead of using latest.
+
+### Redis URL
+
+So we have setup the redis for hosting our own database, with the following URL:
+
+REDIS_OM_URL="redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
+
+Step to connect to the correct REDIS database as below:
+
+1. conda env config vars set REDIS_OM_URL="redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
+2. In python, use os to setup REDIS_OM_URL
+3. To view the database visually, go to http://tiger.lti.cs.cmu.edu:8008/redis-stack/browser
+
+To setup Redis on Tiger, an example docker command is as below:
+
+docker run -d --name CONTAINERNAME -p PORT:6379 -p PORT:8001 -v /home/PATH/FOLDER/:/data/ -e REDIS_ARGS="--save 60 1000 --requirepass PASSWORD" redis/redis-stack:latest
