@@ -18,3 +18,11 @@ Since the redis-server cannot directly input json data, it requires loading a Re
 docker run -p 6379:6379 --name redis-stack redis/redis-stack:latest
 
 Link: <https://github.com/RedisJSON/RedisJSON>
+
+
+
+### Redis Version Issue
+
+The default version for redis could be 7.2.x. However, to deploy it on tiger, we need to use the 6.2.x version of redis. Therefore, the command line could be:
+
+`docker run -p 6379:6379 --name redis-stack-old redis/redis-stack:6.2.6-v10` instead of using latest.
