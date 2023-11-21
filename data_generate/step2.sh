@@ -1,4 +1,4 @@
-python step2_push_agent_relationship_env_to_db.py ./env_filtered.csv environment 
+python step2_push_agent_relationship_env_to_db.py ./env_filtered_scenario_unique_social_goal_reasonable_different_from_testset_part1.csv environment 
 python step2_push_agent_relationship_env_to_db.py ./AgentProfile.csv  agent 
 python step2_push_agent_relationship_env_to_db.py ./RelationshipProfile.csv  relationship
-python step2_push_agent_relationship_env_to_db.py ./env_filtered.csv agentenvcombo
+python step2_push_agent_relationship_env_to_db.py ./env_filtered_scenario_unique_social_goal_reasonable_different_from_testset_part1.csv agentenvcombo
