@@ -15,7 +15,8 @@ import json
 import enum
 
 #PROMPT_PREFIX = "Prompt after formatting:\n"
-MAX_TOKEN = 2048
+MAX_TOKEN = 2048 # 5000
+
 PROMPT_TEMPLATE="""Prompt after formatting:\nImagine you are {agent}, your task is to act/speak as {agent} would, keeping in mind {agent}'s social goal.
 You can find {agent}'s background and goal in the 'Here is the context of the interaction' field.
 Note that {agent}'s secret and goal is only visible to you.
@@ -25,18 +26,8 @@ Additionally, maintaining the conversation's naturalness and realism is essentia
 You are at Turn #{turn_number}."""
 
 #PYDANTIC_FORMAT_INSTRUCTIONS.format(schema=schema_str)
-FORMAT_TEMPLATE = """\nAs an example, for the schema {\"properties\": {\"foo\": {\"title\": \"Foo\", \"description\": \"a list of strings\", \"type\": \"array\", \"items\": {\"type\": \"string\"}}}, \"required\": [\"foo\"]}
-the object {\"foo\": [\"bar\", \"baz\"]} is a well-formatted instance of the schema. The object {\"properties\": {\"foo\": [\"bar\", \"baz\"]}} is not well-formatted.
-\nHere is the output schema:\n```\n{\"description\": \"An interface for messages.\\nThere is only one required method: to_natural_language\", \"properties\": {\"action_type\": {\"title\": \"Action Type\", \"description\": \"whether to speak at this turn or choose to not do anything\", \"enum\": [\"none\", \"speak\", \"non-verbal communication\", \"action\", \"leave\"], \"type\": \"string\"}, \"argument\": {\"title\": \"Argument\", \"description\": \"the utterance if choose to speak, the expression or gesture if choose non-verbal communication, or the physical action if choose action\", \"type\": \"string\"}}, \"required\": [\"action_type\", \"argument\"]}\n```\u001b[0m"""
 
-
-PROMPT_TEMPLATE_W_FORMAT="""Prompt after formatting:\nImagine you are {agent}, your task is to act/speak as {agent} would, keeping in mind {agent}'s social goal.
-You can find {agent}'s background and goal in the 'Here is the context of the interaction' field.
-Note that {agent}'s secret and goal is only visible to you.
-You should try your best to achieve {agent}'s goal in a way that align with their character traits.
-Additionally, maintaining the conversation's naturalness and realism is essential (e.g., do not repeat what other people has already said before).
-{history}.
-You are at Turn #{turn_number}. Your available action types are
+FORMAT_TEMPLATE=""" Your available action types are
 "none action speak non-verbal communication leave".
 Note: You can "leave" this conversation if 1. you have achieved your social goals, 2. this conversation makes you uncomfortable, 3. you find it uninteresting/you lose your patience, 4. or for other reasons you want to leave.
 
@@ -77,14 +68,6 @@ def to_natural_language(self) -> str:
 
 
 SELECTED_TAG = ["gpt-4_gpt-4_v0.0.1_clean"]
-def get_clean_episodes(selected_tags=SELECTED_TAG):
-    selected_episodes = {}
-    for tag in selected_tags:
-        tag_epis = EpisodeLog.find(EpisodeLog.tag == tag).all()
-        if len(tag_epis) > 0:
-            selected_episodes[tag]=tag_epis
-    
-    return selected_episodes
 
 def detect_action(msg):
     # first detect what action type is, default at none
@@ -140,7 +123,7 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
     episode_msg = epilog.messages
     # per episode
     agent_model = epilog.models[1]
-    promt_template = PROMPT_TEMPLATE_W_FORMAT if include_format else PROMPT_TEMPLATE
+    promt_template = PROMPT_TEMPLATE
 
     if len(episode_msg) > 0:
         init_loop = episode_msg[0]
@@ -178,13 +161,15 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
             next_turn = i
             prompt = promt_template.format(
                     agent=speaker, history=dial_history, turn_number=next_turn)
-            over_tokens = surpass_max_token_check(prompt)
+            over_tokens = surpass_max_token_check(prompt, max_token)
             if over_tokens > 0:
                 all_dial = dial_history[len(context):]
                 #print(all_dial)
                 trun_dial = truncate_prompt_to_length(all_dial, over_tokens)
                 prompt = promt_template.format(
                     agent=speaker, history=context+"\n"+trun_dial, turn_number=next_turn)
+            if include_format:
+                prompt += FORMAT_TEMPLATE
             turn_dic["prompt"] = prompt   
             turn_dic['result'] = str_result
             prompt_result_instances.append(turn_dic)
@@ -192,8 +177,8 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
     return prompt_result_instances
 
 
-def parse_prompt_to_json(episode, dir, init_speak):
-    prompt_result_instances = reverse_episode_log(episode, init_speak)
+def parse_prompt_to_json(episode, dir, init_speak, include_format=False):
+    prompt_result_instances = reverse_episode_log(episode, init_speak, include_format)
     
     if not os.path.exists(dir):
         os.makedirs(dir)
@@ -201,8 +186,16 @@ def parse_prompt_to_json(episode, dir, init_speak):
     for i in range(len(prompt_result_instances)):
         instance = prompt_result_instances[i]
         todump = json.dumps(instance, indent=4)
-        with open(dir+"/{}-{}.json".format(episode.pk, i), "w") as f:
+        with open(dir+"/{}-{}-{}.json".format(episode.pk, init_speak, i), "w") as f:
             f.write(todump)
+
+def run_reverse_by_pk_agent(episode_pk, agent_side, save_dir):
+    """
+    Entry function if you want to reverse engineer given a pk, not a episode
+    """
+    episode = EpisodeLog.find(EpisodeLog.pk == episode_pk).all()[0]
+    parse_prompt_to_json(episode, save_dir, agent_side, False)
+
 
 def run_all_tag_reverse(filter_env_dic, dir):
     #tag_episodes = get_clean_episodes(selected_tags=[tag])[tag]
@@ -214,6 +207,4 @@ def run_all_tag_reverse(filter_env_dic, dir):
                 parse_prompt_to_json(episode, dir, False)
             else:
                 parse_prompt_to_json(episode, dir, True)
-
-
 
