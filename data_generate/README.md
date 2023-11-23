@@ -18,3 +18,73 @@ Since the redis-server cannot directly input json data, it requires loading a Re
 docker run -p 6379:6379 --name redis-stack redis/redis-stack:latest
 
 Link: <https://github.com/RedisJSON/RedisJSON>
+
+
+### Redis Version Issue
+
+The default version for redis could be 7.2.x. However, to deploy it on tiger, we need to use the 6.2.x version of redis. Therefore, the command line running on local could be:
+
+`docker run -p 6379:6379 --name redis-stack-old redis/redis-stack:6.2.6-v10` instead of using latest. After running on local and save all data to redis db, we should get a dump.rdb in the folder that are in version 6.2.6. We could then upload this file to tiger server. 
+
+# Redis on Server - USE this all in one tuturial as the latest instruction for hosting redis db
+We are using CMU Tiger to host our Redis Database. The current host port is 8008 and redis port is 6388.
+
+### Connecting to Redis
+To connect to Redis DB for loading and saving, follow the steps:
+1. When activate conda environment, enter:
+   
+`conda env config vars set REDIS_OM_URL="redis://:PASSWORD@tiger.lti.cs.cmu.edu:6388"`
+
+The password is only available to the development team, or upon request.
+
+2. After setting REDIS_OM_URL in conda, you should reactivate your conda.
+   
+3. To load data from Redis, an example way is:
+   
+   `from sotopia.database.logs import EpisodeLog`
+
+   `episode = EpisodeLog.get(pk = 'xxxxx')`
+  
+4. To save data from Redis, an example way is
+   
+   `Migrator().run()`
+
+   `episode = EpisodeLog(**jsonfile)`
+
+   `episode.save()`
+
+### Hosting Redis on Server (TIGER)
+To do so, one of the member must first have access to TIGER. Then, follow the steps:
+1. Login:
+   
+   `ssh USERNAME@tiger.lti.cs.cmu.edu` >>> enter password
+2. Create conda environment and activate:
+
+   `conda create -n sotopia python=3.11; conda activate sotopia; conda install -c conda-forge pip`
+3. Locate the initial dataset to start the server. The dataset should be a dump.rdb from your local or from available sources by `curl` or `wget`.
+   To copy a local dump.rdb to TIGER, use
+
+   `scp localpath/dir/dump.rdb USERNAME@tiger.lti.cs.cmu.edu:/serverfolder/dump.rdb`
+
+   If serverfolder does not exist, you should first create a folder separately for the rdb file in TIGER.
+
+4. Use docker run to start a Redis server:
+   
+   `docker run -d --name NAMEYOUWANT -p PORT1:6379 -p PORT2:8001 -v /home/USERNAME/serverfolder/:/data/ -e REDIS_ARGS="--save 60 1000 --requirepass PASSWORD" redis/redis-stack:7.2.0-v6`
+
+* NAMEYOUWANT - name the docker container, such as my-redis-server
+
+* PORT1 - change to any port that is not occupied
+  
+* PORT2 - this is the port you could use to access the database online, change to any port that is not occupied
+  
+* save 60 1000 - this specifies the Redis server to dump the dataset to disk every 60 seconds if at least 1000 keys changed
+  
+* PASSWORD - this restrict the access to redis DB
+
+* 7.2.0-v6 - this is due to version incompatibility. On TIGER, redis version is current at 5.0.7, but the dump.rdb we are using is in version 7.2.3. Using latest redis-stack without specifying verison would lead to incompatibility. We must specified we want the redis-stack to run using a newer version of image. If the dump.rdb are in version 6.2.12 for example, `redis/redis-stack:latest` is enough.
+
+To check the version of redis, run `redis-cli INFO SERVER` on command line. 
+
+To check if the server is successfully running, you could either go online using `http://SERVER:PORT/redis-stack/browser`, or run `docker ps` on command line and see if the container named NAMEYOUWANT is running. 
+   
