@@ -1,4 +1,8 @@
 {
+  "sotopia_custom_sft": {
+    "file_name": "sotopia_custom_training_sft.json",
+    "file_sha1": ""
+  },
   "sotopia_no_slide_no_filter_format_sft": {
     "file_name": "fastchat-ft-gp4-gpt4-easy-truncated.json",
     "file_sha1": ""
