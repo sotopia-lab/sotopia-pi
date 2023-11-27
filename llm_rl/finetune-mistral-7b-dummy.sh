@@ -3,7 +3,7 @@ deepspeed src/train_bash.py \
     --model_name_or_path mistralai/Mistral-7B-v0.1 \
     --dataset dummy_convs \
     --dataset_dir ./data/ \
-    --cutoff_len 4096 \
+    --cutoff_len 32 \
     --template llama2-sotopia \
     --wandb_project "llama-factory-sft" \
     --wandb_tags "['mistral-7b']" \
@@ -11,7 +11,7 @@ deepspeed src/train_bash.py \
     --do_train \
     --num_train_epochs 15.0 \
     --per_device_train_batch_size 1 \
-    --gradient_accumulation_steps 8 \
+    --gradient_accumulation_steps 32 \
     --finetuning_type lora \
     --lora_target q_proj,v_proj \
     --learning_rate 5e-5 \
