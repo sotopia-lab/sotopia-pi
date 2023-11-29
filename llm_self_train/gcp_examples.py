@@ -13,4 +13,4 @@ print(response.text)
 response = download_from_gcp(object_name, save_to_location, oauth2_token_location, bucket_name)
 print(response.text)
 
-# monitor_and_upload('./test_cache', 5, oauth2_token_location, bucket_name)
+asyncio.run(monitor_and_upload("./output_cache", 5))
