@@ -1,4 +1,6 @@
 from pipelines.gcp_util import upload_to_gcp, download_from_gcp, monitor_and_upload
+import asyncio
+import time
 
 object_location = '/Users/zhengyangqi/Desktop/template-demo.txt'  # Replace with your file path
 oauth2_token_location = './resources/auth_token.key'      # Replace with your OAuth2 token
@@ -13,4 +15,20 @@ print(response.text)
 response = download_from_gcp(object_name, save_to_location, oauth2_token_location, bucket_name)
 print(response.text)
 
-asyncio.run(monitor_and_upload("./output_cache", 5))
+run_sft_completed = False
+
+def should_stop():
+    global run_sft_completed
+    return run_sft_completed
+
+async def timer():
+    await asyncio.sleep(15)
+    print("Stopping...")
+    global run_sft_completed
+    run_sft_completed = True
+    
+async def hello():
+    await asyncio.gather(monitor_and_upload('./model_cache', 5, should_stop=should_stop), timer())
+
+asyncio.run(hello())
+print("Done")

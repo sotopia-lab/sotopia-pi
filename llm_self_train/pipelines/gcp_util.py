@@ -7,7 +7,7 @@ import zipfile
 import asyncio
 import os
 
-async def monitor_and_upload(directory_to_monitor, check_interval=60, oauth2_token_location=config['oauth2_token_location'], bucket_name=config['bucket_name']):
+async def monitor_and_upload(directory_to_monitor, check_interval=60, should_stop=lambda: False, oauth2_token_location=config['oauth2_token_location'], bucket_name=config['bucket_name']):
     '''
     Monitors a directory and uploads new subdirectories to GCP
 
@@ -18,7 +18,6 @@ async def monitor_and_upload(directory_to_monitor, check_interval=60, oauth2_tok
         check_interval (int): Time interval (in seconds) to check for new subdirectories
     '''
     already_uploaded = set()
-
     while True:
         try:
             if not os.path.exists(directory_to_monitor):
@@ -28,9 +27,10 @@ async def monitor_and_upload(directory_to_monitor, check_interval=60, oauth2_tok
             new_subdirectories = current_subdirectories - already_uploaded
             
             if not new_subdirectories:
-                if run_sft_completed == True:
-                    break
+                if should_stop() == True:
+                    return
                 else:
+                    print(f"No new subdirectories found. Checking again in {check_interval} seconds...")
                     await asyncio.sleep(check_interval)
                 
             for subdir in new_subdirectories:
