@@ -3,7 +3,7 @@ from pipelines import config
 import yaml
 import subprocess
 
-with open('./train_args.yml', 'r') as file:
+with open('./resources/train_args.yml', 'r') as file:
     train_args = yaml.safe_load(file)
 
 def run():
