@@ -148,6 +148,17 @@ def goal_reward_by_env_agent(env_epi_dic, reward='goal', filter_threshold=0, bal
 
     return reward_dic, filter_dic
 
+def filter_pks_to_prompts(filter_env_pks, save_dir, include_format=False):
+    # function to reverse engineering filter pks, for non-sotopia scenarios
+    # here we don't apply scenario filtering for easy-difficult
+    for env, agent_dic in filter_env_pks.items():
+        for agent, agent_pks in agent_dic.items():
+            agent_idx = 0 if agent == 'agent1' else 1
+            for pk in agent_pks:
+                episode = EpisodeLog.get(pk=pk)
+                parse_prompt_to_json(episode, save_dir, agent_idx, include_format)
+
+
 def get_env_mean_var(env_reward_dic):
     # function to calculate variance and mean of each scenario, each agent
     env_var_dic = {}
@@ -172,6 +183,11 @@ def get_threshold_by_keep_rate(env_rewards, keeprate_, balance=True):
     score2_threshold = np.percentile(scores2, 100*(1-keeprate_))
 
     return max(score1_threshold, score2_threshold) if balance else min(score1_threshold, score2_threshold)
+
+def get_threshold_by_variance(env_rewards, var_limit, balance=True):
+    # function to generate threshold that could use to control the variance 
+
+    return 
 
 
 def goal_filter_per_env_agent(episodes, apply_filter=True):
@@ -218,7 +234,8 @@ def goal_filter_all_env_agent(env_episode_dic, apply_filter=True):
 
 
 def run_filtered_episodes_to_prompt(filter_env_agent_episodes, json_dir, level="Easy", include_format=False):
-    # function to convert selected episode into prompt completion format and save to json
+    # function to convert selected episode into prompt completion format and save to json 
+    # use for Sotopia Scenario
     if not os.path.exists(json_dir):
         os.makedirs(json_dir)
     parse_count = 0
@@ -230,6 +247,7 @@ def run_filtered_episodes_to_prompt(filter_env_agent_episodes, json_dir, level="
             parse_count+=1
 
     print(parse_count)
+
 
 def filter_episodes_to_prompt_main(selected_tag):
     # one shot run of reverse engineering of sotopia scenarios
