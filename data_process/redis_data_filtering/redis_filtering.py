@@ -15,9 +15,6 @@ import numpy as np
 import json
 
 
-TRAIN_LOGS = r'train_logs' 
-TEST_LOGS = r'test_logs' 
-
 OVERALL_REWARD_FILTER = 3.2   
 GOAL_AVG_THRESHOLD = 7
 GOAL_KEEP_THRESHOD = 10
@@ -134,18 +131,17 @@ def goal_reward_by_env_agent(env_epi_dic, reward='goal', filter_threshold=0, bal
         # if balance, reduce one agent's score to match
         if balance:
             agent1_len, agent2_len = len(goal_score['agent1']), len(goal_score['agent2'])
-            if agent1_len == agent2_len:
-                continue
-            target_length = min(agent1_len, agent2_len)
-            to_reduce_agent = "agent1" if agent1_len > target_length else "agent2"
-            # reduce agent 2
-            to_reduce_agent_rank = np.argsort(goal_score[to_reduce_agent])[::-1]
-            to_keep_index = to_reduce_agent_rank[:target_length]
+            if agent1_len != agent2_len:
+                target_length = min(agent1_len, agent2_len)
+                to_reduce_agent = "agent1" if agent1_len > target_length else "agent2"
+                # reduce agent 
+                to_reduce_agent_rank = np.argsort(goal_score[to_reduce_agent])[::-1]
+                to_keep_index = to_reduce_agent_rank[:target_length]
 
-            to_keep_score = np.array(goal_score[to_reduce_agent])[to_keep_index].tolist()
-            to_keep_episode = np.array(env_filter_episodes[to_reduce_agent])[to_keep_index].tolist()
-            goal_score[to_reduce_agent] = to_keep_score
-            env_filter_episodes[to_reduce_agent] = to_keep_episode
+                to_keep_score = np.array(goal_score[to_reduce_agent])[to_keep_index].tolist()
+                to_keep_episode = np.array(env_filter_episodes[to_reduce_agent])[to_keep_index].tolist()
+                goal_score[to_reduce_agent] = to_keep_score
+                env_filter_episodes[to_reduce_agent] = to_keep_episode
 
         reward_dic[env] = goal_score
         filter_dic[env] = env_filter_episodes
@@ -165,6 +161,18 @@ def get_env_mean_var(env_reward_dic):
         env_var_dic[env] = agent_dic
 
     return env_var_dic
+
+def get_threshold_by_keep_rate(env_rewards, keeprate_, balance=True):
+    # function to generate threshold that could use to approximate % of data we want to keep 
+    keepnum = sum([len(v['agent1']) for v in env_rewards.values()])*keeprate_
+    keepnum = round(keepnum, 0) # per agent, keep this many
+    scores1 = sum([v['agent1'] for v in env_rewards.values()], [])
+    scores2 = sum([v['agent2'] for v in env_rewards.values()], [])
+    score1_threshold = np.percentile(scores1, 100*(1-keeprate_))
+    score2_threshold = np.percentile(scores2, 100*(1-keeprate_))
+
+    return max(score1_threshold, score2_threshold) if balance else min(score1_threshold, score2_threshold)
+
 
 def goal_filter_per_env_agent(episodes, apply_filter=True):
     # function to AUTOMATICALLY filter using goal reward scores for each agent position given scenario
@@ -222,3 +230,12 @@ def run_filtered_episodes_to_prompt(filter_env_agent_episodes, json_dir, level="
             parse_count+=1
 
     print(parse_count)
+
+def filter_episodes_to_prompt_main(selected_tag):
+    # one shot run of reverse engineering of sotopia scenarios
+    episode_by_tag = get_clean_episodes(selected_tag)
+    concat_epilist = sum(episode_by_tag.values(), [])
+    dic_epi_env = align_episode_by_env(concat_epilist)
+    filter_agent_episodes = goal_filter_all_env_agent(dic_epi_env)
+    run_filtered_episodes_to_prompt(filter_agent_episodes, r'GPT4-4_Redis_Easy')
+    run_filtered_episodes_to_prompt(filter_agent_episodes, r'GPT4-4_Redis_Hard', "Hard")
