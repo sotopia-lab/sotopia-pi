@@ -3,7 +3,7 @@ import asyncio
 import time
 
 object_location = '/Users/zhengyangqi/Desktop/template-demo.txt'  # Replace with your file path
-oauth2_token_location = './resources/auth_token.key'      # Replace with your OAuth2 token
+oauth2_token_location = './resources/gcp_auth.token'      # Replace with your OAuth2 token
 content_type = 'application/json; charset=utf-8'      # Replace with the content type of your object
 bucket_name = 'pipeline-test-storage'        # Replace with your bucket name
 object_name = 'test/test.txt'        # Replace with your object name
@@ -28,7 +28,7 @@ async def timer():
     run_sft_completed = True
     
 async def hello():
-    await asyncio.gather(monitor_and_upload('./model_cache', 5, should_stop=should_stop), timer())
+    await asyncio.gather(monitor_and_upload('./demo_cache', 5, should_stop=should_stop), timer())
 
 asyncio.run(hello())
 print("Done")
