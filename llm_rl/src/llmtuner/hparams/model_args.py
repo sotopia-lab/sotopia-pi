@@ -79,6 +79,15 @@ class ModelArguments:
         default="fp32",
         metadata={"help": "The compute_dtype option from bitsandbytes."}
     )
+    use_custom_callback: Optional[bool] = field(
+        default=False,
+        metadata={"help": "Whether enable custom callbacks."}
+    )
+    call_back_save_epochs: Optional[int] = field(
+        default=1,
+        metadata={"help": "The number of epochs before each call back save."}
+    )
+    
 
     def __post_init__(self):
         self.model_max_length = None

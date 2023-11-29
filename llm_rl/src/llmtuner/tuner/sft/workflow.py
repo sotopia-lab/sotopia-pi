@@ -11,6 +11,7 @@ from llmtuner.tuner.core import load_model_and_tokenizer
 from llmtuner.tuner.sft.metric import ComputeMetrics
 from llmtuner.tuner.sft.trainer import CustomSeq2SeqTrainer
 from llmtuner.tuner.core.utils import is_first_node
+from llmtuner.tuner.sft.custom_callback import SaveModelCallback
 
 if TYPE_CHECKING:
     from transformers import TrainerCallback
@@ -52,6 +53,9 @@ def run_sft(
     training_args = Seq2SeqTrainingArguments(**training_args_dict)
     if is_first_node():
         training_args.report_to = ["wandb"]
+        
+    if model_args.use_custom_callback:
+        callbacks.append(SaveModelCallback(model_args.call_back_save_epochs, training_args.output_dir))
 
     # Initialize our Trainer
     trainer = CustomSeq2SeqTrainer(
