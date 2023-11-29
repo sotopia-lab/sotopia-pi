@@ -1,6 +1,6 @@
 stage: sft
 model_name_or_path: NEED-CONFIG
-dataset: sotopia_custom_sft
+dataset: dummy_convs
 dataset_dir: ../llm_rl/data/
 cutoff_len: 4096
 template: llama2-sotopia

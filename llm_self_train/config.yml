@@ -1,6 +1,8 @@
+# redis
 redis_om_url: redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388
 redis_data_tag: gpt-4_gpt-3.5-turbo_v0.0.1_clean
 
+# training
 num_gpus: 1
 model_name_or_path: meta-llama/Llama-2-13b-hf
 hf_auth_token: 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
@@ -8,3 +10,7 @@ hf_auth_token: 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
 wandb_project: self-train
 wandb_tags: "['llama-2-13b-hf']"
 wandb_token: 99caa13ec9552adf0e92e5c30021307ce3cf7fa4
+
+#gcp
+oauth2_token_location: ./resources/auth_token.key
+bucket_name: pipeline-test-storage
