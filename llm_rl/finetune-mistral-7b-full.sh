@@ -19,7 +19,7 @@ deepspeed src/train_bash.py \
     --warmup_ratio 0.03 \
     --flash_attn True \
     --gradient_checkpointing True \
-    --fp16 True \
+    --bf16 True \
     --cache_dir ./model_cache \
     --overwrite_cache \
     --output_dir ./mistral-7b-sft_cache \
