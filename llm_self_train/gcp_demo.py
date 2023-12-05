@@ -1,7 +1,9 @@
 from pipelines.gcp_util import upload_to_gcp, download_from_gcp, monitor_and_upload
+import asyncio
+import time
 
 object_location = '/Users/zhengyangqi/Desktop/template-demo.txt'  # Replace with your file path
-oauth2_token_location = './resources/auth_token.key'      # Replace with your OAuth2 token
+oauth2_token_location = './resources/gcp_auth.token'      # Replace with your OAuth2 token
 content_type = 'application/json; charset=utf-8'      # Replace with the content type of your object
 bucket_name = 'pipeline-test-storage'        # Replace with your bucket name
 object_name = 'test/test.txt'        # Replace with your object name
@@ -13,4 +15,20 @@ print(response.text)
 response = download_from_gcp(object_name, save_to_location, oauth2_token_location, bucket_name)
 print(response.text)
 
-# monitor_and_upload('./test_cache', 5, oauth2_token_location, bucket_name)
+run_sft_completed = False
+
+def should_stop():
+    global run_sft_completed
+    return run_sft_completed
+
+async def timer():
+    await asyncio.sleep(15)
+    print("Stopping...")
+    global run_sft_completed
+    run_sft_completed = True
+    
+async def hello():
+    await asyncio.gather(monitor_and_upload('./demo_cache', 5, should_stop=should_stop), timer())
+
+asyncio.run(hello())
+print("Done")

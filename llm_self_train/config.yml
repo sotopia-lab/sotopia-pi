@@ -12,5 +12,5 @@ wandb_tags: "['llama-2-13b-hf']"
 wandb_token: 99caa13ec9552adf0e92e5c30021307ce3cf7fa4
 
 #gcp
-oauth2_token_location: ./resources/auth_token.key
+oauth2_token_location: ./resources/gcp_auth.token
 bucket_name: pipeline-test-storage
