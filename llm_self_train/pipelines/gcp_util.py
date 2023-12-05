@@ -4,10 +4,10 @@ import os
 import requests
 import zipfile
 
+import asyncio
 import os
-import time
 
-def monitor_and_upload(directory_to_monitor, check_interval=60, oauth2_token_location=config['oauth2_token_location'], bucket_name=config['bucket_name']):
+async def monitor_and_upload(directory_to_monitor, check_interval=60, should_stop=lambda: False, oauth2_token_location=config['oauth2_token_location'], bucket_name=config['bucket_name']):
     '''
     Monitors a directory and uploads new subdirectories to GCP
 
@@ -18,15 +18,20 @@ def monitor_and_upload(directory_to_monitor, check_interval=60, oauth2_token_loc
         check_interval (int): Time interval (in seconds) to check for new subdirectories
     '''
     already_uploaded = set()
-
     while True:
         try:
+            if not os.path.exists(directory_to_monitor):
+                os.makedirs(directory_to_monitor)
+                
             current_subdirectories = {d for d in os.listdir(directory_to_monitor) if os.path.isdir(os.path.join(directory_to_monitor, d))}
             new_subdirectories = current_subdirectories - already_uploaded
             
             if not new_subdirectories:
-                print(f"No new subdirectories found. Checking again in {check_interval} seconds...")
-                time.sleep(check_interval)
+                if should_stop() == True:
+                    return
+                else:
+                    print(f"No new subdirectories found. Checking again in {check_interval} seconds...")
+                    await asyncio.sleep(check_interval)
                 
             for subdir in new_subdirectories:
                 subdir_path = os.path.join(directory_to_monitor, subdir)
