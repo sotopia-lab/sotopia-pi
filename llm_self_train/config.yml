@@ -12,5 +12,6 @@ wandb_tags: "['llama-2-13b-hf']"
 wandb_token: 99caa13ec9552adf0e92e5c30021307ce3cf7fa4
 
 #gcp
-service_account_key_location: /workspace/sotopia-llm/llm_self_train/resources/scs-lti-miis-team-3-727bea79660c.json
+service_account_key_location: ./resources/scs-lti-miis-team-3-727bea79660c.json
 bucket_name: pipeline-test-storage
+checkpoint_prefix: checkpoint
