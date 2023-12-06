@@ -1,5 +1,8 @@
+from pipelines import config
+
 from pipelines.cloud_util import upload_dir_to_gcp, download_dir_from_gcp, list_blobs_with_prefix, monitor_and_upload
-import asyncio
+from pipelines.monitor_proc import monitor_local_and_upload_to_gcp
+
 import time
 
 bucket_name = 'pipeline-test-storage' 
@@ -12,23 +15,34 @@ dest_dir = '/workspace/sotopia-llm/llm_self_train/checkpoint-hello'
 
 # Call the upload and download function
 upload_dir_to_gcp(source_dir, dest_blob_prefix, bucket_name)
-download_dir_from_gcp(source_blob_prefix, dest_dir, bucket_name)
 print(list_blobs_with_prefix(bucket_name, ""))
 
 run_sft_completed = False
 
-def should_stop():
-    global run_sft_completed
-    return run_sft_completed
+def should_stop(run_sft_completed):
+    return run_sft_completed.value
 
-async def timer(timeout=60*2):
-    await asyncio.sleep(timeout)
+def timer(timeout, run_sft_completed):
+    time.sleep(timeout)
     print("Stopping...")
-    global run_sft_completed
-    run_sft_completed = True
+    run_sft_completed.value = True
     
-async def main():
-    await asyncio.gather(monitor_and_upload('./demo_cache', 5, should_stop=should_stop), timer())
+def main():
+    run_sft_completed = multiprocessing.Value('b', False)
 
-asyncio.run(main())
-print("Done")
+    # Process for monitoring and uploading
+    monitor_process = multiprocessing.Process(target=monitor_and_upload_wrapper, args=('./demo_cache', 5, lambda: should_stop(run_sft_completed)))
+
+    # Process for timer
+    timer_process = multiprocessing.Process(target=timer, args=(120, run_sft_completed))
+
+    monitor_process.start()
+    timer_process.start()
+
+    monitor_process.join()
+    timer_process.join()
+
+    print("Done")
+    
+if __name__ == '__main__':
+    main()

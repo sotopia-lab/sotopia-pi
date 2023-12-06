@@ -1,2 +1,3 @@
-google-api-python-client
 tqdm
+requests
+google-cloud-storage
