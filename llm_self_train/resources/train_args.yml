@@ -29,7 +29,7 @@ overwrite_cache: true
 output_dir: ./output_cache
 overwrite_output_dir: true
 logging_steps: 1
-save_strategy: "epoch"
+save_strategy: "no"
 save_total_limit: 5
 use_auth_token: True
 wandb_token: NEED-CONFIG
