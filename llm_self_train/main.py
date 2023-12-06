@@ -13,7 +13,7 @@ def main():
     global run_sft_completed
     run_sft_completed = False
     
-    asyncio.run(monitor_and_upload("./output_cache", 5))
+    # asyncio.run(monitor_and_upload("./output_cache", 5))
     run_sft()
     run_sft_completed = True
     
