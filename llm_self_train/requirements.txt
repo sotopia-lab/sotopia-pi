@@ -1,1 +1,2 @@
 requests
+google-cloud-storage
