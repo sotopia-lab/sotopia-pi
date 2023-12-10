@@ -1,34 +1,48 @@
-from pipelines.gcp_util import upload_to_gcp, download_from_gcp, monitor_and_upload
-import asyncio
+from pipelines import config
+
+from pipelines.cloud_util import upload_dir_to_gcp, download_dir_from_gcp, list_blobs_with_prefix, monitor_and_upload
+from pipelines.monitor_proc import monitor_local_and_upload_to_gcp
+
 import time
 
-object_location = '/Users/zhengyangqi/Desktop/template-demo.txt'  # Replace with your file path
-oauth2_token_location = './resources/gcp_auth.token'      # Replace with your OAuth2 token
-content_type = 'application/json; charset=utf-8'      # Replace with the content type of your object
-bucket_name = 'pipeline-test-storage'        # Replace with your bucket name
-object_name = 'test/test.txt'        # Replace with your object name
-save_to_location = './test.txt'
+bucket_name = 'pipeline-test-storage' 
 
-# Call the upload function
-response = upload_to_gcp(object_name, object_location, oauth2_token_location, bucket_name, content_type)
-print(response.text)
-response = download_from_gcp(object_name, save_to_location, oauth2_token_location, bucket_name)
-print(response.text)
+source_dir = '/workspace/sotopia-llm/llm_self_train/output_cache/checkpoint-960'
+dest_blob_prefix = 'checkpoint-960'
+
+source_blob_prefix = 'checkpoint-960'
+dest_dir = '/workspace/sotopia-llm/llm_self_train/checkpoint-hello'
+
+# Call the upload and download function
+upload_dir_to_gcp(source_dir, dest_blob_prefix, bucket_name)
+print(list_blobs_with_prefix(bucket_name, ""))
 
 run_sft_completed = False
 
-def should_stop():
-    global run_sft_completed
-    return run_sft_completed
+def should_stop(run_sft_completed):
+    return run_sft_completed.value
 
-async def timer():
-    await asyncio.sleep(15)
+def timer(timeout, run_sft_completed):
+    time.sleep(timeout)
     print("Stopping...")
-    global run_sft_completed
-    run_sft_completed = True
+    run_sft_completed.value = True
     
-async def hello():
-    await asyncio.gather(monitor_and_upload('./demo_cache', 5, should_stop=should_stop), timer())
+def main():
+    run_sft_completed = multiprocessing.Value('b', False)
 
-asyncio.run(hello())
-print("Done")
+    # Process for monitoring and uploading
+    monitor_process = multiprocessing.Process(target=monitor_and_upload_wrapper, args=('./demo_cache', 5, lambda: should_stop(run_sft_completed)))
+
+    # Process for timer
+    timer_process = multiprocessing.Process(target=timer, args=(120, run_sft_completed))
+
+    monitor_process.start()
+    timer_process.start()
+
+    monitor_process.join()
+    timer_process.join()
+
+    print("Done")
+    
+if __name__ == '__main__':
+    main()

@@ -2,7 +2,7 @@ stage: sft
 model_name_or_path: NEED-CONFIG
 dataset: dummy_convs
 dataset_dir: ../llm_rl/data/
-cutoff_len: 4096
+cutoff_len: 128
 template: llama2-sotopia
 wandb_project: NEED-CONFIG
 wandb_tags: "[]"
@@ -29,7 +29,8 @@ overwrite_cache: true
 output_dir: ./output_cache
 overwrite_output_dir: true
 logging_steps: 1
-save_strategy: "epoch"
+save_strategy: "steps"
+save_steps: 1000000000
 save_total_limit: 5
 use_auth_token: True
 wandb_token: NEED-CONFIG
