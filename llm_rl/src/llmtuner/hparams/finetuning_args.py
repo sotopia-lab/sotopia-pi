@@ -100,6 +100,10 @@ class FinetuningArguments:
         default=None,
         metadata={"help": "The tag for the current wandb run."}
     )
+    checkpoint_saved_queue: Optional[str] = field(
+        default=None,
+        metadata={"help": "The path to the checkpoint saved queue file."}
+    )
 
     def __post_init__(self):
         if isinstance(self.lora_target, str): # support custom target modules/layers of LoRA
