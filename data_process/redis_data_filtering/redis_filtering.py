@@ -149,8 +149,12 @@ def goal_reward_by_env_agent(env_epi_dic, reward='goal', filter_threshold=0, bal
     return reward_dic, filter_dic
 
 def filter_pks_to_prompts(filter_env_pks, save_dir, include_format=False):
+    # KEY function to run all completion from filter pks
     # function to reverse engineering filter pks, for non-sotopia scenarios
     # here we don't apply scenario filtering for easy-difficult
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
     for env, agent_dic in filter_env_pks.items():
         for agent, agent_pks in agent_dic.items():
             agent_idx = 0 if agent == 'agent1' else 1
