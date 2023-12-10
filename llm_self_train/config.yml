@@ -12,8 +12,17 @@ wandb_tags: "['llama-2-13b-hf']"
 wandb_token: 99caa13ec9552adf0e92e5c30021307ce3cf7fa4
 
 #gcp
+<<<<<<< HEAD
 # service_account_key_location: /workspace/sotopia-llm/llm_self_train/resources/scs-lti-miis-team-3-727bea79660c.json
 service_account_key_location: /Users/pamela/Documents/capstone/sotopia-llm/llm_self_train/resources/scs-lti-miis-team-3-727bea79660c.json
 bucket_name: pipeline-test-storage
 selftrain_improve_gcp_dir: improve-2/
 blob_prefix: checkpoint
+||||||| parent of 79b09d6... Feature/cloud utils (#130)
+oauth2_token_location: ./resources/gcp_auth.token
+bucket_name: pipeline-test-storage
+=======
+service_account_key_location: ./resources/scs-lti-miis-team-3-727bea79660c.json
+bucket_name: pipeline-test-storage
+checkpoint_prefix: checkpoint
+>>>>>>> 79b09d6... Feature/cloud utils (#130)

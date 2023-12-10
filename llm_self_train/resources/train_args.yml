@@ -29,7 +29,14 @@ overwrite_cache: true
 output_dir: ./output_cache
 overwrite_output_dir: true
 logging_steps: 1
+<<<<<<< HEAD
 save_strategy: "no"
+||||||| parent of 79b09d6... Feature/cloud utils (#130)
+save_strategy: "epoch"
+=======
+save_strategy: "steps"
+save_steps: 1000000000
+>>>>>>> 79b09d6... Feature/cloud utils (#130)
 save_total_limit: 5
 use_auth_token: True
 wandb_token: NEED-CONFIG

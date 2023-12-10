@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 google-api-python-client
 tqdm
+||||||| parent of 79b09d6... Feature/cloud utils (#130)
+requests
+=======
+tqdm
+requests
+google-cloud-storage
+>>>>>>> 79b09d6... Feature/cloud utils (#130)
