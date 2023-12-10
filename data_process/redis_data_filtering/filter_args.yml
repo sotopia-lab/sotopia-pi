@@ -1,0 +1,9 @@
+tag_list: ""
+sotopia: False
+generated: True
+scenario_list: ""
+output_dir: ./llm_rl/filter
+reward: 'goal'
+reward_cutoff: 7.0
+balance: True
+includeformat: False
