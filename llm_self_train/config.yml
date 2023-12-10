@@ -1,28 +1,23 @@
-# redis
-redis_om_url: redis://:password@server_name:port_num
-redis_data_tag: gpt-4_gpt-3.5-turbo_v0.0.1_clean
+# self train
+experiment_name: test-experiment
+num_improve_steps: 2
+data_dir: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain
+checkpoint_saved_queue: /home/ruiyiwan/selftrain/test-dir/logs/deploy_queue.txt
 
 # training
-num_gpus: 1
+num_gpus: 4
 model_name_or_path: meta-llama/Llama-2-13b-hf
-hf_auth_token: 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
 
+hf_auth_token: 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
 wandb_project: self-train
 wandb_tags: "['llama-2-13b-hf']"
 wandb_token: 99caa13ec9552adf0e92e5c30021307ce3cf7fa4
 
+# redis
+redis_om_url: redis://:password@server_name:port_num
+redis_data_tag: gpt-4_gpt-3.5-turbo_v0.0.1_clean
+
 #gcp
-<<<<<<< HEAD
-# service_account_key_location: /workspace/sotopia-llm/llm_self_train/resources/scs-lti-miis-team-3-727bea79660c.json
-service_account_key_location: /Users/pamela/Documents/capstone/sotopia-llm/llm_self_train/resources/scs-lti-miis-team-3-727bea79660c.json
-bucket_name: pipeline-test-storage
-selftrain_improve_gcp_dir: improve-2/
-blob_prefix: checkpoint
-||||||| parent of 79b09d6... Feature/cloud utils (#130)
-oauth2_token_location: ./resources/gcp_auth.token
-bucket_name: pipeline-test-storage
-=======
 service_account_key_location: ./resources/scs-lti-miis-team-3-727bea79660c.json
-bucket_name: pipeline-test-storage
+bucket_name: babel-test-storage
 checkpoint_prefix: checkpoint
->>>>>>> 79b09d6... Feature/cloud utils (#130)

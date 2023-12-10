@@ -26,19 +26,15 @@ gradient_checkpointing: True
 bf16: True
 cache_dir: ./model_cache
 overwrite_cache: true
-output_dir: ./output_cache
+output_dir: NEED-CONFIG
 overwrite_output_dir: true
 logging_steps: 1
-<<<<<<< HEAD
-save_strategy: "no"
-||||||| parent of 79b09d6... Feature/cloud utils (#130)
 save_strategy: "epoch"
-=======
-save_strategy: "steps"
-save_steps: 1000000000
->>>>>>> 79b09d6... Feature/cloud utils (#130)
 save_total_limit: 5
 use_auth_token: True
 wandb_token: NEED-CONFIG
 hf_auth_token: NEED-CONFIG
 deepspeed: ../llm_rl/deepspeed_config_s2.json
+use_custom_callback: True
+call_back_save_epochs: 4
+checkpoint_saved_queue: NEED-CONFIG
