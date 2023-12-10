@@ -160,6 +160,8 @@ def filter_pks_to_prompts(filter_env_pks, save_dir, include_format=False):
             agent_idx = 0 if agent == 'agent1' else 1
             for pk in agent_pks:
                 episode = EpisodeLog.get(pk=pk)
+                print("This is the episode")
+                print(episode)
                 parse_prompt_to_json(episode, save_dir, agent_idx, include_format)
 
 

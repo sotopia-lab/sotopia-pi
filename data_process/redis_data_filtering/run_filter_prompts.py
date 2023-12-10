@@ -17,7 +17,7 @@ def read_item_list(filepath):
     return item_list
 
 def main():
-    with open('./filter_args.yml', 'r') as file:
+    with open(os.getcwd()+'/data_process/redis_data_filtering/filter_args.yml', 'r') as file:
         args = yaml.safe_load(file)
     # parser = argparse.ArgumentParser()
     # parser.add_argument(
@@ -80,7 +80,7 @@ def main():
     include_format = args['includeformat'] 
 
     env_episodes = get_episode_by_env(tags, use_only_sotopia, use_only_gen, selected_envs)
-    env_rewards, env_pks = goal_reward_by_env_agent(env_episodes, filter_score)
+    # env_rewards, env_pks = goal_reward_by_env_agent(env_episodes, filter_score)
     # env_mean_var = get_env_mean_var(env_rewards)
     filter_env_rewards, filter_env_pks = goal_reward_by_env_agent(
         env_episodes, filter_score, filter_cutoff, balance=if_balance)
