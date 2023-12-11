@@ -3,11 +3,11 @@ experiment_name: test-experiment
 num_improve_steps: 2
 data_dir: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain
 checkpoint_saved_queue: /home/ruiyiwan/selftrain/test-dir/logs/deploy_queue.txt
+call_back_save_epochs: 10
 
 # training
 num_gpus: 4
 model_name_or_path: meta-llama/Llama-2-13b-hf
-
 hf_auth_token: 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
 wandb_project: self-train
 wandb_tags: "['llama-2-13b-hf']"
