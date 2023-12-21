@@ -1,7 +1,6 @@
 from pipelines import config
 import os
-import asyncio
-from google.cloud.storage import Client, transfer_manager
+from google.cloud.storage import Client
 from tqdm import tqdm
 
 
