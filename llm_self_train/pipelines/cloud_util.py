@@ -168,8 +168,7 @@ async def monitor_gcp_and_download_to_local(directory_to_monitor, local_download
 =======
 from pipelines import config
 import os
-import asyncio
-from google.cloud.storage import Client, transfer_manager
+from google.cloud.storage import Client
 from tqdm import tqdm
 
 

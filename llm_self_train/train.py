@@ -9,6 +9,7 @@ import yaml
 with open('config.yml', 'r') as file:
     config = yaml.safe_load(file)
 
+
 def should_stop(run_sft_completed):
     return run_sft_completed.value
 
