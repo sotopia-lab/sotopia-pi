@@ -17,7 +17,7 @@ from sotopia.database.persistent_profile import (
 from sotopia.database.env_agent_combo_storage import EnvAgentComboStorage
 
 # res_pks = list(RelationshipProfile.all_pks()) # 120
-#env_agent_combos = list(EnvAgentComboStorage.all_pks()) # 550
+# env_agent_combos = list(EnvAgentComboStorage.all_pks()) # 550
 # agent_pks = list(AgentProfile.all_pks()) # 40
 # env_pks = list(EnvironmentProfile.all_pks()) # 62
 # epi_pks = list(EpisodeLog.all_pks()) 
