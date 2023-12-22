@@ -210,7 +210,7 @@ def obtain_chain(
     template: str,
     input_variables: list[str],
     temperature: float = 0.7,
-    max_retries: int = 1,
+    max_retries: int = 6,
 ) -> LLMChain:
     """
     Using langchain to sample profiles for participants
