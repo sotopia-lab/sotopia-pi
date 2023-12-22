@@ -135,9 +135,14 @@ if __name__ == "__main__":
             ]
         ]
         envs = cast(list[dict[str, Any]], df.to_dict(orient="records"))
+        filtered_envs = []
         for env in envs:
             env["agent_goals"] = ast.literal_eval(env["agent_goals"])
+            print(len(env["agent_goals"]))
             assert isinstance(env["relationship"], int)
+            if len(env["agent_goals"]) == 2:
+                filtered_envs.append(env)
+                import pdb; pdb.set_trace()
         add_env_profiles(envs)
         Migrator().run()
     elif type == "relationship":
