@@ -142,7 +142,6 @@ if __name__ == "__main__":
             assert isinstance(env["relationship"], int)
             if len(env["agent_goals"]) == 2:
                 filtered_envs.append(env)
-                import pdb; pdb.set_trace()
         add_env_profiles(envs)
         Migrator().run()
     elif type == "relationship":
