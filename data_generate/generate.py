@@ -424,11 +424,12 @@ async def agenerate_env_profile(
     """
     return await agenerate(
         model_name=model_name,
-        template="""Please generate scenarios and goals following the examples below. 
+        template="""Please generate scenarios and goals following those examples below:
         Examples:
         {examples}
-        Additionally, generate creative scenarios based on one or more inspirational prompt. The scenario and social goal is motivated by them but not very related to those prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
-        Inspirational prompt: {inspiration_prompt}
+        Generate creative scenarios and social goals based on one or more inspirational prompt listed below. The scenario and social goal should be related to at least one of those inspirational prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
+        Inspirational prompt: 
+        {inspiration_prompt}
         Please use the following format and follow that format strictly:
         {format_instructions}
         """,
