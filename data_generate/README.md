@@ -1,5 +1,7 @@
 # Data Generation
 
+For the zero step, we need to prepare new inspirational prompts as motivations of gpt-4-turbo to generate creative scenario and social goals.
+
 For the first step, we generate envProfile (including scenario / social goal / relationship restriction) based on inspiring prompt.
 
 For the 2.1 step, we put the original agentProfile and relationshipProfile into our new redis database
