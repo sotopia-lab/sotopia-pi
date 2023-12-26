@@ -1,3 +1,7 @@
+import os
+os.environ[
+    "REDIS_OM_URL"
+] = "redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
 import ast
 import sys
 from typing import Any, cast
@@ -42,11 +46,17 @@ def retrieve_agent_by_first_name(first_name: str) -> AgentProfile:
 def add_env_profile(**kwargs: dict[str, Any]) -> None:
     env_profile = EnvironmentProfile(**kwargs)
     env_profile.save()
+    print("new PK is")
+    print(env_profile.pk)
+    return env_profile
 
 
 def add_env_profiles(env_profiles: list[dict[str, Any]]) -> None:
+    env_list = []
     for env_profile in env_profiles:
-        add_env_profile(**env_profile)
+        profile = add_env_profile(**env_profile)
+        env_list.append(profile)
+    return env_list
 
 
 def add_relationship_profile(**kwargs: dict[str, Any]) -> None:
@@ -90,6 +100,7 @@ def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
         env_agent_combo_list = list(
             sampler.sample(agent_classes=[LLMAgent] * 2, replacement=False)
         )
+        print("Entering here")
     except:
         return
     global agent_env_combo_num
