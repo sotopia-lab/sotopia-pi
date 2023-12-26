@@ -46,8 +46,8 @@ def retrieve_agent_by_first_name(first_name: str) -> AgentProfile:
 def add_env_profile(**kwargs: dict[str, Any]) -> None:
     env_profile = EnvironmentProfile(**kwargs)
     env_profile.save()
-    print("new PK is")
-    print(env_profile.pk)
+    # print("new PK is")
+    # print(env_profile.pk)
     return env_profile
 
 

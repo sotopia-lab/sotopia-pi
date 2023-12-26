@@ -28,7 +28,7 @@ USED_PROMPT_FILE = os.getcwd()+"/data_generate/used_prompt.csv"
 
 def get_sotopia_scenarios(): 
     """
-    # Function to get all sotopia scenario pk
+    Function to get all sotopia scenario pk
     """
     # function to get all sotopia scenario pk
     # we use gpt4-gpt4 tag to collect all sotopia scenario, other clean tags should do the same thing
@@ -99,14 +99,26 @@ def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo"):
     return background_df
 
 
-def get_used_env(filename):
-
+def get_used_env(filename, key=None):
+    """
+    Function that retrieve so far used environment profile to avoid repetitively generate data
+    using the same environment profile
+    Args:
+        filename: path to the json file that saved so-far-used pks
+        key: optional, as in each experiment, we would save a different list of pks
+    """
     with open(filename, "r") as file:
         used_dic = json.load(file)
-        #item_list = file.read().split("\n")
-    return sum(used_dic.values(), [])
+    if not key:
+        return sum(used_dic.values(), [])
+    else:
+        return used_dic[key]
+
 
 def auto_generate_scenarios(num):
+    """
+    Function to generate new environment scenarios based on target number of generation
+    """
     background_df = generate_newenv_profile(num)
     columns = ["codename",
                 "scenario",
@@ -119,36 +131,47 @@ def auto_generate_scenarios(num):
     envs = cast(list[dict[str, Any]], background_df.to_dict(orient="records"))
     filtered_envs = []
     for env in envs:
-        #print(env["agent_goals"])
+        # in case the env["agent_goals"] is string, convert into list
         if isinstance(env["agent_goals"], str):
             env["agent_goals"] = ast.literal_eval(env["agent_goals"])
         assert isinstance(env["relationship"], int)
         if len(env["agent_goals"]) == 2:
             filtered_envs.append(env)
+    # add to database
     env_profiles = add_env_profiles(envs)
+    # print(env_profiles)
     # also save new combo to database
     for env in env_profiles:
         sample_env_agent_combo_and_push_to_db(env.pk)
+
     Migrator().run()
 
-    return background_df
+    return [envprofile.pk for envprofile in env_profiles]
 
 
-def sample_unused_scenarios(num, used_file):
-    used_pks = get_used_env(used_file)
+def sample_unused_scenarios(num, used_file, experiment_name=None):
+    """
+    Function that automatically generate data -- main runner function
+    The logic is as follow:
+        For unused environment that are not in SOTOPIA, we sample list of envs based on num to sample
+        If we have enough unsed pks, then we sample all pks and return a list
+        If we don't have enough, go to auto generate that amount of scenarios, and then return
+
+    """
+    used_pks = get_used_env(used_file, key=experiment_name)
     sotopia_envs = get_sotopia_scenarios()
 
     used_pks += sotopia_envs
     # retrieve from redis DB the number of scenarios
     env_pks = set(EnvironmentProfile.all_pks()) 
-
+    # take un-overlapping portion
     candidates = list(set(used_pks) ^ env_pks)
     if len(candidates) > num:
         samples = random.sample(candidates, num)
 
     else:
         new_pks = auto_generate_scenarios(num)
-        samples = random.sample(candidates+new_pks)
+        samples = random.sample(candidates+new_pks, num)
 
     return samples
 
@@ -163,5 +186,4 @@ def sample_unused_scenarios(num, used_file):
 # num = 20
 # samples = random.sample(candidates, num)
 # print(samples)
-
-test = auto_generate_scenarios(1)
+# test = auto_generate_scenarios(2)
