@@ -22,9 +22,9 @@ import rich
 from pydantic import BaseModel
 
 T = TypeVar("T", bound=BaseModel)
-INSPIRE_PROMPT_FILE = os.getcwd()+"/data_generate/inspirational_prompt.csv"
-USED_PROMPT_FILE = os.getcwd()+"/data_generate/used_prompt.csv"
-
+INSPIRE_PROMPT_FILE = os.getcwd()+"/data_generate/env_files/inspirational_prompt.csv"
+USED_PROMPT_FILE = os.getcwd()+"/data_generate/env_files/used_prompt.csv"
+USED_ENV_FILE = os.getcwd()+"/data_generate/env_files/used_env.json"
 
 def get_sotopia_scenarios(): 
     """
@@ -174,7 +174,6 @@ def sample_unused_scenarios(num, used_file, experiment_name=None):
         samples = random.sample(candidates+new_pks, num)
 
     return samples
-
 
 # used_pks = get_used_env(os.getcwd()+"/data_generate/used_env.json")
 # sotopia_envs = get_sotopia_scenarios()
