@@ -1,5 +1,25 @@
 # Data Generation
 
+### Explanation for inspirational prompt:
+
+For Sotopia's inspirational prompt, it includes cherry-pick a few examples from 6 datasets (`social\_iqa`, `social\_chem`, `normbank`, `deal-or-no-deal`, `persuation_for_good`, `mindcraft`)
+
+For our inspirational prompt, it include full examples from 3 datasets (`social\_iqa`, `social\_chem`, `normbank`). 
+
+Notice1: The reason why we does not include `deal-or-no-deal` and `mindcraft` is because we think those inspirational prompt is too similar within one dataset and would cause some leakage if we train on them and test on sotopia ones
+
+Notice2: The reason why we do not include `persuation_for_good` is because we cannnot find the exact form of inspirational prompt that is the same with sotopia's inspirational prompt and the previous mentioed three datasets already provide enough inspirational prompts.
+
+
+
+### Explanation for EnvProfile generation:
+
+With inspirational prompt, we utilize `gpt-4-turbo` to generate EnvProfile.
+
+
+
+# Data Generation (deprecated)
+
 For the zero step, we need to prepare new inspirational prompts as motivations of gpt-4-turbo to generate creative scenario and social goals.
 
 For the first step, we generate envProfile (including scenario / social goal / relationship restriction) based on inspiring prompt.
@@ -14,7 +34,8 @@ For the third step, we need to use another version of redis and convert it into 
 
 For the final step, we convert the whole thing into Ruiyi's format.
 
-# Local Redis Setting
+# Local Redis Setting (deprecated)
+
 Since the redis-server cannot directly input json data, it requires loading a RedisJson model into the redis-server to enable this function. Therefore, we need to load a docker based on RedisJson:
 
 docker run -p 6379:6379 --name redis-stack redis/redis-stack:latest
@@ -28,27 +49,30 @@ The default version for redis could be 7.2.x. However, to deploy it on tiger, we
 
 `docker run -p 6379:6379 --name redis-stack-old redis/redis-stack:6.2.6-v10` instead of using latest. After running on local and save all data to redis db, we should get a dump.rdb in the folder that are in version 6.2.6. We could then upload this file to tiger server. 
 
-# Redis on Server - USE this all in one tuturial as the latest instruction for hosting redis db
+# Redis on Server - USE this all in one tuturial as the latest instruction for hosting redis db (deprecated)
+
 We are using CMU Tiger to host our Redis Database. The current host port is 8008 and redis port is 6388.
 
 ### Connecting to Redis
+
 To connect to Redis DB for loading and saving, follow the steps:
+
 1. When activate conda environment, enter:
-   
+
 `conda env config vars set REDIS_OM_URL="redis://:PASSWORD@tiger.lti.cs.cmu.edu:6388"`
 
 The password is only available to the development team, or upon request.
 
 2. After setting REDIS_OM_URL in conda, you should reactivate your conda.
-   
+
 3. To load data from Redis, an example way is:
-   
+
    `from sotopia.database.logs import EpisodeLog`
 
    `episode = EpisodeLog.get(pk = 'xxxxx')`
-  
+
 4. To save data from Redis, an example way is
-   
+
    `Migrator().run()`
 
    `episode = EpisodeLog(**jsonfile)`
@@ -56,13 +80,17 @@ The password is only available to the development team, or upon request.
    `episode.save()`
 
 ### Hosting Redis on Server (TIGER)
+
 To do so, one of the member must first have access to TIGER. Then, follow the steps:
+
 1. Login:
-   
+
    `ssh USERNAME@tiger.lti.cs.cmu.edu` >>> enter password
+
 2. Create conda environment and activate:
 
    `conda create -n sotopia python=3.11; conda activate sotopia; conda install -c conda-forge pip`
+
 3. Locate the initial dataset to start the server. The dataset should be a dump.rdb from your local or from available sources by `curl` or `wget`.
    To copy a local dump.rdb to TIGER, use
 
@@ -71,17 +99,17 @@ To do so, one of the member must first have access to TIGER. Then, follow the st
    If serverfolder does not exist, you should first create a folder separately for the rdb file in TIGER.
 
 4. Use docker run to start a Redis server:
-   
+
    `docker run -d --name NAMEYOUWANT -p PORT1:6379 -p PORT2:8001 -v /home/USERNAME/serverfolder/:/data/ -e REDIS_ARGS="--save 60 1000 --requirepass PASSWORD" redis/redis-stack:7.2.0-v6`
 
 * NAMEYOUWANT - name the docker container, such as my-redis-server
 
 * PORT1 - change to any port that is not occupied
-  
+
 * PORT2 - this is the port you could use to access the database online, change to any port that is not occupied
-  
+
 * save 60 1000 - this specifies the Redis server to dump the dataset to disk every 60 seconds if at least 1000 keys changed
-  
+
 * PASSWORD - this restrict the access to redis DB
 
 * 7.2.0-v6 - this is due to version incompatibility. On TIGER, redis version is current at 5.0.7, but the dump.rdb we are using is in version 7.2.3. Using latest redis-stack without specifying verison would lead to incompatibility. We must specified we want the redis-stack to run using a newer version of image. If the dump.rdb are in version 6.2.12 for example, `redis/redis-stack:latest` is enough.
@@ -89,7 +117,7 @@ To do so, one of the member must first have access to TIGER. Then, follow the st
 To check the version of redis, run `redis-cli INFO SERVER` on command line. 
 
 To check if the server is successfully running, you could either go online using `http://SERVER:PORT/redis-stack/browser`, or run `docker ps` on command line and see if the container named NAMEYOUWANT is running. 
-   
+
 =======
 
 ### Redis Version Issue
@@ -113,4 +141,3 @@ Step to connect to the correct REDIS database as below:
 To setup Redis on Tiger, an example docker command is as below:
 
 docker run -d --name CONTAINERNAME -p PORT:6379 -p PORT:8001 -v /home/PATH/FOLDER/:/data/ -e REDIS_ARGS="--save 60 1000 --requirepass PASSWORD" redis/redis-stack:latest
-
