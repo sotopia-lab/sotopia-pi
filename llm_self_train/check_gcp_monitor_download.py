@@ -43,7 +43,7 @@ print("Done")
 from pipelines import config
 
 from pipelines.cloud_util import list_blobs_with_prefix, download_files_from_gcp, check_gcp_directory_exists
-from pipelines.monitor_proc import monitor_gcp_and_download_to_local
+from llm_self_train.pipelines.monitor_processes import monitor_gcp_and_download_to_local
 
 import multiprocessing
 import time
