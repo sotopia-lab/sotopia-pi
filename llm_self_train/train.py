@@ -21,14 +21,11 @@ def main():
 
     for i in range(config["num_improve_steps"]):
         run_sft_completed = multiprocessing.Value('b', False)
-        curr_improve_dir = os.path.join(config['data_dir'], config["experiment_name"], f"improve-{i}")
-        print(curr_improve_dir)
-
-        sft_process = multiprocessing.Process(target=run_sft, args=(curr_improve_dir, ))
-        
+        curr_improve_dir = os.path.join(config['data_dir'], config["experiment_name"])
+        sft_process = multiprocessing.Process(target=run_sft, args=(curr_improve_step, ))
         sft_process.start()
-        
         sft_process.join()
+
         run_sft_completed.value = True
 
 if __name__ == "__main__":

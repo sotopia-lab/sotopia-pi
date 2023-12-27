@@ -3,6 +3,7 @@ experiment_name: test-experiment
 num_improve_steps: 2
 data_dir: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain
 checkpoint_saved_queue: /home/ruiyiwan/selftrain/test-dir/logs/deploy_queue.txt
+num_train_epochs: 20.0
 call_back_save_epochs: 10
 
 # training
