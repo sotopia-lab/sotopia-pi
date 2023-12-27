@@ -104,6 +104,10 @@ class FinetuningArguments:
         default=None,
         metadata={"help": "The path to the checkpoint saved queue file."}
     )
+    improve_step: Optional[int] = field(
+        default=0,
+        metadata={"help": "The n-th improve step in ReST."}
+    )
 
     def __post_init__(self):
         if isinstance(self.lora_target, str): # support custom target modules/layers of LoRA

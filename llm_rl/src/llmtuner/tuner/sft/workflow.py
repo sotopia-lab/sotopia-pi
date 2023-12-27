@@ -56,7 +56,7 @@ def run_sft(
         training_args.report_to = ["wandb"]
         
     if model_args.use_custom_callback:
-        callbacks.append(SaveModelCallback(model_args.call_back_save_epochs, training_args.output_dir, finetuning_args.checkpoint_saved_queue))
+        callbacks.append(SaveModelCallback(model_args.call_back_save_epochs, training_args.output_dir, finetuning_args.checkpoint_saved_queue, finetuning_args.improve_step))
 
     # Initialize our Trainer
     trainer = CustomSeq2SeqTrainer(
