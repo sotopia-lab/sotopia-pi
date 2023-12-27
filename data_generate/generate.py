@@ -320,7 +320,7 @@ def generate(
             "format_instructions"
         ] = output_parser.get_format_instructions()
     result = chain.predict([logging_handler], **input_values)
-    import pdb; pdb.set_trace()
+    prompt = logging_handler.retrive_prompt()
     try:
         parsed_result = output_parser.parse(result)
     except KeyboardInterrupt:
@@ -335,7 +335,7 @@ def generate(
         )
         parsed_result = output_parser.parse(reformat_parsed_result)
     log.info(f"Generated result: {parsed_result}")
-    return parsed_result
+    return parsed_result, prompt
 
 
 @gin.configurable
@@ -365,7 +365,9 @@ async def agenerate(
         input_values[
             "format_instructions"
         ] = output_parser.get_format_instructions()
+    import pdb; pdb.set_trace()
     result = await chain.apredict([logging_handler], **input_values)
+    import pdb; pdb.set_trace()
     prompt = logging_handler.retrive_prompt()
     try:
         parsed_result = output_parser.parse(result)
@@ -424,11 +426,12 @@ async def agenerate_env_profile(
     """
     return await agenerate(
         model_name=model_name,
-        template="""Please generate scenarios and goals following the examples below. 
+        template="""Please generate scenarios and goals following those examples below:
         Examples:
         {examples}
-        Additionally, generate creative scenarios based on one or more inspirational prompt. The scenario and social goal is motivated by them but not very related to those prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
-        Inspirational prompt: {inspiration_prompt}
+        Generate creative scenarios and social goals based on one or more inspirational prompt listed below. The scenario and social goal should be related to at least one of those inspirational prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
+        Inspirational prompt: 
+        {inspiration_prompt}
         Please use the following format and follow that format strictly:
         {format_instructions}
         """,
@@ -553,6 +556,36 @@ def generate_action(
         raise KeyboardInterrupt
     except:
         return AgentAction(action_type="none", argument="")
+
+@gin.configurable
+@beartype
+def generate_env_profile(
+    model_name: LLM_Name,
+    inspiration_prompt: str = "asking my boyfriend to stop being friends with his ex",
+    examples: str = "",
+    temperature: float = 0.7,
+) -> tuple[EnvironmentProfile, str]:
+    """
+    Using langchain to generate the background
+    """
+    return generate(
+        model_name=model_name,
+        template="""Please generate scenarios and goals following those examples below:
+        Examples:
+        {examples}
+        Generate creative scenarios and social goals based on one or more inspirational prompt listed below. The scenario and social goal should be related to at least one of those inspirational prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
+        Inspirational prompt: 
+        {inspiration_prompt}
+        Please use the following format and follow that format strictly:
+        {format_instructions}
+        """,
+        input_values=dict(
+            inspiration_prompt=inspiration_prompt,
+            examples=examples,
+        ),
+        output_parser=PydanticOutputParser(pydantic_object=EnvironmentProfile),
+        temperature=temperature,
+    )
 
 
 @beartype
