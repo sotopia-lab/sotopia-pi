@@ -19,10 +19,10 @@ def main():
     if not os.path.exists("../llm_rl/data/sotopia_custom_training_sft.json"):
         preprocess_episodes_with_tag()
 
-    for i in range(config["num_improve_steps"]):
+    for improve_step in range(config["num_improve_steps"]):
         run_sft_completed = multiprocessing.Value('b', False)
-        curr_improve_dir = os.path.join(config['data_dir'], config["experiment_name"])
-        sft_process = multiprocessing.Process(target=run_sft, args=(curr_improve_step, ))
+        output_dir = os.path.join(config['data_dir'], config["experiment_name"])
+        sft_process = multiprocessing.Process(target=run_sft, args=(output_dir, improve_step, ))
         sft_process.start()
         sft_process.join()
 
