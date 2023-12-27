@@ -1,4 +1,5 @@
 sotopia
+convokit
 rejson
 evaluate
 redis==3.5.3 # for step3 and step4

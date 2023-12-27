@@ -198,13 +198,13 @@ cython_debug/
 
 ./llm_rl/preprocess/GPT4-4_Redis_Easy_No_Slide
 
+llm_rl/*cache/
+data_generate/**/*.jsonl
+
+data_generate/**/*.tsv
 *cache/
-
 llm_rl/data/sotopia_custom_training_sft.json
-
 *.zip
-
 *.token
 ./llm_self_train/resources/*
-
 test.txt
