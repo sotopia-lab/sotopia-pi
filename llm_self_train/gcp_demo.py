@@ -1,7 +1,7 @@
 from pipelines import config
 
 from pipelines.cloud_util import upload_dir_to_gcp, download_dir_from_gcp, list_blobs_with_prefix, monitor_and_upload
-from pipelines.monitor_proc import monitor_local_and_upload_to_gcp
+from llm_self_train.pipelines.monitor_processes import monitor_local_and_upload_to_gcp
 
 import time
 
