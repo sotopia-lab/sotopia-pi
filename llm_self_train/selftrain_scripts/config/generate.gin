@@ -1,0 +1,25 @@
+from __gin__ import dynamic_registration
+import __main__ as train_script
+import sotopia.generation_utils.generate as generate
+import sotopia.envs.evaluators as evaluators
+
+MAX_RETRIES=6
+CUSTOM_MODEL_NAME="checkpoint-base_epoch_2"
+CUSTOM_OPENAI_API_BASE="http://0.0.0.0:8010/v1"
+CUSTOM_OPENAI_KEY="EMPTY"
+
+generate.agenerate_action:
+    temperature = 1.0
+
+evaluators.ReachGoalLLMEvaluator.__acall__:
+    temperature = 0.0
+
+generate.agenerate_env_profile:
+    model_name = "gpt-3.5-turbo"
+
+generate.obtain_chain:
+    max_retries = %MAX_RETRIES
+    custom_model_name = %CUSTOM_MODEL_NAME
+    custom_openai_api_base = %CUSTOM_OPENAI_API_BASE
+    custom_openai_key = %CUSTOM_OPENAI_KEY
+
