@@ -1,0 +1,287 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0curl: (7) Failed to connect to 0.0.0.0 port 8009: Connection refused
+2023-12-26 23:48:16 | INFO | controller | args: Namespace(host='localhost', port=21001, dispatch_method='shortest_queue', ssl=False)
+2023-12-26 23:48:16 | ERROR | stderr | INFO:     Started server process [1850292]
+2023-12-26 23:48:16 | ERROR | stderr | INFO:     Waiting for application startup.
+2023-12-26 23:48:16 | ERROR | stderr | INFO:     Application startup complete.
+2023-12-26 23:48:16 | ERROR | stderr | INFO:     Uvicorn running on http://localhost:21001 (Press CTRL+C to quit)
+INFO:     Started server process [1850294]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8009 (Press CTRL+C to quit)
+2023-12-26 23:48:21 | INFO | model_worker | args: Namespace(host='localhost', port=21002, worker_address='http://localhost:21002', controller_address='http://localhost:21001', model_path='/data/tir/projects/tir6/bisk/ruiyiwan/selftrain/pilot-1/checkpoint-base_epoch_1', revision='main', device='cuda', gpus=None, num_gpus=1, max_gpu_memory=None, dtype=None, load_8bit=False, cpu_offloading=False, gptq_ckpt=None, gptq_wbits=16, gptq_groupsize=-1, gptq_act_order=False, awq_ckpt=None, awq_wbits=16, awq_groupsize=-1, enable_exllama=False, exllama_max_seq_len=4096, exllama_gpu_split=None, model_names=None, conv_template=None, embed_in_truncate=False, limit_worker_concurrency=5, stream_interval=2, no_register=False, seed=None)
+2023-12-26 23:48:23 | INFO | model_worker | Loading the model ['checkpoint-base_epoch_1'] on worker ce55e6fd ...
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+2023-12-26 23:48:25 | ERROR | stderr | Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     02023-12-26 23:48:35 | INFO | stdout | INFO:     ::1:50606 - "POST /refresh_all_workers HTTP/1.1" 200 OK
+2023-12-26 23:48:35 | INFO | stdout | INFO:     ::1:50614 - "POST /list_models HTTP/1.1" 200 OK
+100    27  100    27    0     0   3857      0 --:--:-- --:--:-- --:--:--  3857
+2023-12-26 23:48:35 | ERROR | stderr | Loading checkpoint shards:  50%|█████     | 1/2 [00:10<00:10, 10.22s/it]
+2023-12-26 23:48:40 | ERROR | stderr | Loading checkpoint shards: 100%|██████████| 2/2 [00:14<00:00,  6.97s/it]
+2023-12-26 23:48:40 | ERROR | stderr | Loading checkpoint shards: 100%|██████████| 2/2 [00:14<00:00,  7.46s/it]
+2023-12-26 23:48:40 | ERROR | stderr | 
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     02023-12-26 23:48:55 | INFO | stdout | INFO:     ::1:48758 - "POST /refresh_all_workers HTTP/1.1" 200 OK
+2023-12-26 23:48:55 | INFO | stdout | INFO:     ::1:48762 - "POST /list_models HTTP/1.1" 200 OK
+100    27  100    27    0     0   4500      0 --:--:-- --:--:-- --:--:--  4500
+Using pad_token, but it is not set yet.
+2023-12-26 23:48:56 | INFO | model_worker | Register to controller
+2023-12-26 23:48:56 | INFO | controller | Register a new worker: http://localhost:21002
+2023-12-26 23:48:56 | INFO | controller | Register done: http://localhost:21002, {'model_names': ['checkpoint-base_epoch_1'], 'speed': 1, 'queue_length': 0}
+2023-12-26 23:48:56 | INFO | stdout | INFO:     ::1:48770 - "POST /register_worker HTTP/1.1" 200 OK
+2023-12-26 23:48:56 | ERROR | stderr | INFO:     Started server process [1850293]
+2023-12-26 23:48:56 | ERROR | stderr | INFO:     Waiting for application startup.
+2023-12-26 23:48:56 | ERROR | stderr | INFO:     Application startup complete.
+2023-12-26 23:48:56 | ERROR | stderr | INFO:     Uvicorn running on http://localhost:21002 (Press CTRL+C to quit)
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     02023-12-26 23:49:15 | INFO | controller | Register a new worker: http://localhost:21002
+2023-12-26 23:49:15 | INFO | stdout | INFO:     ::1:40094 - "POST /worker_get_status HTTP/1.1" 200 OK
+2023-12-26 23:49:15 | INFO | controller | Register done: http://localhost:21002, {'model_names': ['checkpoint-base_epoch_1'], 'speed': 1, 'queue_length': 0}
+2023-12-26 23:49:15 | INFO | stdout | INFO:     ::1:58064 - "POST /refresh_all_workers HTTP/1.1" 200 OK
+2023-12-26 23:49:15 | INFO | stdout | INFO:     ::1:58066 - "POST /list_models HTTP/1.1" 200 OK
+100   468  100   468    0     0  58500      0 --:--:-- --:--:-- --:--:-- 58500
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+/home/ruiyiwan/miniconda3/envs/myenv/lib/python3.11/site-packages/beartype/_util/hint/pep/utilpeptest.py:339: BeartypeDecorHintPep585DeprecationWarning: PEP 484 type hint typing.Sequence[sotopia.agents.base_agent.BaseAgent[sotopia.messages.message_classes.Observation, sotopia.messages.message_classes.AgentAction]] deprecated by PEP 585. This hint is scheduled for removal in the first Python version released after October 5th, 2025. To resolve this, import this hint from "beartype.typing" rather than "typing". For further commentary and alternatives, see also:
+    https://beartype.readthedocs.io/en/latest/api_roar/#pep-585-deprecations
+  warn(
+I1226 23:49:20.237664 140557239349376 gin_utils.py:55] Gin Configuration:
+I1226 23:49:20.243811 140557239349376 gin_utils.py:57] from __gin__ import dynamic_registration
+I1226 23:49:20.245335 140557239349376 gin_utils.py:57] import __main__ as train_script
+I1226 23:49:20.246586 140557239349376 gin_utils.py:57] import sotopia.envs.evaluators as evaluators
+I1226 23:49:20.247838 140557239349376 gin_utils.py:57] import sotopia.generation_utils.generate as generate
+I1226 23:49:20.249203 140557239349376 gin_utils.py:57] import sotopia.server as server
+I1226 23:49:20.250405 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.251519 140557239349376 gin_utils.py:57] # Macros:
+I1226 23:49:20.252673 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.254012 140557239349376 gin_utils.py:57] ACTION_ORDER = 'round-robin'
+I1226 23:49:20.255227 140557239349376 gin_utils.py:57] AGENT1_MODEL = 'gpt-3.5-turbo'
+I1226 23:49:20.256383 140557239349376 gin_utils.py:57] AGENT2_MODEL = 'custom_model'
+I1226 23:49:20.257565 140557239349376 gin_utils.py:57] BATCH_SIZE = 4
+I1226 23:49:20.258724 140557239349376 gin_utils.py:57] CUSTOM_MODEL_NAME = 'checkpoint-base_epoch_1'
+I1226 23:49:20.260063 140557239349376 gin_utils.py:57] CUSTOM_OPENAI_API_BASE = 'http://0.0.0.0:8009/v1'
+I1226 23:49:20.261309 140557239349376 gin_utils.py:57] CUSTOM_OPENAI_KEY = 'EMPTY'
+I1226 23:49:20.262493 140557239349376 gin_utils.py:57] ENV_IDS = \
+I1226 23:49:20.263556 140557239349376 gin_utils.py:57]     ['01HFSDNWG78KV60B0H60GQNNF9',
+I1226 23:49:20.264802 140557239349376 gin_utils.py:57]      '01HFSDNWGPJSBBS6HT8GDWMC9Q',
+I1226 23:49:20.266030 140557239349376 gin_utils.py:57]      '01HFSDNWG5Z99ZX40DHZY88PY8',
+I1226 23:49:20.267206 140557239349376 gin_utils.py:57]      '01HFSDNWHDNSAWC41SWM1ZXTCG',
+I1226 23:49:20.268312 140557239349376 gin_utils.py:57]      '01HFSDNWGMHY3VNT4BGDXP0GZN',
+I1226 23:49:20.269496 140557239349376 gin_utils.py:57]      '01HFSDNWG1WFWWBEMMQ0M694BG']
+I1226 23:49:20.270675 140557239349376 gin_utils.py:57] MAX_RETRIES = 6
+I1226 23:49:20.271792 140557239349376 gin_utils.py:57] MODEL_NAMES = {'agent1': %AGENT1_MODEL, 'agent2': %AGENT2_MODEL, 'env': 'gpt-4'}
+I1226 23:49:20.273210 140557239349376 gin_utils.py:57] PUSH_TO_DB = False
+I1226 23:49:20.274367 140557239349376 gin_utils.py:57] TAG = 'pilot-1_checkpoint-base_epoch_1_gpt-3.5-turbo_dev'
+I1226 23:49:20.275622 140557239349376 gin_utils.py:57] TAG_TO_CHECK_EXISTING_EPISODES = \
+I1226 23:49:20.276823 140557239349376 gin_utils.py:57]     'pilot-1_checkpoint-base_epoch_1_gpt-3.5-turbo_dev'
+I1226 23:49:20.278043 140557239349376 gin_utils.py:57] VERBOSE = False
+I1226 23:49:20.279141 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.280206 140557239349376 gin_utils.py:57] # Parameters for evaluators.ReachGoalLLMEvaluator.__acall__:
+I1226 23:49:20.281419 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.282629 140557239349376 gin_utils.py:57] evaluators.ReachGoalLLMEvaluator.__acall__.temperature = 0.0
+I1226 23:49:20.283884 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.284898 140557239349376 gin_utils.py:57] # Parameters for train_script._iterate_env_agent_combo_not_in_db:
+I1226 23:49:20.286186 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.287342 140557239349376 gin_utils.py:57] train_script._iterate_env_agent_combo_not_in_db.env_ids = %ENV_IDS
+I1226 23:49:20.288602 140557239349376 gin_utils.py:57] train_script._iterate_env_agent_combo_not_in_db.tag = \
+I1226 23:49:20.289826 140557239349376 gin_utils.py:57]     %TAG_TO_CHECK_EXISTING_EPISODES
+I1226 23:49:20.291000 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.291998 140557239349376 gin_utils.py:57] # Parameters for generate.agenerate_action:
+I1226 23:49:20.293159 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.294360 140557239349376 gin_utils.py:57] generate.agenerate_action.temperature = 1.0
+I1226 23:49:20.295542 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.296591 140557239349376 gin_utils.py:57] # Parameters for generate.agenerate_env_profile:
+I1226 23:49:20.297752 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.298974 140557239349376 gin_utils.py:57] generate.agenerate_env_profile.model_name = 'gpt-3.5-turbo'
+I1226 23:49:20.300163 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.301188 140557239349376 gin_utils.py:57] # Parameters for generate.obtain_chain:
+I1226 23:49:20.302328 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.303481 140557239349376 gin_utils.py:57] generate.obtain_chain.custom_model_name = %CUSTOM_MODEL_NAME
+I1226 23:49:20.304696 140557239349376 gin_utils.py:57] generate.obtain_chain.custom_openai_api_base = %CUSTOM_OPENAI_API_BASE
+I1226 23:49:20.305973 140557239349376 gin_utils.py:57] generate.obtain_chain.custom_openai_key = %CUSTOM_OPENAI_KEY
+I1226 23:49:20.307195 140557239349376 gin_utils.py:57] generate.obtain_chain.max_retries = %MAX_RETRIES
+I1226 23:49:20.308373 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.309400 140557239349376 gin_utils.py:57] # Parameters for server.run_async_server:
+I1226 23:49:20.310510 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.311636 140557239349376 gin_utils.py:57] server.run_async_server.action_order = %ACTION_ORDER
+I1226 23:49:20.312803 140557239349376 gin_utils.py:57] server.run_async_server.model_dict = \
+I1226 23:49:20.314012 140557239349376 gin_utils.py:57]     {'agent1': 'gpt-3.5-turbo', 'agent2': 'gpt-3.5-turbo', 'env': 'gpt-4'}
+I1226 23:49:20.315325 140557239349376 gin_utils.py:57] server.run_async_server.push_to_db = %PUSH_TO_DB
+I1226 23:49:20.316489 140557239349376 gin_utils.py:57] server.run_async_server.tag = %TAG
+I1226 23:49:20.317669 140557239349376 gin_utils.py:57] server.run_async_server.using_async = True
+I1226 23:49:20.318877 140557239349376 gin_utils.py:57] 
+I1226 23:49:20.319893 140557239349376 gin_utils.py:57] # Parameters for train_script.run_async_server_in_batch:
+I1226 23:49:20.321082 140557239349376 gin_utils.py:57] # ==============================================================================
+I1226 23:49:20.322301 140557239349376 gin_utils.py:57] train_script.run_async_server_in_batch.batch_size = %BATCH_SIZE
+I1226 23:49:20.323499 140557239349376 gin_utils.py:57] train_script.run_async_server_in_batch.model_names = %MODEL_NAMES
+I1226 23:49:20.324699 140557239349376 gin_utils.py:57] train_script.run_async_server_in_batch.tag = %TAG
+I1226 23:49:20.325941 140557239349376 gin_utils.py:57] train_script.run_async_server_in_batch.verbose = %VERBOSE
+Running all envs in batch:   0%|          | 0/6 [00:00<?, ?it/s]
+Running one batch:   0%|          | 0/4 [00:00<?, ?it/s][A2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36072 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [0.0], ret: http://localhost:21002
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36074 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53492 - "POST /worker_get_conv_template HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53500 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53512 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36088 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [1.0], ret: http://localhost:21002
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36098 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53534 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53536 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36100 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [2.0], ret: http://localhost:21002
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36106 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53552 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53554 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36108 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [3.0], ret: http://localhost:21002
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:36120 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53566 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:21 | INFO | stdout | INFO:     ::1:53572 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:38 | INFO | stdout | INFO:     ::1:53550 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:49:40 | INFO | stdout | INFO:     ::1:53564 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:49:41 | INFO | stdout | INFO:     ::1:53528 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:49:41 | INFO | model_worker | Send heart beat. Models: ['checkpoint-base_epoch_1']. Semaphore: Semaphore(value=4, locked=False). call_ct: 4. worker_id: ce55e6fd. 
+2023-12-26 23:49:41 | INFO | controller | Receive heart beat. http://localhost:21002
+2023-12-26 23:49:41 | INFO | stdout | INFO:     ::1:46942 - "POST /receive_heart_beat HTTP/1.1" 200 OK
+2023-12-26 23:49:41 | INFO | stdout | INFO:     ::1:53588 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:49:46 | INFO | stdout | INFO:     ::1:46948 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:46 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [0.0], ret: http://localhost:21002
+2023-12-26 23:49:46 | INFO | stdout | INFO:     ::1:46950 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:46 | INFO | stdout | INFO:     ::1:57928 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:46 | INFO | stdout | INFO:     ::1:57932 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:46964 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [1.0], ret: http://localhost:21002
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:46968 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:57940 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:57942 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:46970 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [2.0], ret: http://localhost:21002
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:46980 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:57950 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:47 | INFO | stdout | INFO:     ::1:57960 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:54 | INFO | stdout | INFO:     ::1:57936 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:49:57 | INFO | stdout | INFO:     ::1:59610 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:57 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [3.0], ret: http://localhost:21002
+2023-12-26 23:49:57 | INFO | stdout | INFO:     ::1:59626 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:57 | INFO | stdout | INFO:     ::1:42364 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:57 | INFO | stdout | INFO:     ::1:57946 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:49:57 | INFO | stdout | INFO:     ::1:42370 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:58 | INFO | stdout | INFO:     ::1:57964 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:49:58 | INFO | stdout | INFO:     ::1:59630 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:58 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [4.0], ret: http://localhost:21002
+2023-12-26 23:49:58 | INFO | stdout | INFO:     ::1:59642 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:58 | INFO | stdout | INFO:     ::1:42400 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:58 | INFO | stdout | INFO:     ::1:42402 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:49:59 | INFO | stdout | INFO:     ::1:33510 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:49:59 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [5.0], ret: http://localhost:21002
+2023-12-26 23:49:59 | INFO | stdout | INFO:     ::1:33514 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:49:59 | INFO | stdout | INFO:     ::1:46256 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:49:59 | INFO | stdout | INFO:     ::1:46266 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:50:07 | INFO | stdout | INFO:     ::1:42386 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:50:09 | INFO | stdout | INFO:     ::1:42414 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:50:10 | INFO | stdout | INFO:     ::1:46278 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:50:12 | INFO | stdout | INFO:     ::1:35694 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:50:12 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [6.0], ret: http://localhost:21002
+2023-12-26 23:50:12 | INFO | stdout | INFO:     ::1:35704 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:50:12 | INFO | stdout | INFO:     ::1:57344 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:50:12 | INFO | stdout | INFO:     ::1:57350 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:35706 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [7.0], ret: http://localhost:21002
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:35720 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:57372 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:57380 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:35732 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [8.0], ret: http://localhost:21002
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:35734 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:57406 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:50:13 | INFO | stdout | INFO:     ::1:57416 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:50:14 | INFO | stdout | INFO:     ::1:57356 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:50:18 | INFO | stdout | INFO:     ::1:57420 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:50:20 | INFO | stdout | INFO:     ::1:57396 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:50:21 | INFO | stdout | INFO:     ::1:51074 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:50:21 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [9.0], ret: http://localhost:21002
+2023-12-26 23:50:21 | INFO | stdout | INFO:     ::1:51090 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:50:21 | INFO | stdout | INFO:     ::1:56102 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:50:21 | INFO | stdout | INFO:     ::1:56104 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:50:22 | INFO | stdout | INFO:     ::1:56106 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:50:26 | INFO | model_worker | Send heart beat. Models: ['checkpoint-base_epoch_1']. Semaphore: Semaphore(value=5, locked=False). call_ct: 14. worker_id: ce55e6fd. 
+2023-12-26 23:50:26 | INFO | controller | Receive heart beat. http://localhost:21002
+2023-12-26 23:50:26 | INFO | stdout | INFO:     ::1:51102 - "POST /receive_heart_beat HTTP/1.1" 200 OK
+
+Running one batch:  25%|██▌       | 1/4 [01:08<03:25, 68.53s/it][A
+Running one batch:  50%|█████     | 2/4 [01:42<01:35, 47.98s/it][A
+Running one batch:  75%|███████▌  | 3/4 [01:49<00:29, 29.33s/it][A
+Running one batch: 100%|██████████| 4/4 [01:49<00:00, 17.85s/it][ARunning one batch: 100%|██████████| 4/4 [01:49<00:00, 27.38s/it]
+Running all envs in batch:  67%|██████▋   | 4/6 [01:49<00:54, 27.38s/it]Running all envs in batch: 100%|██████████| 6/6 [01:49<00:00, 18.26s/it]
+Running one batch:   0%|          | 0/2 [00:00<?, ?it/s]2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:50004 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:51:10 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [0.0], ret: http://localhost:21002
+2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:50018 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:47430 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:47438 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:50020 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:51:10 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [1.0], ret: http://localhost:21002
+2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:50028 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:47442 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:51:10 | INFO | stdout | INFO:     ::1:47456 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:51:11 | INFO | model_worker | Send heart beat. Models: ['checkpoint-base_epoch_1']. Semaphore: Semaphore(value=3, locked=False). call_ct: 16. worker_id: ce55e6fd. 
+2023-12-26 23:51:11 | INFO | controller | Receive heart beat. http://localhost:21002
+2023-12-26 23:51:11 | INFO | stdout | INFO:     ::1:50044 - "POST /receive_heart_beat HTTP/1.1" 200 OK
+2023-12-26 23:51:15 | INFO | stdout | INFO:     ::1:47468 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:51:18 | INFO | stdout | INFO:     ::1:50060 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:51:18 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [0.0], ret: http://localhost:21002
+2023-12-26 23:51:18 | INFO | stdout | INFO:     ::1:50070 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:51:18 | INFO | stdout | INFO:     ::1:47472 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:51:18 | INFO | stdout | INFO:     ::1:47488 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:51:23 | INFO | stdout | INFO:     ::1:47500 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:51:24 | INFO | stdout | INFO:     ::1:47440 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:51:27 | INFO | stdout | INFO:     ::1:56676 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:51:27 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [1.0], ret: http://localhost:21002
+2023-12-26 23:51:27 | INFO | stdout | INFO:     ::1:56688 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:51:27 | INFO | stdout | INFO:     ::1:48332 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:51:27 | INFO | stdout | INFO:     ::1:48338 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:51:29 | INFO | stdout | INFO:     ::1:38016 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:51:29 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [2.0], ret: http://localhost:21002
+2023-12-26 23:51:29 | INFO | stdout | INFO:     ::1:38032 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:51:29 | INFO | stdout | INFO:     ::1:44166 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:51:29 | INFO | stdout | INFO:     ::1:44182 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:51:30 | INFO | stdout | INFO:     ::1:48352 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:51:33 | INFO | stdout | INFO:     ::1:38034 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:51:33 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [3.0], ret: http://localhost:21002
+2023-12-26 23:51:33 | INFO | stdout | INFO:     ::1:38044 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:51:33 | INFO | stdout | INFO:     ::1:44212 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:51:33 | INFO | stdout | INFO:     ::1:44228 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:51:34 | INFO | stdout | INFO:     ::1:44232 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:51:35 | INFO | stdout | INFO:     ::1:44198 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:51:36 | INFO | stdout | INFO:     ::1:38052 - "POST /list_models HTTP/1.1" 200 OK
+2023-12-26 23:51:37 | INFO | controller | names: ['http://localhost:21002'], queue_lens: [4.0], ret: http://localhost:21002
+2023-12-26 23:51:37 | INFO | stdout | INFO:     ::1:38058 - "POST /get_worker_address HTTP/1.1" 200 OK
+2023-12-26 23:51:37 | INFO | stdout | INFO:     ::1:44236 - "POST /model_details HTTP/1.1" 200 OK
+2023-12-26 23:51:37 | INFO | stdout | INFO:     ::1:44242 - "POST /count_token HTTP/1.1" 200 OK
+2023-12-26 23:51:38 | INFO | stdout | INFO:     ::1:44258 - "POST /worker_generate HTTP/1.1" 200 OK
+2023-12-26 23:51:56 | INFO | model_worker | Send heart beat. Models: ['checkpoint-base_epoch_1']. Semaphore: Semaphore(value=5, locked=False). call_ct: 21. worker_id: ce55e6fd. 
+2023-12-26 23:51:56 | INFO | controller | Receive heart beat. http://localhost:21002
+2023-12-26 23:51:56 | INFO | stdout | INFO:     ::1:57218 - "POST /receive_heart_beat HTTP/1.1" 200 OK
+slurmstepd: error: *** JOB 89931 ON babel-3-9 CANCELLED AT 2023-12-26T23:52:01 ***
