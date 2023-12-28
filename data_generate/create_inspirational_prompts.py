@@ -18,7 +18,7 @@ def collect_social_iqa():
 def collect_normbank():
     normbank_df = pd.read_csv(os.getcwd()+"/data_generate/env_files//NormBank.csv")[['behavior']]
     normbank_df = normbank_df.rename(columns={'behavior': 'prompt'})
-    normbank_df = normbank_df.drop_duplicates().reset_index()
+    normbank_df = normbank_df.drop_duplicates().reset_index(drop=True)
     normbank_df['source'] = "normbank"
 
     return normbank_df
@@ -29,7 +29,7 @@ def collect_social_chemistry():
         os.getcwd()+"/data_generate/env_files/social-chem-101.v1.0.tsv", delimiter="\t"
         )[['situation']]
     social_chem_df = social_chem_df.rename(columns={'situation': 'prompt'})
-    social_chem_df = social_chem_df.drop_duplicates().reset_index()
+    social_chem_df = social_chem_df.drop_duplicates().reset_index(drop=True)
     social_chem_df['source'] = "social_chem"
 
     return social_chem_df
@@ -57,4 +57,5 @@ if __name__ == "__main__":
     normbank_prompt = collect_normbank()
     concat_prompt = pd.concat([social_chem_prompt, social_iqa_prompt, normbank_prompt])
     inspirational_prompt_data = delete_sotopia_data(concat_prompt)
+    inspirational_prompt_data = inspirational_prompt_data.drop_duplicates(subset=['prompt'], keep='first')
     inspirational_prompt_data.to_csv(os.getcwd()+'/data_generate/env_files/inspirational_prompt.csv')
