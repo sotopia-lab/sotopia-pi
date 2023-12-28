@@ -14,11 +14,14 @@ Notice2: The reason why we do not include `persuation_for_good` is because we ca
 
 ### Explanation for EnvProfile generation:
 
-With inspirational prompt, we utilize `gpt-4-turbo` to generate EnvProfile.
+With inspirational prompt, we utilize `gpt-4-turbo` to generate EnvProfile. 
+
+Note that our function also allow other OpenAI models. 
 
 
+### Detail Steps
 
-# Data Generation (deprecated)
+### Detail Steps (deprecated)
 
 For the zero step, we need to prepare new inspirational prompts as motivations of gpt-4-turbo to generate creative scenario and social goals.
 

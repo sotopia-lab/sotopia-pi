@@ -1,2 +1,431 @@
-prompt,model
-Partners should listen to each other's issues.,gpt-4-turbo
+model|source|pk|prompt
+gpt-4-turbo|normbank|01HJPMD5KHA2JT3DNJ9ZGVPBT8|sit by the fire
+gpt-4-turbo|normbank|01HJPMD5KZF6C4XRS39KMXWK39|eat a messy food
+gpt-4-turbo|normbank|01HJPMD5MPYGA2WHH82K2Z13S8|sit on the benches
+gpt-4-turbo|normbank|01HJPMD5NCGGKXQKBETH76PPG0|kick the tires
+gpt-4-turbo|social_iqa|01HJPMD5P22RRE0M3EH5SJKBAQ|Quinn sent Cameron flowers in an apology for what he did.
+gpt-4-turbo|social_iqa|01HJPMD5PSHNB5P0R7RBAM8FDM|Bailey paid their cable bill but it was already beyond the past due date.
+gpt-4-turbo|social_iqa|01HJPMD5QB241H5E90RDBJ3HEM|Sydney brought flowers into the field to set up the wedding spot for Tracy's wedding.
+gpt-4-turbo|social_iqa|01HJPMD5QR8AFTP4S3AJGW69NZ|Ash let their friend off with a warning. It was clear it could not happen again.
+gpt-4-turbo|social_chem|01HJPMD5REZ4XC3RM2GXQWWXD7|getting on the bus awkwardly
+gpt-4-turbo|social_chem|01HJPMD5S5A2M9QDA5044PH435|I stopped denying I had a problem and enrolled into a facility.
+gpt-4-turbo|social_chem|01HJPMD5SWAM82KEZJQXG77TZ6|thinking I made a girl self concious
+gpt-4-turbo|normbank|01HJPQ334Y2Z7PP3P3SPFTGGCM|show off
+gpt-4-turbo|normbank|01HJPQ335HRCMK86RZXX3245A3|leave food out in the open
+gpt-4-turbo|normbank|01HJPQ3367R2437H6HPX2MJD76|sing along to the radio
+gpt-4-turbo|normbank|01HJPQ336X745MQY1FH72DGSR4|use a keurig machine
+gpt-4-turbo|normbank|01HJPQ337KACYQKFSZEKS9F3SS|pray or meditate
+gpt-4-turbo|normbank|01HJPQ338A10FM1ZYE51ESZHX1|sleeping on the floor
+gpt-4-turbo|normbank|01HJPQ338WE1Q8DBR98BH3YHVP|hang upside down
+gpt-4-turbo|normbank|01HJPQ339JM832EQGBGG3QGX48|cage or pen the animals
+gpt-4-turbo|normbank|01HJPQ33A91AZT5CSX4PFNRPKW|eat a donut
+gpt-4-turbo|normbank|01HJPQ33B34Y6CZJC53AXYF1GN|use a power drill
+gpt-4-turbo|normbank|01HJPQ33BTK92E00275JPTEXW3|judge someone's teeth
+gpt-4-turbo|normbank|01HJPQ33CGAJ3VKRNHJVS6VJJZ|play volleyball
+gpt-4-turbo|normbank|01HJPQ33D705RRB75Z0TDPQ3YS|hide under the bed
+gpt-4-turbo|normbank|01HJPQ33DXMT762PFHK90FJDTJ|sell your textbooks
+gpt-4-turbo|normbank|01HJPQ33EP6E678RH26Q0ZDS4Q|boo the rodeo clown
+gpt-4-turbo|normbank|01HJPQ33FFAF1A8917QYFGG8S2|write down your score
+gpt-4-turbo|normbank|01HJPQ33G6W0ZMAG5EKMJZJP2B|ask for a specific doctor by name
+gpt-4-turbo|normbank|01HJPQ33GWVVQWKSEC79C1JN8S|dance in the waiting room
+gpt-4-turbo|normbank|01HJPQ33HNVVWB4S7WRCEPAWY4|put on the blinkers
+gpt-4-turbo|normbank|01HJPQ33JEYKACME5CXJY7YDAN|cook without a recipe
+gpt-4-turbo|normbank|01HJPQ33K56XWEQ4YVRX5MBC2Q|ask someone personal questions
+gpt-4-turbo|normbank|01HJPQ33KVDD3WV3VE2T94ZPEY|hire and train employees
+gpt-4-turbo|normbank|01HJPQ33MHGVCYRANR78DHASW5|take a child's toy away from them
+gpt-4-turbo|normbank|01HJPQ33N8G6WZVVK34ZZG8A8N|smoking cigarettes
+gpt-4-turbo|normbank|01HJPQ33NYXCK63E6FF47F2Q3V|watch a film about apartheid
+gpt-4-turbo|normbank|01HJPQ33PM9T2CZZ5Q5KWEQ07Y|cook with horse meat
+gpt-4-turbo|normbank|01HJPQ33Q7BEPJ179YJEC1VSQ3|wearing headphones
+gpt-4-turbo|normbank|01HJPQ33QXEQV555VJKRHRF22N|dance on a pole
+gpt-4-turbo|normbank|01HJPQ33S00YW7N8FRMBJMP9SA|use a communal shower
+gpt-4-turbo|normbank|01HJPQ33SQTAC6Q04VW98H07VB|checking out someone
+gpt-4-turbo|normbank|01HJPQ33T971CF9VBZZ7NHSWHD|make a mud pie
+gpt-4-turbo|normbank|01HJPQ33V00W6SBBRFHJVY06X5|use a whistle
+gpt-4-turbo|social_iqa|01HJPQ33VJRBNR85ABZADQJG2H|Despite knowing Sasha's future capabilities, Alex spared Sasha's life this time.
+gpt-4-turbo|social_iqa|01HJPQ33W4CDZ35BD8K4K0JQ18|Kai found a new friend and forgot all about their old friends instantly.
+gpt-4-turbo|social_iqa|01HJPQ33WTM4CAR8T6EAYZ1621|Taylor lost their engagement ring in the hope, she desperately hoped she would find it and after two long hours searching, it was found in her jean pocket.
+gpt-4-turbo|social_iqa|01HJPQ33XHH3GDRCH7G1A3H555|Casey rode her bike to the movies and had a great time there.
+gpt-4-turbo|social_iqa|01HJPQ33Y97J36DFCMZP3PCJ36|Sasha was going to bake pizza for dinner tonight. She took the pizza out of the freezer.
+gpt-4-turbo|social_iqa|01HJPQ33Z3M5F2PR1XA2TDBMTP|Cameron brought Taylor home. They talked for a minute and the Cameron left, he was hungry and tired.
+gpt-4-turbo|social_iqa|01HJPQ33ZSJGSH3BW7Y1M05BDH|Taylor gave their daughter up for adoption without telling the father first.
+gpt-4-turbo|social_iqa|01HJPQ340FZ5K93PDGTQPC0X2X|Jan found time to spend with her friends after being busy all month.
+gpt-4-turbo|social_iqa|01HJPQ34164S4F18XWW9NNM0JB|Lee quickly began running and eventually won the race.
+gpt-4-turbo|social_iqa|01HJPQ341WTJ04ME0ZW54H6DDM|Carson assisted Casey in achieving the goal they wanted to accomplish.
+gpt-4-turbo|social_iqa|01HJPQ342HHEB7237NNQ1SCX65|Quinn required Alex's effort to complete their work since the project's deadline was approaching fast.
+gpt-4-turbo|social_iqa|01HJPQ3438TZ04NXH39TK7G2XM|Quinn made their point on the matter and everybody was in agreement.
+gpt-4-turbo|social_iqa|01HJPQ343YYJXYPYFKWM7S587Q|Bailey took Quinn aside to talk about the problem of having too many cigarettes.
+gpt-4-turbo|social_iqa|01HJPQ344HEEFGZSP55A12A9ES|Remy bought concert tickets so she could go see the band perform live.
+gpt-4-turbo|social_iqa|01HJPQ347QXCMW4JMZNBXYRWTW|Remy wanted to have a nice garden, so they decided to grow flowers.
+gpt-4-turbo|social_iqa|01HJPQ348EB61X00D59WG6CR9E|Jordan suddenly heard a knock at his door as he was sleeping silently.
+gpt-4-turbo|social_iqa|01HJPQ349772CCRAFJWYXYDFP3|Quinn was in a hurry to get to work and forgot if he had locked the door so he had to go back to double check.
+gpt-4-turbo|social_iqa|01HJPQ349S7J1YT9S0ZV84SMRF|kendall heard someone call her name so she immediately turned around.
+gpt-4-turbo|social_iqa|01HJPQ34AGD5SCZP2QJGN8E8MQ|The mad scientist known as Remy wanted to harness the power of the Earth's core, so he used his giant drill to reach it.
+gpt-4-turbo|social_iqa|01HJPQ34B9X7MAY2GRDQBKSFXJ|Riley was taking a spelling class and spelled the word apple correctly.
+gpt-4-turbo|social_iqa|01HJPQ34C2EME19P31F4462QVA|Jesse shared Jordan's love of Harry Potter. They decided to see every showing of Half Blood Prince that they could when it was released.
+gpt-4-turbo|social_iqa|01HJPQ34CV727G9RE7429PTS3N|Lee exhausted every alternative and still was not ready to give up on the quest.
+gpt-4-turbo|social_iqa|01HJPQ34DHBFH5GW7AVXC7SVH5|Sasha played basketball well.
+gpt-4-turbo|social_iqa|01HJPQ34DZ0JVBKF9G9EFC4RGC|Riley saved Jan's life by pulling her out of the sinking car.
+gpt-4-turbo|social_iqa|01HJPQ34EN6HRXAE0GVCVZJHMC|Jan took Kendall to a doctor despite protests from Kendall telling them not to.
+gpt-4-turbo|social_iqa|01HJPQ34FBFQY3TF19RBSQN2QZ|Lee decided that they would go ahead and marry another man.
+gpt-4-turbo|social_iqa|01HJPQ34G1EN08TF0Q44Q5W4K2|Carson woke up late, they run around quickly getting dressed before running out to start their truck.
+gpt-4-turbo|social_iqa|01HJPQ34GR3FB0EVQ02FHS8HSK|Alex said something out of anger, but then Alex took it back.
+gpt-4-turbo|social_iqa|01HJPQ34HEWZCSYQ985CQN08DB|Jan needed to make something for a school bake sale and decided on brownies.
+gpt-4-turbo|social_iqa|01HJPQ34J5PXTW9MQTNA02TSFV|Ash assisted his father in understanding all of the paper work that day.
+gpt-4-turbo|social_iqa|01HJPQ34JVRPARF2NM2N3WBGHW|Kai was a big sister and got some gifts for the birthday party.
+gpt-4-turbo|social_iqa|01HJPQ34KJYFHGXWB076ST7F8G|Skylar became a millionaire after coming up with an invention that sold well.
+gpt-4-turbo|social_chem|01HJPQ34M9ETPZ75HJHX1FZKA5|wanting the women who is interested in dating me to go the gym
+gpt-4-turbo|social_chem|01HJPQ34MNXXMVTAHX174647YA|telling my good friends parents he has no job
+gpt-4-turbo|social_chem|01HJPQ34N8V0HZRVGF2JPK8KHE|Husband Treats Wife Like The Poo On His Shoes
+gpt-4-turbo|social_chem|01HJPQ34NZYMHJ00EMBD6R3NJV|Breakdown in Communication Is No Service to Customer
+gpt-4-turbo|social_chem|01HJPQ34PNXSMR7GNE7A9C1VC6|His tummy ached throughout the night and he knew why his mom was right.
+gpt-4-turbo|social_chem|01HJPQ34QB8SYBW6FEWRB4YXP3|sleeping with my ex
+gpt-4-turbo|social_chem|01HJPQ34R24ZGW7R7ERK4K0VWA|She forced herself to trudge through her laziness.
+gpt-4-turbo|social_chem|01HJPQ34RMDPWK6KQ077WK9JC0|being upset my ex didnt want me again
+gpt-4-turbo|social_chem|01HJPQ34S6QRVZPVYYGK5QKZ4V|I have a Me Too story from a decade ago that I've chosen not to go public with. This movement causes me anxiety and I can't admit it to anyone because I know it's extremely important and it's not anyone else's fault I don't know how to find healing for myself.
+gpt-4-turbo|social_chem|01HJPQ34SWZEWXGGFDRDEA5EMS|telling my gf she needs to at least attempt finishing her meals if I'm paying for them
+gpt-4-turbo|social_chem|01HJPQ34TK02EM424V7QMBZFSA|I’m no longer satisfied with any game I own or find
+gpt-4-turbo|social_chem|01HJPQ34VDHWPE4G9T88Q9CXP6|Victim's Silence Allows Rapist to Go Unpunished
+gpt-4-turbo|social_chem|01HJPQ34W41585EP7MQ3C9WAHH|It’s been 5 years...and 8 since we’ve seen each other.
+gpt-4-turbo|social_chem|01HJPQ34WVTGBB7CK6CNG0QCY8|hating the resident asshole in our apartment complex
+gpt-4-turbo|social_chem|01HJPQ34XDAYX632YKKD2J6XF1|insulting his sister in front of his life long friends
+gpt-4-turbo|social_chem|01HJPQ34Y3S1TDPTRX1CCH6VPG|I love apples so I immediately went to eat one.
+gpt-4-turbo|social_chem|01HJPQ34YSGHPWGWH0EBJ4DEC5|It’s been a year since my big brother passed away and it breaks my heart knowing it was because of me
+gpt-4-turbo|social_chem|01HJPQ34ZG9WZEDX6BV5QZB1QG|I Tell My Long Distance Gf That I Will Go To Sleep But Instead, I Play Video Games With My Buddies.
+gpt-4-turbo|social_chem|01HJPQ35060GM48AFNSCJMECZA|I kinda wish I was a girl.
+gpt-4-turbo|social_chem|01HJPQ350XMQFGD1XR1JP07HGE|not wanting to waste food
+gpt-4-turbo|social_chem|01HJPQ351KEXW7QH2KM4QNZGQK|asking a customer if they had any of our bread in their plastic bag
+gpt-4-turbo|social_chem|01HJPQ352AZ5BVHDB5XN09T1DN|Mom's Internet Sleuthing Gives Daughter the Creeps
+gpt-4-turbo|social_chem|01HJPQ3531Q5GCT4QG44GY5W2S|My partner and I get on well most of the time, but....
+gpt-4-turbo|social_chem|01HJPQ353SVM28W987V3978E0A|Im a average looking guy and girls are creeping me out sometimes with their lines...
+gpt-4-turbo|social_chem|01HJPQ354ERMAK00E8KZAHSE3V|resenting my parents for raising me in the middle of fucking no where
+gpt-4-turbo|social_chem|01HJPQ3554RWK2N6MG6G9Z5GDA|Husband's Micromanagement Wears Thin on Wife at Home
+gpt-4-turbo|social_chem|01HJPQ355VT7NMHYCC0PP6ME2H|Mother Protecting Daughter Provokes Ugly Family Fight
+gpt-4-turbo|social_chem|01HJPQ356HXQ4X0JCWTMYRBYKX|When he hit me, I fought back until he stopped.
+gpt-4-turbo|social_chem|01HJPQ3574NKJDJNYSDRH5H9JE|He carried the blanket with him wherever he went.
+gpt-4-turbo|social_chem|01HJPQ357TFY29XE1VFWF1M45X|wanting nothing to do with my aunt after she was disgracefully rude at my grandmothers funeral
+gpt-4-turbo|social_chem|01HJPQ358FJXRS50GTYCZEPP4Y|I wish we went to war with Iran just for the thrills of it
+gpt-4-turbo|social_chem|01HJPQ358XBETCTVFD54HARQKW|But as she had no family, she was all alone.
+gpt-4-turbo|social_chem|01HJPQ359KFCYGGKPH0ZH8YBT1|Not a confession but I have a question to ask
+gpt-4-turbo|social_chem|01HJPQ35AARQABTSVC8KRPMP2J|Boyfriend yells and throws tantrums when he plays video games and it gives me anxiety attacks. Somehow I feel bad for it though.
+gpt-4-turbo|normbank|01HJPTHKY9BWB1S1MDM0B8E83D|lean against the machine
+gpt-4-turbo|normbank|01HJPTHKYXAWZ913AFQWG4XETX|change your clothes in public
+gpt-4-turbo|normbank|01HJPTHKZNK6BM2RJHRNY1H3GD|conduct research on animals
+gpt-4-turbo|normbank|01HJPTHM06Z0SEGNHPW9MM903A|eat a hotdog
+gpt-4-turbo|normbank|01HJPTHM0WARWWMV0HBAC6XCQY|act interested in the cars
+gpt-4-turbo|normbank|01HJPTHM1JADWN8F8HJX88VTNX|place a microphone on it
+gpt-4-turbo|normbank|01HJPTHM297YV68ZMAZRTZAZ9J|make a pizza
+gpt-4-turbo|normbank|01HJPTHM30P0DT7W5MA1H0ZJQV|drink coffee or tea
+gpt-4-turbo|normbank|01HJPTHM3PKFQJRZ418SYWM10E|do push ups
+gpt-4-turbo|normbank|01HJPTHM4CBFXEDJNZBJJXZ6Z9|put your elbows on the counter
+gpt-4-turbo|normbank|01HJPTHM53EDTGCAR81KRXW41M|select and assign stories to reporters
+gpt-4-turbo|normbank|01HJPTHM5SMCM4DFRJJGCB6DCW|hunt for game
+gpt-4-turbo|normbank|01HJPTHM6GNDAT4YSPK4ZATQY2|convert someone to your own beliefs
+gpt-4-turbo|normbank|01HJPTHM768MJHAEAW1SAET4F7|dump waste in the sink
+gpt-4-turbo|normbank|01HJPTHM7XZR9STHF44Y7M4VQG|disconnect your seatbelt
+gpt-4-turbo|normbank|01HJPTHM8K2X1DTBR603YJ1C85|take a bath with someone
+gpt-4-turbo|normbank|01HJPTHM990K45XVM5D7DDX3DQ|climb on the scoreboard
+gpt-4-turbo|normbank|01HJPTHMA013J4FXGAQC0DPNRW|attack someone
+gpt-4-turbo|normbank|01HJPTHMAQ6B3BXPSRESA1YRDB|hang paintings or photos on the walls
+gpt-4-turbo|normbank|01HJPTHMBD14NMMCX6FMAEHVQ0|spin in a circle
+gpt-4-turbo|normbank|01HJPTHMC4K8BCXPWX55JGT8X8|communicate with air traffic control
+gpt-4-turbo|normbank|01HJPTHMCVDXBACHJZ27TV9P5V|play with your hair
+gpt-4-turbo|normbank|01HJPTHMDHNAY5BM25H0R1A9TM|close the door
+gpt-4-turbo|normbank|01HJPTHME7PKP03KQKQGBW49QW|hide in the dark
+gpt-4-turbo|normbank|01HJPTHMES6NXDXWT1KXC6AMF1|drive without a car registration
+gpt-4-turbo|normbank|01HJPTHMFGD8B1RXWSDP4PFPJ1|use personal electronic devices
+gpt-4-turbo|normbank|01HJPTHMG65PHVQKHJ8GMN7PXN|walk on the parade ground
+gpt-4-turbo|normbank|01HJPTHMGRHN4HP2Q4H0ZA5FAA|bring a sick animal into the shelter
+gpt-4-turbo|normbank|01HJPTHMHF9D1ZCMVNV7SDM7B3|stop at a red light
+gpt-4-turbo|normbank|01HJPTHMJ5E9YCW0J62D88DSF5|go on a carousel
+gpt-4-turbo|normbank|01HJPTHMJP835BVF53ZXX1E7QF|put your children's pictures on it
+gpt-4-turbo|normbank|01HJPTHMKCHNP5PFND21RC2QG5|get a receipt for your purchase
+gpt-4-turbo|normbank|01HJPTHMM37AFKSDKG5K9S387N|take a picture with a balloon
+gpt-4-turbo|normbank|01HJPTHMMTYA77EM2D6Q8P595V|assist someone in finding a desired item
+gpt-4-turbo|normbank|01HJPTHMNGT0ND1CG6VM3XBB2Z|sitting in the dirt
+gpt-4-turbo|normbank|01HJPTHMP2VTMY4N8H1ZMQ56D2|ride a horse
+gpt-4-turbo|normbank|01HJPTHMQ0G2AF53V3AXBX6ZVH|wear leather gloves
+gpt-4-turbo|normbank|01HJPTHMQRK0NFK0KV66SHAMKF|check passports and print boarding passes
+gpt-4-turbo|social_iqa|01HJPTHMREZ39QS4Y0359Z2S4R|Lee was hung over and needed a big cup of coffee to get ready for a final exam in school.
+gpt-4-turbo|social_iqa|01HJPTHMS6PKNZRESP0N9FWMEA|Riley got a sunburn that was painful. Riley really hated the sun.
+gpt-4-turbo|social_iqa|01HJPTHMSXHX5KE77YWDN0E5GS|Austin called out to help Lee to get some work done for next week.
+gpt-4-turbo|social_iqa|01HJPTHMTKJ06SZ8QW02DGM6TX|Ash was holding a weapon and looking frightened, so Sasha asked Ash to explain what was going on.
+gpt-4-turbo|social_iqa|01HJPTHMV9RSFJJWWQ7H3Z5915|Sydney put flowers on the grave of the child that her team accidentally killed.
+gpt-4-turbo|social_iqa|01HJPTHMW0WNR7ZP93C0EZMWQQ|Addison noticed that Austin's clothes were having static issues so he offered to give him static cling sheets for his laundry.
+gpt-4-turbo|social_iqa|01HJPTHMWPS5EHQFZNBHWS1K3C|Sydney made it special for him and couldn't wait to see the look on his face when he opened it.
+gpt-4-turbo|social_iqa|01HJPTHMXDBXE7ENY367M7VTKR|casey was bored so she made jesse's adjustments for him.
+gpt-4-turbo|social_iqa|01HJPTHMY3N22M3M8WWCKJGSND|Skylar was supposed to meet her friend for lunch, but she was stuck in traffic.
+gpt-4-turbo|social_iqa|01HJPTHMYTJW5YAB65V1C40RNS|Bailey was the center of attention because he was the funniest person in the room.
+gpt-4-turbo|social_iqa|01HJPTHMZFFDA7GCK1S77S2E2S|Jesse eloped to Vegas and went to get married.
+gpt-4-turbo|social_iqa|01HJPTHN06EYT3VDH8VQ73RNR2|Lee had been acting up a lot in Lee's class at school.
+gpt-4-turbo|social_iqa|01HJPTHN0W0ENEYBR4W694QX2G|Sydney spent time with at her friend Sasha's house.
+gpt-4-turbo|social_iqa|01HJPTHN1KTVZY1PYFGHPTG3YN|Austin and Taylor had not met for a long time, they met during Christmas.
+gpt-4-turbo|social_iqa|01HJPTHN29XY8JSFRSZFTKTQT1|kai found a dog in the street and gave the dog to quinn's grandmother.
+gpt-4-turbo|social_iqa|01HJPTHN307RKH368Q8JDN2HJX|Carson closed the oven behind Jordan when they were done baking it.
+gpt-4-turbo|social_iqa|01HJPTHN3PZECD51253GJHXQEC|Jan pulled Kendall's hands because they just had a serious argument.
+gpt-4-turbo|social_iqa|01HJPTHN4D8ERGN94F6HGJTPYN|Quinn saw Aubrey's article in the paper and showed it to her friends.
+gpt-4-turbo|social_iqa|01HJPTHN54FNPBH4GB9ATPPJ8N|Sydney wasn't very good at singing but when she went to karaoke with her friends she tried anyway.
+gpt-4-turbo|social_iqa|01HJPTHN5TN95JDQ7SH4DYK65J|Jan quit their job because it was both underpaid and tedious.
+gpt-4-turbo|social_iqa|01HJPTHN6HJAB68ENA63DJ5EDZ|Taylor wanted to take a vacation after working a lot for the past year.
+gpt-4-turbo|social_iqa|01HJPTHN78WF8D4C76GETFMBD1|After looking at many different shirts to choose from, Austin bought a new shirt.
+gpt-4-turbo|social_iqa|01HJPTHN7YQR6WT7Y3Z7W8N1MD|With little regard for his own safety and exhaustion, Alex helped everyone that was in distress.
+gpt-4-turbo|social_iqa|01HJPTHN8M34KJWFGT65N5N67G|Ash was hungry and discovered a leftover meal in the refrigerator.
+gpt-4-turbo|social_iqa|01HJPTHN91NTKYA87KWS5BJD1H|Lee scared Quinn to death when he came around the corner unexpectedly.
+gpt-4-turbo|social_iqa|01HJPTHN9S14FT3R2950MM6F0R|Addison had a lot of things to do before work. Addison made sure to feed the dog.
+gpt-4-turbo|social_iqa|01HJPTHNAE1KD3JG7G9ZCS5F34|Riley got third place in the contest in the science fair at school.
+gpt-4-turbo|social_iqa|01HJPTHNB5G2WPZMFM8HMTBJWG|Kendall got Casey's bike and crashed it, making Casey's parents mad.
+gpt-4-turbo|social_iqa|01HJPTHNBW1V5XDKGR2JJ4XEM1|Jesse stopped smoking and got a lot healthier because of this action.
+gpt-4-turbo|social_iqa|01HJPTHNGHB746CHEP45QZGJGK|Sydney shielded her eyes from the sun while laying out on the beach.
+gpt-4-turbo|social_iqa|01HJPTHNHFSHA1QVJ8T8W02JY8|casey wanted to get a item so she followed the stranger far.
+gpt-4-turbo|social_iqa|01HJPTHNJ6TPN8JYM1NYF7CVFZ|Aubrey liked reading very much and always went home to read a few chapters every night.
+gpt-4-turbo|social_iqa|01HJPTHNJWGPEAJEDGWQ1HN3HM|Kendall had Skylar's back in the fight against bullies.
+gpt-4-turbo|social_iqa|01HJPTHNKKEYKC50EM985S6ASB|Addison cut Addison loose by getting some drinks for the party.
+gpt-4-turbo|social_iqa|01HJPTHNMAZW06P3KWJJKQ1CQ4|Taylot got Bailey's girlfriend a birthday gift that Bailey really wanted.
+gpt-4-turbo|social_iqa|01HJPTHNMWH2RWBA7CGP5KN85Q|Cameron tied Lee's shoelaces together as a prank.
+gpt-4-turbo|social_iqa|01HJPTHNNKFPSQYQPVBKB68255|Robin had a way with words so she talked the whole class into wanting to study for the next test.
+gpt-4-turbo|social_iqa|01HJPTHNPEQGSGYCKFWFJ0YDS0|Tracy checked under Austin's bed after they complained about having nightmares.
+gpt-4-turbo|social_iqa|01HJPTHNQ9RH8GMRNZWPDANXM0|Sydney also gave Aubrey a present at her going away party.
+gpt-4-turbo|social_chem|01HJPTHNR66XHYBNNX7WKA46Z9|Until one year when my work held me very late on election day.
+gpt-4-turbo|social_chem|01HJPTHNRV97A2K9H7PZWXP9ZC|asking my father to speak respectfully to me in front of my kid
+gpt-4-turbo|social_chem|01HJPTHNSJXX5P1N665C4JJBF7|not wanting to be friends with a coworker who seems lonely and whose parent died in the last year
+gpt-4-turbo|social_chem|01HJPTHNT8NP9WN059MBJW2P8Y|not liking my 5 year old niece
+gpt-4-turbo|social_chem|01HJPTHNTZ34M11TFBWTG90HRZ|Couple Considering Sex Must First Explore Their Feelings
+gpt-4-turbo|social_chem|01HJPTHNVQZWE7CDMF5Q30FPGA|He underestimated how hot they would be.
+gpt-4-turbo|social_chem|01HJPTHNWHC06BQKDJEYBG2J5V|I wear diapers and get high on cough syrup
+gpt-4-turbo|social_chem|01HJPTHNX7W1E9YSTK4GRBN0KQ|Party Would Be No Picnic If Birthday Girl Is Stuck With The Bill
+gpt-4-turbo|social_chem|01HJPTHNXRKNSBSEVRRF1JBREJ|giving my friends 14 y/o son condoms and not telling him
+gpt-4-turbo|social_chem|01HJPTHNYAQAXMMGAZWMKBC3B6|Sisters Sharing Room Must Stop Playing the Blame Game
+gpt-4-turbo|social_chem|01HJPTHNZ16JMQ3NWHF48Z8CV9|I'll be dead by the end of the decade
+gpt-4-turbo|social_chem|01HJPTHNZQHRKT5NSCBD1DS7FJ|Cross-Dressing Best Friend Wants to Go out as a Couple
+gpt-4-turbo|social_chem|01HJPTHP0DTAVEZPWWFFA5JCTS|not accepting an apology for a gross breech of privacy
+gpt-4-turbo|social_chem|01HJPTHP14G4HB1SKS74RH3F2D|I Yelled At One of My Students
+gpt-4-turbo|social_chem|01HJPTHP1TX99RW6MSR2WJDKC7|I love all of you but
+gpt-4-turbo|social_chem|01HJPTHP2HAYPCATBTNBHEE6BW|Found out my mother might be spying on family members
+gpt-4-turbo|social_chem|01HJPTHP37YD8JJ2FD1ANQN6ND|I've been a drug addict for almost 5 years and nobody in my life has ever known
+gpt-4-turbo|social_chem|01HJPTHP3MM4AC8V9J9Y7J7849|not wanting to meet my girlfriend's racist and emotionally manipulative Father
+gpt-4-turbo|social_chem|01HJPTHP4CGNH6NH6C1097C637|Vet Bill Tests Couple's Agreement to Share Expenses
+gpt-4-turbo|social_chem|01HJPTHP527488XCW2YCYZDD2N|He has taken all the medication he can think of.
+gpt-4-turbo|social_chem|01HJPTHP5SGMJRM7558F8JYH07|Photo Gallery of Perfection Makes Woman Feel Insecure
+gpt-4-turbo|social_chem|01HJPTHP6FKCFZNXG63EP58GS5|Hospital Horror Stories Focus on Staff's Careless Hygiene
+gpt-4-turbo|social_chem|01HJPTHP7679AMAXY484W9EKZ7|Alice asked her friends if they would join her.
+gpt-4-turbo|social_chem|01HJPTHP7WW23F5RAEM5H40PWG|I've done some serious harm to someone I fell in love with and the pain is growing every day.
+gpt-4-turbo|social_chem|01HJPTHP8910QQKQZ7VMK88RBM|I was in a car accident tonight and my father didn’t ask if I was okay.
+gpt-4-turbo|social_chem|01HJPTHP90YJ88P90XSDK2BAQ5|not letting my fiancé's parents have a say in the guest list because they are not financially contributing to our wedding
+gpt-4-turbo|social_chem|01HJPTHP9PQ8TMXKXWJ0WDYHYH|kicking two people from a D&D group
+gpt-4-turbo|social_chem|01HJPTHPACX946F1Y9PE0D2JRC|I sometimes use a strand of my hair in place of floss.
+gpt-4-turbo|social_chem|01HJPTHPAYCARMR3QPJ09GTM0Q|I told my crush in 9th grade that I would throw her gum away. I put it in the rapper, took it home, and chewed it overnight. Never told anyone what do I do to get it out of my head
+gpt-4-turbo|social_chem|01HJPTHPBN7M70WPV23NW99WD4|Ivy mixed a banana into her smoothie every morning.
+gpt-4-turbo|social_chem|01HJPTHPC7AJ3R3ZW664J94DNN|The next day, they brought me breakfast in bed.
+gpt-4-turbo|social_chem|01HJPTHPCYGYT6FE35S301SHDH|He had trained Nero, his Rottweiler, for over a year.
+gpt-4-turbo|social_chem|01HJPTHPDKZA4FEGZQKEH375EC|Woman With Unpopular Boyfriend Feels Abandoned by Her Girlfriends
+gpt-4-turbo|social_chem|01HJPTHPEB4QQXNJYEWWV31XJN|being hurt by my boyfriend for not wanting me to go to his family's party as it would be awkward
+gpt-4-turbo|social_chem|01HJPTHPF176Q8YHFNMH5W10ZH|wanting/trying to contact my ex
+gpt-4-turbo|social_chem|01HJPTHPFQN5KKA3QAQJ380T5K|telling my gf that I wouldn't bribe my way through a Driver's license test
+gpt-4-turbo|social_chem|01HJPTHPGDT7DSWV0Y0S76SWMJ|Matchmaking Mom Wants Son's Gal Pal in the Family
+gpt-4-turbo|social_chem|01HJPTHPH5BH4PEJ15QAF6R186|hating to see my ex girlfriend hanging out with my ex best friend
+gpt-4-turbo|social_chem|01HJPTHPHW67DR8TNYFV9DAW02|not hanging out with my (former) best friend anymore after his dad died
+gpt-4-turbo|social_chem|ERROR|not giving up my table
+gpt-4-turbo|normbank|01HJPX4ZR27RERMC21NNFSV504|apply vaseline to someone's face
+gpt-4-turbo|normbank|01HJPX4ZRQ3FR6TSAP4J188NXZ|show off your body
+gpt-4-turbo|normbank|01HJPX4ZSD9Q83MJ7AGA39YSRH|put raw garlic in a dish
+gpt-4-turbo|normbank|01HJPX4ZSZ4PX1TCTMEQS4GWH8|cook or eat something
+gpt-4-turbo|normbank|01HJPX4ZTNST9Y6WEPTHMS26BJ|use a toothbrush holder
+gpt-4-turbo|normbank|01HJPX4ZVBY08X7GR6NGSMRCHP|eat a bat
+gpt-4-turbo|normbank|01HJPX4ZW2GA4SADAF7043A6E0|put up a washing line
+gpt-4-turbo|normbank|01HJPX4ZWRZJ7NBCDMJ4D4JHZW|put on a shirt backwards
+gpt-4-turbo|normbank|01HJPX4ZXG9PYH0YPSZFY325QQ|lift heavy boxes
+gpt-4-turbo|normbank|01HJPX4ZY1GPFGW05S3DD18G0E|ask for advice on how to use a vibrator
+gpt-4-turbo|normbank|01HJPX4ZYKFGXXAZH7EARNMBX4|kick a can
+gpt-4-turbo|normbank|01HJPX4ZZ9D5B56V93R2VD2M2T|stay for more than a few days
+gpt-4-turbo|normbank|01HJPX5000JXEGHR9CM6YGGN99|enter without a lawyer
+gpt-4-turbo|normbank|01HJPX500QCP7KBNY9KY5R9P59|sell goods
+gpt-4-turbo|normbank|01HJPX501D6VT3HWTJQGJ0VX9E|wipe down the machines
+gpt-4-turbo|normbank|01HJPX5024T4NYK2JYXCPDA817|get up and leave without saying goodbye
+gpt-4-turbo|normbank|01HJPX502TA4K0YVGQT8E777WS|adopt a new animal
+gpt-4-turbo|normbank|01HJPX503GZ332TDT4RA93XM0F|get on your knees and pray
+gpt-4-turbo|normbank|01HJPX50425WQK2TM93Z0HXPSH|give someone a sexual innuendo
+gpt-4-turbo|normbank|01HJPX504SAHM8GGMEZWXK47BS|pray before the game
+gpt-4-turbo|normbank|01HJPX505GZMHWT9TGM7VYZ209|adjust your clothing
+gpt-4-turbo|normbank|01HJPX50673F7YYVZ37PDMVF94|travel without food
+gpt-4-turbo|normbank|01HJPX506XJBV03HWPXFQQD8EM|show your bare shoulders
+gpt-4-turbo|normbank|01HJPX507NFSWYB2GD4SBCJ984|drive a motor vehicle
+gpt-4-turbo|normbank|01HJPX50874EGC7RD7QNVG6NCG|have a pick-up game
+gpt-4-turbo|normbank|01HJPX5091VCZN14A4P0WMNG0J|bring food and drinks to customers
+gpt-4-turbo|normbank|01HJPX509JZRA0ZATK2HDQF4SN|take your shoes off
+gpt-4-turbo|normbank|01HJPX50A0HE4X76P8CDR16ZW1|bowl with two bowling balls
+gpt-4-turbo|normbank|01HJPX50AJA1V849FWY3WKWNXF|take a child
+gpt-4-turbo|normbank|01HJPX50B7WZCRSQRHECGRA3KT|use a flash
+gpt-4-turbo|normbank|01HJPX50C80P0SDKXF3D0R9E9Q|pay
+gpt-4-turbo|normbank|01HJPX50CZEPVTD8P5H2N8KKEY|fertilize it
+gpt-4-turbo|normbank|01HJPX50DKEGNRA06E87WEN28A|scale or jump over barriers
+gpt-4-turbo|social_iqa|01HJPX50E5D37JVG95E39Z7MW9|Skylar told lee to bring drinks to the party for everyone attending.
+gpt-4-turbo|social_iqa|01HJPX50ER6TSSBN1TCYW30GPX|Riley's baby woke up in the middle of the night and began to cry.
+gpt-4-turbo|social_iqa|01HJPX50FE3XYZBBPYWYHNM43J|Jesse ran Alex's fingers down the book to see if he could feel in his hands after having surgery.
+gpt-4-turbo|social_iqa|01HJPX50G51KYBXSR1A86XPVX8|The fall semester of school was over, so Tracy went home for the holidays.
+gpt-4-turbo|social_iqa|01HJPX50GPF1JKSV47YGYFCTY3|Casey owed money for college and Remy paid her bill so she wouldn't owe.
+gpt-4-turbo|social_iqa|01HJPX50H8HZTHQC8WYHK4FYF0|Carson brought children into the world because he was an optimist.
+gpt-4-turbo|social_iqa|01HJPX50HW3TF15XJQPWQK4SX1|Kai took their phone out of the box and read the directions.
+gpt-4-turbo|social_iqa|01HJPX50JEYPPAP0140XBGSE9W|Cameron and ash worked together at a school. Cameron took Ash to get lunch.
+gpt-4-turbo|social_iqa|01HJPX50JV4C0EZG70G6WQWPMF|Sydney lost all the money.
+gpt-4-turbo|social_iqa|01HJPX50KDM4P2Q48AK3X1JBHJ|Bailey discussed this matter in detail. It didn't change the bottom line.
+gpt-4-turbo|social_iqa|01HJPX50M43DZG8PV5R25MJ15Y|Austin observed every delivery when they heard that some of the drivers were stealing orders.
+gpt-4-turbo|social_iqa|01HJPX50MTVB1WC1HZ16HRPKZC|Quinn gave Bailey the best advice of her life, that she should vaccinate her children.
+gpt-4-turbo|social_iqa|01HJPX50NC8VMS0VQWGYSNBZMZ|Bailey wanted to tell people about their business. Bailey gathered their friends together.
+gpt-4-turbo|social_iqa|01HJPX50P3T2SBXWW4NJ72BMD9|Robin abolished starvation in the states after she became president and took up lots of charities.
+gpt-4-turbo|social_iqa|01HJPX50PM7YNW2K54TY8DKY8F|Tracy was given detention for texting on their phone during class.
+gpt-4-turbo|social_iqa|01HJPX50Q6ZGF87QZMZKXK0B6N|Jesse took Kendall's clothes to the dry cleaner right before the wedding.
+gpt-4-turbo|social_iqa|01HJPX50R0GC1F55PA2QTSSXP3|Addison took Jan's husband to the big play and it was very nice.
+gpt-4-turbo|social_iqa|01HJPX50RJNYQGQBZR8YBE9HBA|skylar took a energy drink so she was wide awake.
+gpt-4-turbo|social_iqa|01HJPX50S9JA38NVE718HM9VJT|Ash gave Aubrey Jan's name when she could not remember what it was.
+gpt-4-turbo|social_iqa|01HJPX50SQCNTG4HX1CAE798W4|Skylar put things in the right direction by placing them correctly to solve the hard puzzle.
+gpt-4-turbo|social_iqa|01HJPX50TDX6A7N5X8ZJ4Q36F1|Austin was leaving the love of his life in San Francisco. Austin boarded the train.
+gpt-4-turbo|social_iqa|01HJPX50TZG7Y7EX33BMBRWRGD|Cameron raised the roof on the new house construction project with a large crane.
+gpt-4-turbo|social_iqa|01HJPX50VPCP0RSX0GS5QFRGYK|Sasha made many friends at school because she is a kind and charming person.
+gpt-4-turbo|social_iqa|01HJPX50WGKMHZ2CRSFDFNMA85|kendall signed them up for lessons even though they had no interest in doing it.
+gpt-4-turbo|social_iqa|01HJPX50WZV40R2VJVJQT89GE5|Alex woke up feeling sick and refused to go with the rest of the family on a day trip.
+gpt-4-turbo|social_iqa|01HJPX50XS9HCR5YH8V2C5V7MT|sydney was asked on a date by brad, so taylor decided to also ask sydney.
+gpt-4-turbo|social_iqa|01HJPX50YBF1STPSK6XMKNNTKM|While their baby sister was taking a nap, Jordan played video games but kept the noise to a minimum.
+gpt-4-turbo|social_iqa|01HJPX50YX2GZVGKMSWGRGW6TV|Casey felt Ash's eyes because they were swollen.
+gpt-4-turbo|social_iqa|01HJPX50ZMZ7X7GWBXAJHV0ETG|Skylar challenged their brother to a soccer match to have some fun that day.
+gpt-4-turbo|social_iqa|01HJPX510ECY1Q770R5K5K1RF0|Riley opened up in the form of writing and reciting her original poetry.
+gpt-4-turbo|social_iqa|01HJPX5110JGPN888EM63NT6W8|Jesse was in good shape after studying for the entrance exam for weeks.
+gpt-4-turbo|social_chem|01HJPX511K4ZXVW8KB142FJC7J|cutting my mother-in-law out of my sons life? t
+gpt-4-turbo|social_chem|01HJPX5129SET0ZFPJA7N2KVGD|Girl Is Flustered by Boy Who Shadows Her at School
+gpt-4-turbo|social_chem|01HJPX512Z0NMJ2HWXBDFVB3YQ|reporting a cheater to the professor
+gpt-4-turbo|social_chem|01HJPX513PXC13VHN18SYY8MB0|using my own car and not putting gas in it
+gpt-4-turbo|social_chem|01HJPX514TNH070GYQ752KNBGA|Moving on with my life
+gpt-4-turbo|social_chem|01HJPX515GSBQ31JTZB5672YCA|They all wanted to learn as much as they could about history.
+gpt-4-turbo|social_chem|01HJPX5166J3V1YW6PVYAF82W1|being upset that my husband likes to spend all his money gambling
+gpt-4-turbo|social_chem|01HJPX516XMHY38TAJQ6YGSSX8|I am 14, and I like Phineas and Ferb.
+gpt-4-turbo|social_chem|01HJPX517KE3298W5BXQDQZWMR|He told her he needed to drink a cola first.
+gpt-4-turbo|social_chem|01HJPX518AED3Q41CY048WF1WN|Someone asked him to eat lunch with him.
+gpt-4-turbo|social_chem|01HJPX5192JZM0Y5ECVP01SKXS|He didn't know they were usually quite obvious to everyone.
+gpt-4-turbo|social_chem|01HJPX519V4E69B3FSKXQW260Z|I can turn off my emotions
+gpt-4-turbo|social_chem|01HJPX51AJ3NY2SJB32ZQ6AEMV|I feel terrible every time I vent.
+gpt-4-turbo|social_chem|01HJPX51B9Y1S7EX1XPR19D268|I cannot function in society like this..
+gpt-4-turbo|social_chem|01HJPX51BZ5NDXPRBQHXVNNPFT|making a scene at Macdoanls
+gpt-4-turbo|social_chem|01HJPX51CN3VQ100N7DE13JFWA|I gave away away my entire Hello Kitty collection to a hospital for kids with Cancer.
+gpt-4-turbo|social_chem|01HJPX51DCCC8XV3EVWE0C81F6|Am I stalking my ex?
+gpt-4-turbo|social_chem|01HJPX51E5MMN673PJZZ0X4WN9|90 percent off time I can’t sense smell
+gpt-4-turbo|social_chem|01HJPX51EVNJCSGGBWV37HTGE8|In love with wives best friend
+gpt-4-turbo|social_chem|01HJPX51FJX2YTTH00AKSNKHYT|Wife Saddled With Dog Duty Is Ready to Hand Over Leash
+gpt-4-turbo|social_chem|01HJPX51G9X7C89AZKVP8V4JDW|I look up TotalBiscuit every few weeks just to see how bad the cancer is getting
+gpt-4-turbo|social_chem|01HJPX51GTNBASPDR2EG3J8VJJ|Woman Stressed About In-Laws' Planned Visit
+gpt-4-turbo|social_chem|01HJPX51HHBZGS7YXRPDR8P3D7|Someone told her that her stress was partly due to nowhere to relax.
+gpt-4-turbo|social_chem|01HJPX51J7W1FDYFA29FF1RD65|Divorced Dads Need to Stay in Contact With Their Kids
+gpt-4-turbo|social_chem|01HJPX51JXCV217P7A94X86TSD|Saw a counselors for the first time
+gpt-4-turbo|social_chem|01HJPX51KMNFG1Y7E96YSY3SFQ|wanting to spend more time with my girlfriend
+gpt-4-turbo|social_chem|01HJPX51MB8NQX25RR1TZ3GBJ9|referring to myself as fat when around other, fatter people
+gpt-4-turbo|social_chem|01HJPX51N1X4H46MVSSXXCFZ9M|I pranked my Mother on Mother's Day by calling her, pretending to be the police telling her that her son had died in a horrible accident
+gpt-4-turbo|social_chem|01HJPX51NQ377VTQ1HSM0QJ4WK|I don't know why I was afforded the ability to live.
+gpt-4-turbo|social_chem|01HJPX51PECX074R9HZV6HJD1N|He searched through his bedroom but could not find them.
+gpt-4-turbo|social_chem|01HJPX51Q5JWN9W2JEDKYD4BXN|ignoring my 'friend' after a hangout
+gpt-4-turbo|social_chem|01HJPX51QV47VHK3QRWMDGC3ZS|I think she needs it for the daily grind.
+gpt-4-turbo|social_chem|01HJPX51RHZD4YK3QR6R56S3B2|Andy purchased the seeds, and went to his garden to plant them.
+gpt-4-turbo|social_chem|01HJPX51S89ETD1T08GPC144EY|Eating disorder or health conscious?
+gpt-4-turbo|normbank|01HJPZ3DH17S3YJWKC2WF1GSN3|write grants to secure funding for operations and projects
+gpt-4-turbo|normbank|01HJPZ3DHMV5X6RXMVPQFVKFKN|sign up for a boxing class
+gpt-4-turbo|normbank|01HJPZ3DJ9B3RYREV92B58C746|bring toys to play with
+gpt-4-turbo|social_chem|01HJPZ3DJZD26MGCQBJXW30EC7|logging into ex's snapchat to find out she (might have) cheated
+gpt-4-turbo|normbank|01HJRH6S35PKYD3MR8FNG28HMV|following up with someone after a purchase
+gpt-4-turbo|normbank|01HJRH6S425D565RGA23NF9GGJ|ask to borrow a pen or pencil
+gpt-4-turbo|normbank|01HJRH6S4GJCZVWWKYJB6AH655|hang up your clothes
+gpt-4-turbo|normbank|01HJRH6S54RHYQKYYRDY6TQ65Q|get a full body wax
+gpt-4-turbo|normbank|01HJRH6S5PEN23DY44RC903BPF|buy an item without trying it on first
+gpt-4-turbo|normbank|01HJRH6S631J5PV08V5DHBHEYS|dunking someone's head under water
+gpt-4-turbo|normbank|01HJRH6S6Q77TAWQ9Z1ZXXFRPH|get everyone's attention
+gpt-4-turbo|normbank|01HJRH6S7ACY007BXSY5K6H7VG|dress in a skirt
+gpt-4-turbo|normbank|01HJRH6S7ZPKQKW5TDWDZRVB4D|refusing to talk to someone
+gpt-4-turbo|normbank|01HJRH6S8H8M1E0JS3ZACAC6AQ|get your own drink
+gpt-4-turbo|normbank|01HJRH6S8ZVJRRPQGBG4HTC1JR|dance the foxtrot
+gpt-4-turbo|normbank|01HJRH6S9JXED9M0TP50Y54ZHA|bargain or haggle over prices
+gpt-4-turbo|social_iqa|01HJRH6SA7PYM9RK17FVZPN4JX|Jordan used Taylor's tools to help fix the broken computer system at work.
+gpt-4-turbo|social_iqa|01HJRH6SAVB2V27HWNXPFEASK7|Cameron took their friend to Japan where they tried many types of sushi.
+gpt-4-turbo|social_iqa|01HJRH6SBCNM0QVYY8FE1S6F28|Sydney slid Taylor's hands into the mittens so that Taylor would not be cold when they went out.
+gpt-4-turbo|social_iqa|01HJRH6SBZ894HQSXJHB4H2N08|Riley cashed Sasha's check after Sasha brought it to the counter.
+gpt-4-turbo|social_iqa|01HJRH6SCNV5GR079CCH0QGHHX|Quinn called the police and reported that their dog was missing.
+gpt-4-turbo|social_iqa|01HJRH6SDBTBH91QZDB5RWSDZP|Aubrey felt jealous of her friend getting the part even though she wasn't suppose to.
+gpt-4-turbo|social_iqa|01HJRH6SDZGPJE6255TGY6RQG2|Alex saved Skylar the trouble of calling by showing up at her house.
+gpt-4-turbo|social_iqa|01HJRH6SEKCY5TFVXTR8MWBYSD|Skylar supported Remy's claim because he thought that it was a fair claim.
+gpt-4-turbo|social_iqa|01HJRH6SF4XVZPJWQTNCFZA22V|Alex expected Robin's answer by the next day latest but never heard from Robin again.
+gpt-4-turbo|social_iqa|01HJRH6SFWPKP55S4V3ZM5EFKT|Riley saved Jan's life but Jan is still has to stay at the hospital for observation.
+gpt-4-turbo|social_iqa|01HJRH6SGMFNMT5WZ2ECTVN9HV|Management yelled at Austin in front of everyone, so Austin put management in their place.
+gpt-4-turbo|social_iqa|01HJRH6SHCAKBQM4ASMHDKB84F|Ash bought lunch at a price that was cheaper than usual.
+gpt-4-turbo|social_iqa|01HJRH6SJ2WFEAK0SGTP6DCM59|Addison brushed her teeth and flossed before bed after seeing the dentist that morning.
+gpt-4-turbo|social_chem|01HJRH6SJKE2GRP0H2AZS1D48C|He decided one day he was going to try out for the local team.
+gpt-4-turbo|social_chem|01HJRH6SK888HRMS0ZMRNDAN6Q|giving my 14 year old cousin wasabi without telling her what it was first
+gpt-4-turbo|social_chem|01HJRH6SKT4GTTZM53NTKSRC2M|issuing an Ultimatum
+gpt-4-turbo|social_chem|01HJRH6SMK8VBHCH1Q5H7EMRD3|I stole things that are like $1 from a card store and my friend saw. I feel guilty especially because I know they saw and didn’t say anything. I feel guilty because it’s not the first time I’ve stolen.
+gpt-4-turbo|social_chem|01HJRH6SN87DEG5MN5NJQ9D1GD|Welfare Hog Freely Feeds From Government Trough
+gpt-4-turbo|social_chem|01HJRH6SNSR5P5K5G1XNGY0KQV|I have a fetish for hands.
+gpt-4-turbo|social_chem|01HJRH6SPANEYBP8VMQZ706Y4G|asking my inlaws to change how they celebrate Hollidays with my children
+gpt-4-turbo|social_chem|01HJRH6SPYNF4NT0M54SZYTH24|Tired of Being a Friend
+gpt-4-turbo|social_chem|01HJRH6SQEXS93KGYZZ0TN39DV|I hate Mainstream Music, Let's give chance to hardworking artists.
+gpt-4-turbo|social_chem|01HJRH6SR4C1ZMXMC3Z4HCKB0H|He decided it was his favorite instrument.
+gpt-4-turbo|social_chem|01HJRH6SRRPH9K6P1DTH77D3ZC|Claire felt really proud that she had done so well.
+gpt-4-turbo|social_chem|01HJRH6SSCXWMQAFY07HE1J0A9|deleting a photo of my body off of my husbands phone
+gpt-4-turbo|social_chem|01HJRH6SSZRWQNEQFK1551GJ29|I fake being sick when I’m depressed.
+gpt-4-turbo|social_chem|01HJRH6STK0NRF4VC87CH6GZ0S|When I was cooking dinner my son went into my makeup bag.
+gpt-4-turbo|normbank|01HJRKDXJ2NKFWA2NVXSXH9HQ6|give a child a kiss
+gpt-4-turbo|normbank|01HJRKDXK1M7PQ5QHCGG41N4FW|breastfeed a child
+gpt-4-turbo|normbank|01HJRKDXKNM186T4VBH244Y8CD|play music on your phone
+gpt-4-turbo|normbank|01HJRKDXMANBAGV5QJ62EJRXJ1|have a wedding ceremony
+gpt-4-turbo|normbank|01HJRKDXMT0DQN2CHN5ZDV47BP|adjusting your crotch
+gpt-4-turbo|normbank|01HJRKDXNMNQW9FP9Z6NNHWNCQ|wear all black
+gpt-4-turbo|normbank|01HJRKDXP8MHZNGZ3XT2HNYQ0R|allow animals in the water
+gpt-4-turbo|normbank|01HJRKDXPV0ZCFSD4KVP126G28|use the same towel to dry your body and your face
+gpt-4-turbo|normbank|01HJRKDXQCJ62M0KH5QNDM0FAF|jump off
+gpt-4-turbo|normbank|01HJRKDXQX51P4XMQ27V6N88M2|disrobe
+gpt-4-turbo|normbank|01HJRKDXRK38RV11PZCXFH3ZVM|check out books
+gpt-4-turbo|normbank|01HJRKDXS1VGD0NS9ANRP2E8JP|see a movie with violence
+gpt-4-turbo|normbank|01HJRKDXSNJ5EHA8FX9JMP4587|have a conversation with a imaginary person
+gpt-4-turbo|normbank|01HJRKDXT5TQ1F7FV8KF5QAMBD|hit the bed
+gpt-4-turbo|normbank|01HJRKDXV08YSCVJ586AEJF3ZS|move around erratically
+gpt-4-turbo|normbank|01HJRKDXVXJ5E67JFCSWDS5Z3S|talk about your religious beliefs
+gpt-4-turbo|normbank|01HJRKDXWH0ZJ1S9TSHGZ3E1BQ|bring in outside food and drink
+gpt-4-turbo|normbank|01HJRKDXX2YR2Y9MJ0BHVVA0M2|have a pet
+gpt-4-turbo|normbank|01HJRKDXXMV0P5D4YWWXAP9FKQ|lay down on the ground
+gpt-4-turbo|normbank|01HJRKDXY6KY6Z69DPA9SEBEXY|collect evidence
+gpt-4-turbo|normbank|01HJRKDXYSQTGXZHKGB3TQ0PBY|have a sleepover
+gpt-4-turbo|social_iqa|01HJRKDXZKY21CN94XNZPAE4F0|Taylor looked behind Jan to see if there was a rip in Jan's clothes like there was in the front of their clothes.
+gpt-4-turbo|social_iqa|01HJRKDY0599JGVP35AV979N0D|Casey wanted to be class president and decided to throw her hat into the ring.
+gpt-4-turbo|social_iqa|01HJRKDY0RETY88H5XXFZSCCY1|Casey sucked her thumb and was told she would need braces as a result.
+gpt-4-turbo|social_iqa|01HJRKDY1G0Z38SNWGS5QWCYF1|Aubrey opened projects in the form and found a lot of tough projects to work on that night.
+gpt-4-turbo|social_iqa|01HJRKDY20XM77CA58FVRH08XX|Sydney wanted to go to the new shopping mall. Sydney offered to drive my car. She parked my car at the parking.
+gpt-4-turbo|social_iqa|01HJRKDY2J5C01KZ3RQWQP2QQV|Casey wanted something sweet to eat but decided to make something.
+gpt-4-turbo|social_iqa|01HJRKDY39PSJB41K5Y3ZNN4VC|Remy obtained Quinn's education after years of studying sociology and English.
+gpt-4-turbo|social_iqa|01HJRKDY3VJ6PFZ3QZ3MCAFCEN|Quinn used his daughter Casey's hands to knead the dough while making fresh bread.
+gpt-4-turbo|social_iqa|01HJRKDY4D0HY8SFERXCJWQM9X|Bailey asked Olivia to come to their party. Bailey knew they would come.
+gpt-4-turbo|social_iqa|01HJRKDY4XNZ0FG8KS19CDTE8C|Austin wouldn't let Jan drive drunk so he guided Jan's car into the driveway carefully.
+gpt-4-turbo|social_iqa|01HJRKDY5JEPFX5JXSRTQ5YHDE|Aubrey folded Skylar's hands as they were placed in the coffin for the upcoming service.
+gpt-4-turbo|social_iqa|01HJRKDY65N420PRKFWRZD35FB|Riley and Ash had been dating for 3 months and Riley really liked Ash but Riley found out that Ash had cheated on them.  Riley was hurt and upset but Ash was very apologetic and promised to never do it again.
+gpt-4-turbo|social_iqa|01HJRKDY6PDEKT28DQDN8VYJ9J|Sydney wanted Kendall to come with her to the concert. Sydney asked Kendall's parents for her.
+gpt-4-turbo|social_iqa|01HJRKDY78VTJ6YWVPRNEA3PT2|Jesse went to Quinn's grandmother's house to visit quinn and give them a present.
+gpt-4-turbo|social_iqa|01HJRKDY7V0V32KT22MQ0YW22B|Skylar was at the hospital after having their first baby.
+gpt-4-turbo|social_iqa|01HJRKDY8C8W37R2D4JYV0B2GA|Riley gave Tom a hug after they got broken up with.
+gpt-4-turbo|social_iqa|01HJRKDY90MRDHG28SE9RSK3HY|Carson wanted sausage for breakfast but he use bacon instead.
+gpt-4-turbo|social_iqa|01HJRKDY9RNNB6Q144AT5ZE6HQ|Cameron gave much time to helping the homeless clean up their living areas.
+gpt-4-turbo|social_iqa|01HJRKDYADQTAH51GDT7NJ28AH|Jesse had their feelings hurt by a person that they thought was their friend.
+gpt-4-turbo|social_iqa|01HJRKDYBA2W4V2SDQHGZT2B2Y|skylar knew kendall was hard headed, so she tilted kendall's head back to whisper the secret.
+gpt-4-turbo|social_iqa|01HJRKDYBSND4R3P9J4BYMQD9Q|Bailey had gone to business school so they helped Ash start their own business.
+gpt-4-turbo|social_chem|01HJRKDYCDQBB46RG5SP9Q9K6G|Boogers are . 25 calories
+gpt-4-turbo|social_chem|01HJRKDYD0N94N5W7CXWHN50G9|going to a store without my friend
+gpt-4-turbo|social_chem|01HJRKDYDPVW5NVZNK94ZC9PT5|I got knocked unconscious trying to confront a rude kid
+gpt-4-turbo|social_chem|01HJRKDYECBW25N3BWSQW47HM1|I send hate messages to suicidal people
+gpt-4-turbo|social_chem|01HJRKDYEY16TFXCSSQG606E19|I sold them on eBay, making about $4K.
+gpt-4-turbo|social_chem|01HJRKDYFN3TE2SF6M3SC2QVFD|This girl from work keeps looking at me
+gpt-4-turbo|social_chem|01HJRKDYG9MX3557AR4WKP1BD2|My friends told me they are escaping from school and I couldn't snitch on them. They were found hours later almost frozen to death.
+gpt-4-turbo|social_chem|01HJRKDYGZQVC14PN3HBN1BCA3|He changed his behavior and finally was loved again.
+gpt-4-turbo|social_chem|01HJRKDYHNRHEHAKH2Y8MEEBJZ|I can't cry for things I know I should cry for
+gpt-4-turbo|social_chem|01HJRKDYJNP9QCXMMBJ0WYXK4K|Ricky and his dog went for a run in the park afterwards.
+gpt-4-turbo|social_chem|01HJRKDYKEKD0X5X6APF4WTD4H|Day to day, this has effected me through how much activities I can do.
+gpt-4-turbo|social_chem|01HJRKDYMJVS86NXR130ZMMTZY|I was afraid my parents would find out.
+gpt-4-turbo|social_chem|01HJRKDYN7GVSQVNS29GTE0448|Cliche: in love with my best friend
+gpt-4-turbo|social_chem|01HJRKDYNW9ZCSPH63AJQK49VF|Finally got a loving girlfriend but still have temptations to flirt
+gpt-4-turbo|social_chem|01HJRKDYPDP57QTD5WTSSAYCE5|msging my Boyfriends Ex friend
+gpt-4-turbo|social_chem|01HJRKDYQ08T67B0XMNJ0KGS19|They were able to apprehend him because of Tom's help.
+gpt-4-turbo|social_chem|01HJRKDYQTRRAY81ZKBH8T1TBC|My grandpa bought me a bike with training wheels.
+gpt-4-turbo|social_chem|01HJRKDYRHFVNXX72CA02RR2WD|I’m 22 and can’t read an Analog Clock
+gpt-4-turbo|social_chem|01HJRKDYS563D9W791GF8AD5W9|We drove back home laughing and talking about our day.
+gpt-4-turbo|social_chem|01HJRKDYST85F6V86B4E9RQHMG|She wants everything to be just right for when they eat.
+gpt-4-turbo|social_chem|01HJRKDYT9Q3HPN0EGXRQV00MY|Kim was at her first college party.

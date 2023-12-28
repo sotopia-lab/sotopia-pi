@@ -163,9 +163,11 @@ def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo"):
                 )
 
             assert len(background.agent_goals) == 2
+
         except Exception as e:
             print(e)
             print('error! Skip')
+            # move to next for loop immediately without append
             continue
 
         #rich.print(background)
@@ -241,8 +243,7 @@ def auto_generate_scenarios(num, gen_model="gpt-4-turbo"):
 
     return [envprofile.pk for envprofile in env_profiles]
 
-# if __name__ == "__main__":
-#     auto_generate_scenarios(420)
-
-result = auto_generate_scenarios(12) #332
-print(result)
+if __name__ == "__main__":
+    results = auto_generate_scenarios(42)
+    print("generate newly {} scenarios".format(len(results)))
+    print(results)
