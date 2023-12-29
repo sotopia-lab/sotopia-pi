@@ -16,10 +16,19 @@ Notice2: The reason why we do not include `persuation_for_good` is because we ca
 
 With inspirational prompt, we utilize `gpt-4-turbo` to generate EnvProfile. 
 
-Note that our function also allow other OpenAI models. 
+Note that our function also allow other OpenAI models with different temperature. The default model is gpt-4-turbo and default temperature is 0.5. 
 
 
 ### Detail Steps
+
+1. We create new inspirational prompts csv under env_files folder, based on three sources used in SOTOPIA scenario generation. The sources are social_iqa, social_chemistry and normbank. For each source, we make sure the duplicates are dropped and there is NOT overlapping with SOTOPIA.
+2. We generate 430 new scenarios, roughly evenly distributed across three sources. The logic to generate new scenarios is as follow:
+<br> a. For a target amount of scenarios, we divide the number by three to get X(or number of total sources)
+<br> b. For each source, we randomly select X number of unused prompts, and for each prompt, we randomly select an environment profile example currently in the database, then we use openAI completion with model and temperature to generate new scenario. 
+<br> c. After generation, we save all used propmts, the corresponding pk and generate model in to used_prompts.csv under env_files, so as to track used prompts and avoid future repetition.
+
+3. We also create sampling function that allow random sample from current redis database, and filter out SOTOPIA scenarios and used scenarios, which are saved under used_env.json. The reason is that we want to avoid generating conversation using the same scenarios, to keep diversity. 
+   
 
 ### Detail Steps (deprecated)
 
@@ -37,22 +46,8 @@ For the third step, we need to use another version of redis and convert it into 
 
 For the final step, we convert the whole thing into Ruiyi's format.
 
-# Local Redis Setting (deprecated)
 
-Since the redis-server cannot directly input json data, it requires loading a RedisJson model into the redis-server to enable this function. Therefore, we need to load a docker based on RedisJson:
-
-docker run -p 6379:6379 --name redis-stack redis/redis-stack:latest
-
-Link: <https://github.com/RedisJSON/RedisJSON>
-
-
-### Redis Version Issue
-
-The default version for redis could be 7.2.x. However, to deploy it on tiger, we need to use the 6.2.x version of redis. Therefore, the command line running on local could be:
-
-`docker run -p 6379:6379 --name redis-stack-old redis/redis-stack:6.2.6-v10` instead of using latest. After running on local and save all data to redis db, we should get a dump.rdb in the folder that are in version 6.2.6. We could then upload this file to tiger server. 
-
-# Redis on Server - USE this all in one tuturial as the latest instruction for hosting redis db (deprecated)
+# Redis on Server - USE this all in one tuturial as the latest instruction for hosting redis db
 
 We are using CMU Tiger to host our Redis Database. The current host port is 8008 and redis port is 6388.
 
@@ -144,3 +139,20 @@ Step to connect to the correct REDIS database as below:
 To setup Redis on Tiger, an example docker command is as below:
 
 docker run -d --name CONTAINERNAME -p PORT:6379 -p PORT:8001 -v /home/PATH/FOLDER/:/data/ -e REDIS_ARGS="--save 60 1000 --requirepass PASSWORD" redis/redis-stack:latest
+
+
+
+# Local Redis Setting (deprecated)
+
+Since the redis-server cannot directly input json data, it requires loading a RedisJson model into the redis-server to enable this function. Therefore, we need to load a docker based on RedisJson:
+
+docker run -p 6379:6379 --name redis-stack redis/redis-stack:latest
+
+Link: <https://github.com/RedisJSON/RedisJSON>
+
+
+### Redis Version Issue
+
+The default version for redis could be 7.2.x. However, to deploy it on tiger, we need to use the 6.2.x version of redis. Therefore, the command line running on local could be:
+
+`docker run -p 6379:6379 --name redis-stack-old redis/redis-stack:6.2.6-v10` instead of using latest. After running on local and save all data to redis db, we should get a dump.rdb in the folder that are in version 6.2.6. We could then upload this file to tiger server. 
