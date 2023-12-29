@@ -1,0 +1,5 @@
+ckpt_name: checkpoint-base_epoch_1
+deploy_check_max_round: 10
+deploy_port: 8013
+log_dir: /home/ruiyiwan/sotopia-llm/llm_self_train/logs/pilot-2
+tmp_dir: /home/ruiyiwan/sotopia-llm/llm_self_train/tmp/pilot-2

@@ -1,18 +1,23 @@
 # self train
-experiment_name: test-experiment
+babel_username: ruiyiwan
+experiment_name: pilot-2
 num_improve_steps: 2
-data_dir: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain
-checkpoint_saved_queue: /home/ruiyiwan/selftrain/test-dir/logs/deploy_queue.txt
+script_dir: /home/ruiyiwan/sotopia-llm/llm_self_train
+checkpoint_dir: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain
+checkpoint_saved_queue: /home/ruiyiwan/sotopia-llm/llm_self_train/logs/pilot-2/deploy_queue.txt
 num_train_epochs: 20.0
-call_back_save_epochs: 10
+call_back_save_epochs: 1
 
 # training
 num_gpus: 4
-model_name_or_path: meta-llama/Llama-2-13b-hf
+model_name_or_path: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain/pilot-2/checkpoint-4525
 hf_auth_token: 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
 wandb_project: self-train
-wandb_tags: "['llama-2-13b-hf']"
-wandb_token: 99caa13ec9552adf0e92e5c30021307ce3cf7fa4
+wandb_tags: "['mistral-selftrain-pilot-2']"
+wandb_token: eca44f65849afa1cc146c22631b0b5001ccd24d7
+
+# deploy and eval: check resources/env_ids.json
+eval_env_ids_tag: pilot-2_dev
 
 # redis
 redis_om_url: redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388
