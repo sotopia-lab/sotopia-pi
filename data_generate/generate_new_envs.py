@@ -114,7 +114,7 @@ def sample_prompt_by_source(prompt_df, used_prompt, num, source):
 
     return sampled_prompts
 
-def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo"):
+def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo", temperature=0.5):
     """
     Function to generate new environment profile
     Args:
@@ -159,7 +159,7 @@ def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo"):
                     model_name=gen_model,
                     inspiration_prompt=prompt,
                     examples=sampled_example,
-                    temperature=0.5,
+                    temperature=temperature,
                 )
 
             assert len(background.agent_goals) == 2
@@ -181,11 +181,11 @@ def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo"):
     return background_df
 
 
-def auto_generate_scenarios(num, gen_model="gpt-4-turbo"):
+def auto_generate_scenarios(num, gen_model="gpt-4-turbo", temperature=0.5):
     """
     Function to generate new environment scenarios based on target number of generation
     """
-    all_background_df = generate_newenv_profile(num, gen_model)
+    all_background_df = generate_newenv_profile(num, gen_model, temperature)
     columns = [ "pk",
                 "codename",
                 "scenario",
