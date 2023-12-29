@@ -90,7 +90,7 @@ def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
         env_agent_combo_list = list(
             sampler.sample(agent_classes=[LLMAgent] * 2, replacement=False)
         )
-        print("Entering here "+env_id)
+        #print("Entering here "+env_id)
     except:
         return
     global agent_env_combo_num
@@ -177,14 +177,6 @@ def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo"):
     # append source
     background_df['prompt'] = pd.DataFrame(prompt_sources)
     background_df['prompt_source'] = background_df.prompt.map(ins_prompts.set_index('prompt')['source'])
-    # regardless of error of not, save these prompts as used, 
-    # as we don't want to keep error prompts for future use either
-    # with open(USED_PROMPT_FILE, "a") as use_file:
-    #     #print("writing to file the new propmts")
-    #     for new_prompt in sampled_prompts:
-    #         use_file.write(new_prompt+","+gen_model)
-    #         use_file.write("\n")
-    # use_file.close()
 
     return background_df
 
@@ -236,8 +228,8 @@ def auto_generate_scenarios(num, gen_model="gpt-4-turbo"):
 
     # print(env_profiles)
     # also save new combo to database
-    # for env in env_profiles:
-    #     sample_env_agent_combo_and_push_to_db(env.pk)
+    for env in env_profiles:
+        sample_env_agent_combo_and_push_to_db(env.pk)
 
     Migrator().run()
 
@@ -247,3 +239,4 @@ if __name__ == "__main__":
     results = auto_generate_scenarios(42)
     print("generate newly {} scenarios".format(len(results)))
     print(results)
+
