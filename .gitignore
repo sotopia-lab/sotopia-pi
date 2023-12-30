@@ -208,3 +208,7 @@ llm_rl/data/sotopia_custom_training_sft.json
 *.token
 ./llm_self_train/resources/*
 test.txt
+
+llm_self_train/logs/
+llm_self_train/tmp/
+llm_self_train/train_logs/
