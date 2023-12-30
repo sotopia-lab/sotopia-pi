@@ -15,13 +15,15 @@ from sotopia.database.persistent_profile import (
     RelationshipProfile,
 )
 from sotopia.database.env_agent_combo_storage import EnvAgentComboStorage
+from data_process.redis_data_filtering.redis_filtering import get_sotopia_scenarios
 
 # res_pks = list(RelationshipProfile.all_pks()) # 120
-# env_agent_combos = list(EnvAgentComboStorage.all_pks()) # 550
-# agent_pks = list(AgentProfile.all_pks()) # 40
-# env_pks = list(EnvironmentProfile.all_pks()) # 62
+env_agent_combos = list(EnvAgentComboStorage.all_pks()) # 550 > 1000
+env_pks = list(EnvironmentProfile.all_pks()) # 62 
+# agent_pks = list(AgentProfile.all_pks()) # 40 
 # epi_pks = list(EpisodeLog.all_pks()) 
 # all_combs = list(env_agent_combos)
+# print(len(env_agent_combos), len(env_pks))#, len(res_pks), len(agent_pks))
 
 def load_object_to_json(pks, objecttype, path):
     for pk in pks:
@@ -30,9 +32,8 @@ def load_object_to_json(pks, objecttype, path):
         with open(os.path.join(path, f"{pk}.json"), 'w') as f:
             f.write(objectp_json)
 
-# E.G load_object_to_json(res_pks, RelationshipProfile, "/DIR/redis_combo")
-
-path = "/DIR/redis_combo"
+# load_object_to_json(env_pks, EnvironmentProfile, os.getcwd()+"/redis_env")
+# load_object_to_json(env_agent_combos, EnvAgentComboStorage, os.getcwd()+"/redis_combo")
 
 def upload_json_to_db(filepath, objecttype):
     for filename in os.listdir(filepath):
@@ -43,5 +44,14 @@ def upload_json_to_db(filepath, objecttype):
             newobject = objecttype(**jsonfile)
             newobject.save()
 
-Migrator().run()
-upload_json_to_db(path, EnvAgentComboStorage)
+# Migrator().run()
+# upload_json_to_db(os.getcwd()+"/redis_env", EnvironmentProfile)
+            
+def remove_bad_env():
+    sotopia_pks = get_sotopia_scenarios()
+    diff_pks = EnvironmentProfile.find(
+      (EnvironmentProfile.pk >> sotopia_pks)).all()
+    for pk in diff_pks:
+        environ = EnvironmentProfile.get(pk=pk)
+        if len(environ.agent_goals) > 2:
+            EnvironmentProfile.delete(pk)
