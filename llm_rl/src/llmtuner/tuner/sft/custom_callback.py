@@ -9,7 +9,7 @@ class SaveModelCallback(TrainerCallback):
         self.checkpoint_saved_queue = checkpoint_saved_queue
         self.curr_improve_step = improve_step
         self.curr_epoch = 0
-
+        
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
         self.curr_epoch += 1
         if self.curr_epoch % self.save_epochs == 0:
