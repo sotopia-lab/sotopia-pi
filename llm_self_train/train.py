@@ -26,6 +26,6 @@ def main():
         sft_process.join()
 
         run_sft_completed.value = True
-
+        
 if __name__ == "__main__":
     main()
