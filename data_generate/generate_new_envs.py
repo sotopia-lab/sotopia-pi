@@ -1,6 +1,7 @@
 # function to query redis and sample list of unused scenario pks
 import os
 import sys
+import argparse
 # this file is used to tranfer data from one redis to another, we do not expect to use it more than once
 os.environ[
     "REDIS_OM_URL"
@@ -16,7 +17,7 @@ from sotopia.database.env_agent_combo_storage import EnvAgentComboStorage
 from sotopia.samplers import ConstraintBasedSampler
 from sotopia.messages import AgentAction, Observation
 from sotopia.agents import LLMAgent
-from generate import generate_env_profile
+from utils.generate import generate_env_profile
 
 import random
 from typing import Any, cast, TypeVar
@@ -236,7 +237,15 @@ def auto_generate_scenarios(num, gen_model="gpt-4-turbo", temperature=0.5):
     return [envprofile.pk for envprofile in env_profiles]
 
 if __name__ == "__main__":
-    results = auto_generate_scenarios(42)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num", type=int,
+                        default=420)
+    parser.add_argument("--gen_model", type=str,
+                        default="gpt-4-turbo")
+    parser.add_argument("--temperature", type=float,
+                        default=0.5)
+    args = parser.parse_args()
+    results = auto_generate_scenarios(args.num, args.gen_model, args.temperature)
     print("generate newly {} scenarios".format(len(results)))
-    print(results)
+    #print(results)
 
