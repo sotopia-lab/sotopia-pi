@@ -17,6 +17,15 @@ will modify the bash file according to the provided parameters and start sotopia
 (For more information about the args, run `python3 generate_conversations.py -h`)
 
 # Scenario Generation
+To generate scenarios, we first need to clean up the inspirational prompts using three datasets. Details of dataset selection are listed in data_generate folder, but to run the cleaning and merging codes for an inspirational prompt csv, run
+```python
+python3 create_inspirational_prompts.py
+```
+Next, we need to generate a preliminary pool of scenarios, say 430. To run the code for generation and auto-save to redis DB, run
+```python
+python3 generate_new_envs.py --num 430
+```
+
 
 ### Explanation for inspirational prompt:
 
