@@ -17,7 +17,7 @@ from sotopia.database.env_agent_combo_storage import EnvAgentComboStorage
 from sotopia.samplers import ConstraintBasedSampler
 from sotopia.messages import AgentAction, Observation
 from sotopia.agents import LLMAgent
-from generate import generate_env_profile
+from utils.generate import generate_env_profile
 
 import random
 from typing import Any, cast, TypeVar
