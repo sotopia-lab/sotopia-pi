@@ -1,6 +1,7 @@
 # function to query redis and sample list of unused scenario pks
 import os
 import sys
+import argparse
 # this file is used to tranfer data from one redis to another, we do not expect to use it more than once
 os.environ[
     "REDIS_OM_URL"
@@ -236,10 +237,15 @@ def auto_generate_scenarios(num, gen_model="gpt-4-turbo", temperature=0.5):
     return [envprofile.pk for envprofile in env_profiles]
 
 if __name__ == "__main__":
-    num = 420
-    if len(sys.argv) > 1:
-        num = sys.argv[1]
-    results = auto_generate_scenarios(num)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num", type=int,
+                        default=420)
+    parser.add_argument("--gen_model", type=str,
+                        default="gpt-4-turbo")
+    parser.add_argument("--temperature", type=float,
+                        default=0.5)
+    args = parser.parse_args()
+    results = auto_generate_scenarios(args.num, args.gen_model, args.temperature)
     print("generate newly {} scenarios".format(len(results)))
     #print(results)
 
