@@ -25,6 +25,10 @@ Next, we need to generate a preliminary pool of scenarios, say 430. To run the c
 ```python
 python3 generate_new_envs.py --num 430
 ```
+Note that we use default GPT4-Turbo and Temperature 0.5 for generation. If you want to generate using different parameters and model, you should instead run
+```python
+python3 generate_new_envs.py --num 430 --gen_model "openAI model_name" --temperature 0.x
+```
 
 
 ### Explanation for inspirational prompt:
