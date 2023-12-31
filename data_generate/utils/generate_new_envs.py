@@ -236,7 +236,10 @@ def auto_generate_scenarios(num, gen_model="gpt-4-turbo", temperature=0.5):
     return [envprofile.pk for envprofile in env_profiles]
 
 if __name__ == "__main__":
-    results = auto_generate_scenarios(42)
+    num = 420
+    if len(sys.argv) > 1:
+        num = sys.argv[1]
+    results = auto_generate_scenarios(num)
     print("generate newly {} scenarios".format(len(results)))
-    print(results)
+    #print(results)
 
