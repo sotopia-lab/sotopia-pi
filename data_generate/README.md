@@ -1,4 +1,31 @@
-# Data Generation
+# Run Code
+## Scenario Generation
+To generate scenarios, we first need to clean up the inspirational prompts using three datasets. Details of dataset selection are listed in data_generate folder, but to run the cleaning and merging codes for an inspirational prompt csv, run
+```python
+python3 create_inspirational_prompts.py
+```
+Next, we need to generate a preliminary pool of scenarios, say 430. To run the code for generation and auto-save to redis DB, run
+```python
+python3 generate_new_envs.py --num 430
+```
+Note that we use default GPT4-Turbo and Temperature 0.5 for generation. If you want to generate using different parameters and model, you should instead run
+```python
+python3 generate_new_envs.py --num 430 --gen_model "openAI model_name" --temperature 0.x
+```
+
+## Conversation Data Generation
+The first step is to sample scenarios for conversation generation. Running 
+```python
+python3 sample_scenarios.py --env-file env_files/used_env.json --num 100 --experiment-name SFT-round-1 --show-stat True
+```
+will save 100 sampled scenarios to `env_files/used_env.json` with experiment name "SFT-round-1". The `--show-stat` option provides a breakdown of the scenario distribution.
+
+The second step is to generate conversation based on the SOTOPIA framework. Running
+```python
+python3 generate_conversations.py --eval-script scripts/generate_conv_sft.sh --env-file env_files/used_env.json --experiment-name SFT-round-1 --tag sft_round_1_gpt-4_gpt-4_clean --batch-size 4 --agent1-model gpt-4 --agent2-model gpt-4 --push-to-db True
+```
+will modify the bash file according to the provided parameters and start sotopia evaluation. If `push-to-db` is set to be `True`, then the episode logs will be pushed to the redis database.
+(For more information about the args, run `python3 generate_conversations.py -h`)
 
 ### Explanation for inspirational prompt:
 
