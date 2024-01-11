@@ -1,6 +1,10 @@
 {
+  "sotopia_custom_selftrain": {
+    "file_name": "sotopia_custom_selftrain_data.json",
+    "file_sha1": ""
+  },
   "sotopia_custom_sft": {
-    "file_name": "sotopia_custom_training_sft.json",
+    "file_name": "sotopia_custom_sft_data.json",
     "file_sha1": ""
   },
   "sotopia_no_slide_no_filter_format_sft": {
