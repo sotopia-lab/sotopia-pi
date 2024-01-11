@@ -1,0 +1,59 @@
+{{ block title }}Social Evaluation{{ endblock }}
+
+
+
+{{ block content }}
+
+    <p>
+        Please answer the following questions. 
+    </p>
+
+    <p>
+        Your player ID is {{player.id_in_group}} in Group {{player.group_id}}.
+    </p>
+
+    <style>
+        .conversation {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .turn {
+            margin-bottom: 15px;
+        }
+
+        .speaker {
+            font-weight: bold;
+        }
+
+        .message {
+            margin-left: 20px;
+        }
+    </style>
+
+    <div class="conversation">
+        <div class="turn">
+            <span class="speaker">Lily Greenberg:</span>
+            <p class="message">"Hi Hendrick, I'm considering a purchase like this for my home refresh..."</p>
+        </div>
+        <div class="turn">
+            <span class="speaker">Hendrick Heinz:</span>
+            <p class="message">"Hi Lily! I appreciate your interest in the Crate & Barrel pieces..."</p>
+        </div>
+        <!-- Add more turns here following the same structure -->
+    </div>
+
+    <table class="table">
+        {{ for field in form }}
+        <tr>
+            <th>{{ field.label }}</th>
+            {{ for choice in field }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        {{ endfor }}
+    </table>
+
+    {{ next_button }}
+
+{{ endblock }}
