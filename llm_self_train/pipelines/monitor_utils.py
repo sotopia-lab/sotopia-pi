@@ -116,7 +116,9 @@ def overwrite_eval_bash():
             with open(os.path.join(config["script_dir"], "resources", "env_ids.json"), 'r') as f:
                 env_ids = json.loads(f.read())[config["eval_env_ids_tag"]]
                 env_ids_string = json.dumps(env_ids)
-            lines[i] = f"""    '--gin.ENV_IDS={env_ids_string}'""" + ' \\' + '\n'
+            pattern = r'(--gin\.ENV_IDS=).*?(\s*\\)'
+            lines[i] = re.sub(
+                pattern, r'\1' + env_ids_string + r"'" + r'\2', lines[i])
 
 
     # Regex to find '> filename' pattern and replace filename
@@ -196,7 +198,7 @@ def check_log_and_submit_deploy():
 
             # Submit deploy job
             with open(os.path.join(deploy_config["tmp_dir"], "deploy_job_id.txt"), 'w') as f:
-                args = f"sbatch --gres=gpu:1 -t 1:00:00 --mem=80g -w babel-4-23 -e {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.err -o {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.log {config['script_dir']}/pipelines/submit_deploy.sh"
+                args = f"sbatch --gres=gpu:1 -t 3:00:00 --mem=80g -e {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.err -o {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.log {config['script_dir']}/pipelines/submit_deploy.sh"
                 subprocess.run(args.split(), stdout=f)
             print(f"Submitted sbatch for deploying {deploy_config['ckpt_name']}")
 

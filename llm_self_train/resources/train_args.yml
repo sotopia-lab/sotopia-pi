@@ -2,14 +2,14 @@ stage: sft
 model_name_or_path: NEED-CONFIG
 dataset: sotopia_custom_sft
 dataset_dir: ../llm_rl/data/
-cutoff_len: 128
+cutoff_len: 4096
 template: llama2-sotopia
 wandb_project: NEED-CONFIG
 wandb_tags: "[]"
 use_fast_tokenizer: False
 do_train: true
 num_train_epochs: 20.0
-per_device_train_batch_size: 1
+per_device_train_batch_size: 4
 gradient_accumulation_steps: 1
 finetuning_type: lora
 lora_target: q_proj,v_proj
@@ -23,7 +23,7 @@ quantization_type: nf4
 double_quantization: True
 flash_attn: True
 gradient_checkpointing: True
-bf16: True
+fp16: True
 cache_dir: ./model_cache
 overwrite_cache: true
 output_dir: NEED-CONFIG

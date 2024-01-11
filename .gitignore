@@ -204,6 +204,8 @@ data_generate/**/*.jsonl
 data_generate/**/*.tsv
 *cache/
 llm_rl/data/sotopia_custom_training_sft.json
+llm_rl/data/sotopia_custom_selftrain_data.json
+llm_rl/data/sotopia_custom_sft_data.json
 *.zip
 *.token
 ./llm_self_train/resources/*
@@ -212,3 +214,6 @@ test.txt
 llm_self_train/logs/
 llm_self_train/tmp/
 llm_self_train/train_logs/
+
+*.out
+*.err
