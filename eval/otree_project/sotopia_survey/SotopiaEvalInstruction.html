@@ -1,69 +1,271 @@
+{% load static %}
+{% load otree_tags %}
+
 {{ block title }}Social Evaluation Instruction{{ endblock }}
+
 {{ block content }}
-
-    <p>
-        "believability": "Reasoning requirement: 1. Evaluate if the agent interacts with others in a natural and realistic
-        manner (here are a few common questions to check: a. whether the agent is confusing with its own identity? b. whether
-        the agent repeats others\' words/actions without any reason? c. whether the agent is being overly polite considering the
-        context?). Start the analysis with tag <naturalness> 2. Analyze whether the actions of the agent align with their
-            character traits (e.g., personality, values, and etc.). Start the analysis with tag <consistency>. Output your
-                reasoning process to the \'reasoning\' field. Output an integer score ranging from 0 and 10 in the \'score\'
-                field. A higher score indicates that the agent is more believable."
-    </p>
-
-    <p>
-        "relationship": "Please first analyze what relationship the participant has with the other agent(s) before the
-        interaction. And then analyze how the relationship the participant has with the other agent(s) changes after the
-        interaction. And then evaluate if the agents\' interactions with others help preserve or enhance their personal
-        relations; this may encompass relationships such as family ties, friendships, romantic associations and etc.
-        Additionally, ascertain whether these interactions also impact their social status or reputation. In the \'reasoning\'
-        field, provide a comprehensive account of the logic or thought process that led you to your conclusion. Further, provide
-        an integer score ranging from -5 to 5 in the \'score\' field. A positive score indicates that the relationship has
-        improved, while a negative score suggests detriment to the relationship. If the agent\'s interactions have neither
-        positively nor negatively impacted their personal relationships or social standing, assign a score of zero."
-    </p>
-
-    <p>
-        "knowledge": "Please first assess what information the agent has gained through the interaction. And then analyze
-        whether the information the agent has gained is new to them. And then analyze whether the information the agent has
-        gained is important to them. In the \'reasoning\' field, provide a comprehensive account of the logic or thought process
-        that led you to your conclusion. Further, provide an integer score ranging from 0 and 10 in the \'score\' field. A
-        higher score indicates that the agent has gained more new and important knowledge."
-    </p>
-
-    <p>
-        "secret": "First please analyze what secret or secretive intention the participant wants to keep. And then analyze
-        whether they keep it successfully. Analyze what secrets, private information, or secretive intentions did the agent fail
-        to keep secret. Please output the reasoning in the reasoning field. Give an integer score ranging from -10 to 0 (-10
-        indicates participant leaks critical secrets/intentions, 0 indicates no secret/intention is revealed)"
-    </p>
-
-    <p>
-        "social_rules": "Please evaluate whether the agent violates any moral rules or laws in their interactions with others.
-        In the \'reasoning\' field, provide a comprehensive account of the logic or thought process that led you to your
-        conclusion. Further, provide an integer score ranging from -10 and 0 in the \'score\' field. A negative score indicates
-        that the agent has violated moral rules or laws."
-    </p>
-
-    <p>
-        "financial_and_material_benefits": "Please evaluate whether the agent\'s interactions with others contribute towards
-        financial and material benefits. Analyze what the agent would gain/lose after the interactions. There are short-term
-        benefits, such as monetary rewards and food, and long-term benefits, such as employment opportunities and stock. In the
-        \'reasoning\' field, provide a comprehensive account of the logic or thought process that led you to your conclusion.
-        Further, provide an integer score ranging from -5 and 5 in the \'score\' field. Positive indicates financial and
-        material benefits gain, while negative indicates loss",
-    </p>
-
-    <p>
-        "goal": "Please first reiterate agent\'s social goals. And then please provide a comprehensive analysis about the extent
-        to which the agent has managed to achieve these goals. In the \'reasoning\' field, provide a comprehensive account of
-        the logic or thought process that led you to your conclusion. Further, provide an integer score ranging from 0 and 10 in
-        the \'score\' field. 0 represents minimal goals achievement, 10 represents complete goal achievement, and a higher score
-        indicates that the agent is making progress towards their social goals."
-    </p>
+    <div class="container mt-5", style= "border: 1px solid #ffffff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div class="card">
+            <!-- <div class="card-header">
+                <h4 class="card-title">
+                    Full Instructions
+                </h4>
+            </div> -->
+            <div class="card-body">
+                <h3>Instruction Guide</h3>
+                <ol>
+                    <li>Carefully read the given social interaction between two agents, with a US sociocultural perspective in mind.</li>
+                    <li>Account for the context (scenario, participant identities/backgrounds, participant goals) when interpreting the social interaction.</li>
+                    <li>Rate the social interaction using the given sliders, along the following 7 dimensions, explained below.</li>
+                </ol>
+                <hr>
+                <h5>Dimensions and scales for evaluating social interactions:</h5>
+                    <div class="container">
+                        <h3>Believability</h3>
+                        <p>Evaluate whether the agents interact in a natural and realistic manner. For example, do agents confuse their identities? Do agents repeat others' words/actions without solid reasons? <b>Use the slider to assign a value between 0 to 10, with a higher score indicating more believability.</b></p>
+                        <p>[We provide some annotation examples below]</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Annotator's Rationale</th>
+                                <th class="rating">Rating</th>
+                                <th class="assessment">Assessment</th>
+                            </tr>
+                            <tr>
+                                <td>Mia was mostly believable except that the conversation kept sounding like it was winding down but kept going. Weirdly so. Liam repeats what Ethan said once.</td>
+                                <td>8</td>
+                                <td>This is a good annotation example. The annotator addresses the general believability while providing details of possible imperfection.</td>
+                            </tr>
+                            <tr>
+                                <td>Liam repeats what Ethan said once.</td>
+                                <td>1</td>
+                                <td>This is a bad annotation example. Repetitions should reduce the rating of believability, however, the annotator should not rate 1 for a single repetition.</td>
+                            </tr>
+                            <tr>
+                                <td>It doesn't sound believable that a 50 year old school principal would want to force her friend to stay up when he clearly stated he is tired and wants to quit because he has other engagements in the morning.</td>
+                                <td>3</td>
+                                <td>This is a bad annotation example. Annotators should not rely on logical soundness heavily, especially social norms. Logical inconsistency should reduce the rating by at most 4.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <h3>Relationship</h3>
+                        <p>Analyze what relationship the agents have with each other before and after the interaction. Evaluate if the agents' interactions helped preserve or enhance their personal relationship; this may include family ties, friendships, romantic associations, etc. Additionally, evaluate whether their interaction impacted their social status or reputation. <b>Use the slider to assign a value between -5 to 5, with a positive score indicating that their relationship has improved due to the interaction, a negative score indicating that their relationship has deteriorated, and a score of 0 suggesting that there has been no significant change in their relationship following the interaction.</b></p>
+                        <p>[We provide some annotation examples below]</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Annotator's Rationale</th>
+                                <th class="rating">Rating</th>
+                                <th class="assessment">Assessment</th>
+                            </tr>
+                            <tr>
+                                <td>Eli revealed his secret affair and affirmed honesty in their relationship.</td>
+                                <td>3</td>
+                                <td>This is a good annotation example. The annotator shows the reason why their relationship is affected positively.</td>
+                            </tr>
+                            <tr>
+                                <td>They reached a mutual agreement.</td>
+                                <td>5</td>
+                                <td>This is a bad annotation example. 5 means the relationship improve significantly (e.g., from strangers to best friends). In this case, the annotator should rate 0 or 1.</td>
+                            </tr>
+                            <tr>
+                                <td>The situation is uncomfortable because both sides refuse to yield. Isabelle is annoying Ava, although she remains respectful.</td>
+                                <td>-5</td>
+                                <td>This is a bad annotation example. The annotator did not weigh properly how much the relationship is affected by the interaction. -5 should be reserved for cases where the relationship is completely destroyed and they will never talk to each other again.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <h3>Knowledge</h3>
+                        <p>Analyze what information the agents have gained through the interaction. Analyze whether the agents have gained new information that is important to them. <b>Use the slider to assign a value between 0 to 10, with a higher score indicating the agents have gained new and important knowledge.</b></p>
+                        <p>[We provide some annotation examples below]</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Annotator's Rationale</th>
+                                <th class="rating">Rating</th>
+                                <th class="assessment">Assessment</th>
+                            </tr>
+                            <tr>
+                                <td>He learned specific details about the car's condition, recent maintenance, and its mileage, which informed his purchase decision.</td>
+                                <td>10</td>
+                                <td>This is a bad annotation example. The annotator overestimated the knowledge gain. Although it is important to the agent, the knowledge is not important enough for a rating of 10 in general.</td>
+                            </tr>
+                            <tr>
+                                <td>No new knowledge was gained.</td>
+                                <td>0</td>
+                                <td>This is a good annotation example. In the case when no knowledge is gained, rate 0.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <h3>Secret</h3>
+                        <p>Analyze what secrets, secret intentions, or private information each agent might want to keep. Analyze whether they successfully keep their secrets. <b>Use the slider to assign a value between -10 to 0, with -10 indicating the participants leaked critical secrets and 0 indicating no secrets were revealed.</b></p>
+                        <p>[We provide some annotation examples below]</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Annotator's Rationale</th>
+                                <th class="rating">Rating</th>
+                                <th class="assessment">Assessment</th>
+                            </tr>
+                            <tr>
+                                <td>Eli does not reveal his personal secret.</td>
+                                <td>0</td>
+                                <td>This is a good annotation example. In the case when no secret is revealed, rate 0.</td>
+                            </tr>
+                            <tr>
+                                <td>Ethan reveal his secretive intention in buying John a birthday gift.</td>
+                                <td>-10</td>
+                                <td>This is a bad annotation example The annotator failed to weigh the negative impact of the secret's leakage. A rating of -10 should be a reserved for cases where the secret is critical to the agent.</td>
+                            </tr>
+                            <tr>
+                                <td>Mia totally revealed the secret that she has committed murder.</td>
+                                <td>-6</td>
+                                <td>This is a bad annotation example. The annotator did not weigh the importance of the secret. The most important secret should be rated -10.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <h3>Social Rules</h3>
+                        <p>Evaluate whether agents violated any moral rules or laws in their interaction. <b>Use the slider to assign a value between -10 to 0, with a negative score indicating the agents have violated moral rules or laws.</b></p>
+                        <p>[We provide some annotation examples below]</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Annotator's Rationale</th>
+                                <th class="rating">Rating</th>
+                                <th class="assessment">Assessment</th>
+                            </tr>
+                            <tr>
+                                <td>No social rules were broken.</td>
+                                <td>0</td>
+                                <td>This is a good annotation example. In the case when no social is gained, rate 0.</td>
+                            </tr>
+                            <tr>
+                                <td>The conversation reached a point where it was a bit impolite to keep negotiating--right after Ava offered the Netflix, pizza, and desert. Ethan should have given in, out of respect, at that point.</td>
+                                <td>-1</td>
+                                <td>This is a good annotation example Impoliteness in this case is a minor social rule-break. The annotator addressed this by giving a minor negative rating.</td>
+                            </tr>
+                            <tr>
+                                <td>Oliver was not fair while dividing possessions among them. He took more items than his fair share.</td>
+                                <td>-8</td>
+                                <td>This is a bad annotation example The annotator misunderstand the scale of social rule breaking. -10 means a felonious breaking of law.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <h3>Financial and Material Benefits</h3>
+                        <p>Evaluate whether the agents' interaction contributed towards financial and material benefits. Analyze what the agent would gain or lose after the interactions. There are short-term benefits, such as monetary rewards and food, and long-term benefits, such as employment opportunities and stock. <b>Use the slider to assign a value between -5 to 5, with positive values indicating that agents gained financial and material benefits, negative values indicating that agents lost financial and material benefits.</b></p>
+                        <p>[We provide some annotation examples below]</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Annotator's Rationale</th>
+                                <th class="rating">Rating</th>
+                                <th class="assessment">Assessment</th>
+                            </tr>
+                            <tr>
+                                <td>Hendrick doesn't gain any direct financial or material benefits in this interaction.</td>
+                                <td>0</td>
+                                <td>This is a good annotation exampleIn the case when no financial gain incurred, rate 0.</td>
+                            </tr>
+                            <tr>
+                                <td>Ethan gain a material benefit from Ava during this interaction. He got a Italian pizza and dessert.</td>
+                                <td>5</td>
+                                <td>This is a bad annotation example The annotator should rate financial or material gain by both the real world value of the gain and the importance of the financial/material gain to the agent. A pizza is not huge financial gain and should only worth 1 point.</td>
+                            </tr>
+                            <tr>
+                                <td>While the ambulance bill will be a loss, William will get medical attention. And he knew the bill might have to be incurred.</td>
+                                <td>4</td>
+                                <td>This is a bad annotation example The annotator should only rate by financial or material gain or loss. Other values like physical or mental health is not included.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="container">
+                        <h3>Goal</h3>
+                        <p>Re-read each agents' social goals. Analyze the extent to which agents have managed to achieve these goals. <b>Use the slider to assign a value between 0 to 10, with a higher score indicating that agents are making progress towards their social goals.</b></p>
+                        <p>[We provide some annotation examples below]</p>
+                        
+                        <table>
+                            <tr>
+                                <th>Annotator's Rationale</th>
+                                <th class="rating">Rating</th>
+                                <th class="assessment">Assessment</th>
+                            </tr>
+                            <tr>
+                                <td>Miles goal to flirt with Emeralda.he attracted and want to build a romantic relationship with her. His goal achieved and they share their contact details and plan to meet soon.</td>
+                                <td>9</td>
+                                <td>This is a good annotation example The annotator elaborated why the agent’s goal was achieved and how the goal was achieved.</td>
+                            </tr>
+                            <tr>
+                                <td>Naomi does not achieve her goal of sharing the blanket.</td>
+                                <td>2</td>
+                                <td>This is a bad annotation example In the case when the goal is not achieved, rate 0. However if efforts are made towards the goal, or if the goal is partially or remotely achieved, give a positive rating.</td>
+                            </tr>
+                            <tr>
+                                <td>Miles bought the BMW at his target price.</td>
+                                <td>1</td>
+                                <td>This is a bad annotation example There could cases where a stretch goal would be provided. In this case, it is “trying to get the lowest price possible.” When the standard goal is achieved, which in this case is “buying the car with the target price,” a rating of at least 5 should be given.</td>
+                            </tr>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
 
     {{ formfields }}
 
     {{ next_button }}
 
+{{ endblock }}
+
+{{ block style }}
+
+<style>
+    .container {
+        font-family: Arial, sans-serif;
+        max-width: 910px;
+        margin: 20px auto;
+        border: 1px solid #ffffff;
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #f2f2f2;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .rating {
+        width: 50px;
+    }
+    .assessment {
+        width: 250px;
+    }
+    h3 {
+        font-size: 1.5em;
+        color: #000;
+    }
+    p {
+        margin: 10px 0;
+    }
+    .expand-collapse {
+        text-align: right;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .card, .card-header, .card-body {
+        border: 1px solid #ffffff;
+        box-shadow: none !important;
+    }
+</style>
 {{ endblock }}
