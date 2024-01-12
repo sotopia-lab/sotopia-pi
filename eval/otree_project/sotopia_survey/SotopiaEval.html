@@ -12,33 +12,13 @@
         Your player ID is {{player.id_in_group}} in Group {{player.group_id}}.
     </p>
 
-    <style>
-        .conversation {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .turn {
-            margin-bottom: 15px;
-        }
-
-        .speaker {
-            font-weight: bold;
-        }
-
-        .message {
-            margin-left: 20px;
-        }
-    </style>
 
     <div class="conversation">
         <div class="turn">
-            <span class="speaker">Lily Greenberg:</span>
-            <p class="message">"Hi Hendrick, I'm considering a purchase like this for my home refresh..."</p>
-        </div>
-        <div class="turn">
-            <span class="speaker">Hendrick Heinz:</span>
-            <p class="message">"Hi Lily! I appreciate your interest in the Crate & Barrel pieces..."</p>
+            {% for speaker, turn in turn_list %}
+                <span class="speaker">{{ speaker }}:</span>
+                <p class="message">{{ turn }}</p>
+            {% endfor %}
         </div>
         <!-- Add more turns here following the same structure -->
     </div>
@@ -56,4 +36,24 @@
 
     {{ next_button }}
 
+<style>
+    .conversation {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    .turn {
+        margin-bottom: 15px;
+    }
+
+    .speaker {
+        font-weight: bold;
+    }
+
+    .message {
+        margin-left: 20px;
+    }
+</style>
+
 {{ endblock }}
+
