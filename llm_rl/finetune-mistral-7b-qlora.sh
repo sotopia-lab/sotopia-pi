@@ -9,9 +9,9 @@ deepspeed src/train_bash.py \
     --wandb_tags "['mistral-7b']" \
     --use_fast_tokenizer False \
     --do_train \
-    --num_train_epochs 15.0 \
-    --per_device_train_batch_size 1 \
-    --gradient_accumulation_steps 32 \
+    --num_train_epochs 4.0 \
+    --per_device_train_batch_size 4 \
+    --gradient_accumulation_steps 2 \
     --finetuning_type lora \
     --lora_target q_proj,v_proj \
     --learning_rate 5e-5 \
