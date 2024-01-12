@@ -78,7 +78,6 @@ class C(BaseConstants):
     NAME_IN_URL = 'sotopia_survey'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
-    
 
 
 class Subsession(BaseSubsession):
@@ -156,7 +155,7 @@ class SotopiaEval(Page):
 
     @staticmethod
     def vars_for_template(player):
-        dataset_size = len(processed_dataset)
+        dataset_size = len(processed_dataset) # write it as a queue
         eval_data = processed_dataset[player.group_id % dataset_size]
         turn_list = zip(
             [d['speaker'] for d in eval_data['parsed_conversation']], 
@@ -165,6 +164,19 @@ class SotopiaEval(Page):
         return {
             'turn_list': turn_list # 'string_list' is the key for the list of strings
         }
+
+
+    def is_displayed(self):
+        import time
+        participant = self.participant
+
+        # Check if 'expiry' is set
+        if hasattr(participant, 'expiry') and participant.expiry:
+            current_time = time.time()
+            return current_time < participant.expiry
+        else:
+            # Handle the case where 'expiry' isn't set
+            return False
 
     form_model = 'player'
     form_fields = [
@@ -176,10 +188,16 @@ class SotopiaEval(Page):
         'financial_and_material_benefits', 
         'goal',
     ]
+    timeout_seconds = 10
 
 
 class SotopiaEvalInstruction(Page):
     form_model = 'player'
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        import time
+        player.participant.expiry = time.time() + 10
 
 
 page_sequence = [SotopiaEvalInstruction, SotopiaEval]
