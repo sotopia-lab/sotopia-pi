@@ -24,14 +24,107 @@
     </div>
 
     <table class="table">
-        {{ for field in form }}
         <tr>
-            <th>{{ field.label }}</th>
-            {{ for choice in field }}
-                <td>{{ choice }}</td>
-            {{ endfor }}
+            <th>{{ form.believability.label }}</th>
+            {% for choice in form.believability %}
+            <td>
+                <label>
+                    {{ choice }}
+                </label>
+            </td>
+            {% endfor %}
         </tr>
-        {{ endfor }}
+        <tr>
+            <th>{{ form.relationship.label }}</th>
+            {% for choice in form.relationship %}
+            <td>
+                <label>
+                    {{ choice }}
+                </label>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>{{ form.knowledge.label }}</th>
+            {% for choice in form.knowledge%}
+            <td>
+                <label>
+                    {{ choice }}
+                </label>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>{{ form.secret.label }}</th>
+            {% for choice in form.secret %}
+            <td>
+                <label>
+                    {{ choice }}
+                </label>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>{{ form.social_rules.label }}</th>
+            {% for choice in form.social_rules %}
+            <td>
+                <label>
+                    {{ choice }}
+                </label>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>{{ form.financial_and_material_benefits.label }}</th>
+            {% for choice in form.financial_and_material_benefits %}
+            <td>
+                <label>
+                    {{ choice }}
+                </label>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>{{ form.goal.label }}</th>
+            {% for choice in form.goal %}
+            <td>
+                <label>
+                    {{ choice }}
+                </label>
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+
+    <table class="table">
+        <tr>
+            <th>{{ form.believability_reasoning.label }}</th>
+            <td>{{ form.believability_reasoning }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.relationship_reasoning.label }}</th>
+            <td>{{ form.relationship_reasoning}}</td>
+        </tr>
+        <tr>
+            <th>{{ form.knowledge_reasoning.label }}</th>
+            <td>{{ form.knowledge_reasoning}}</td>
+        </tr>
+        <tr>
+            <th>{{ form.secret_reasoning.label }}</th>
+            <td>{{ form.secret_reasoning}}</td>
+        </tr>
+        <tr>
+            <th>{{ form.social_rules_reasoning.label }}</th>
+            <td>{{ form.social_rules_reasoning}}</td>
+        </tr>
+        <tr>
+            <th>{{ form.financial_and_material_benefits_reasoning.label }}</th>
+            <td>{{ form.financial_and_material_benefits_reasoning}}</td>
+        </tr>
+        <tr>
+            <th>{{ form.goal_reasoning.label }}</th>
+            <td>{{ form.goal_reasoning}}</td>
+        </tr>
     </table>
 
     {{ next_button }}

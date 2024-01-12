@@ -106,12 +106,18 @@ class Player(BasePlayer):
         min=5,
         choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
     )
+    relationship_reasoning = models.StringField(
+        label='Reasoning for relationship',
+    )
     knowledge = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='knowledge (0-10)',
         max=10,
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
+    )
+    knowledge_reasoning = models.StringField(
+        label='Reasoning for knowledge',
     )
     secret= models.IntegerField(
         widget=widgets.RadioSelect, 
@@ -120,12 +126,18 @@ class Player(BasePlayer):
         min=-10,
         choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
     )
+    secret_reasoning = models.StringField(
+        label='Reasoning for secret',
+    )
     social_rules = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='social_rules (-10-0)',
         max=0,
         min=-10,
         choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
+    )
+    social_rules_reasoning = models.StringField(
+        label='Reasoning for social_rules',
     )
     financial_and_material_benefits = models.IntegerField(
         widget=widgets.RadioSelect, 
@@ -134,12 +146,18 @@ class Player(BasePlayer):
         min=-5,
         choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
     )
+    financial_and_material_benefits_reasoning = models.StringField(
+        label='Reasoning for financial_and_material_benefits',
+    )
     goal = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='goal (0-10)',
         max=10,
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
+    )
+    goal_reasoning = models.StringField(
+        label='Reasoning for goal',
     )
 
     
@@ -165,30 +183,31 @@ class SotopiaEval(Page):
             'turn_list': turn_list # 'string_list' is the key for the list of strings
         }
 
-
     def is_displayed(self):
         import time
         participant = self.participant
+        current_time = time.time()
+        return current_time < participant.expiry
 
-        # Check if 'expiry' is set
-        if hasattr(participant, 'expiry') and participant.expiry:
-            current_time = time.time()
-            return current_time < participant.expiry
-        else:
-            # Handle the case where 'expiry' isn't set
-            return False
 
     form_model = 'player'
     form_fields = [
         'believability', 
+        'believability_reasoning',
         'relationship', 
+        'relationship_reasoning',
         'knowledge', 
+        'knowledge_reasoning', 
         'secret', 
+        'secret_reasoning', 
         'social_rules', 
+        'social_rules_reasoning', 
         'financial_and_material_benefits', 
+        'financial_and_material_benefits_reasoning', 
         'goal',
+        'goal_reasoning',
     ]
-    timeout_seconds = 10
+    timeout_seconds = 60
 
 
 class SotopiaEvalInstruction(Page):
