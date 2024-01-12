@@ -5,7 +5,7 @@ import re
 
 
 def read_json_files():
-    directory = '/Users/yuhaofei/Downloads/GPT4-3.5'
+    directory = './sotopia_survey/GPT4-3.5'
 
     # List all JSON files in the directory
     json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
@@ -41,7 +41,6 @@ def parse_personal_info(text, name):
             "personality": personality.strip(),
             "secrets": secrets.strip()
         }
-    import pdb; pdb.set_trace()
     return f"No information found for {name}."
 
 
@@ -176,7 +175,6 @@ class SotopiaEval(Page):
         'social_rules', 
         'financial_and_material_benefits', 
         'goal',
-        'believability_reasoning',
     ]
 
 
