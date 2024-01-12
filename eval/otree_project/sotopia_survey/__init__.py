@@ -89,6 +89,11 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+
+    def add_queue(self):
+        data = json.loads(self.data)
+        processed_dataset.insert(0, data)
+
     believability = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='believability (0-10)',
@@ -159,9 +164,7 @@ class Player(BasePlayer):
     goal_reasoning = models.StringField(
         label='Reasoning for goal',
     )
-
-    
-conversation = ['good', 'bad']
+    data = models.LongStringField() 
 
 
 # FUNCTIONS
@@ -173,11 +176,11 @@ class SotopiaEval(Page):
 
     @staticmethod
     def vars_for_template(player):
-        dataset_size = len(processed_dataset) # write it as a queue
-        eval_data = processed_dataset[player.group_id % dataset_size]
+        player.data = json.dumps(processed_dataset.pop(-1))
+        data = json.loads(player.data)
         turn_list = zip(
-            [d['speaker'] for d in eval_data['parsed_conversation']], 
-            [d['dialogue'] for d in eval_data['parsed_conversation']]
+            [d['speaker'] for d in data['parsed_conversation']], 
+            [d['dialogue'] for d in data['parsed_conversation']]
         )
         return {
             'turn_list': turn_list # 'string_list' is the key for the list of strings
@@ -188,6 +191,10 @@ class SotopiaEval(Page):
         participant = self.participant
         current_time = time.time()
         return current_time < participant.expiry
+    
+    def before_next_page(player, timeout_happened):
+        if timeout_happened:
+            player.add_queue()
 
 
     form_model = 'player'
