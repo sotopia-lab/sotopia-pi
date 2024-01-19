@@ -2,6 +2,7 @@ from otree.api import *
 import os
 import json
 import re
+from collections import defaultdict
 
 
 def read_json_files():
@@ -27,20 +28,41 @@ def find_names(convo_text):
     return (match.group(1), match.group(2)) if match else (None, None)
 
 
+def parse_scenario(text):
+    pattern = r"Scenario: (.*?)\n"
+    scenario_match = re.search(pattern, text, re.DOTALL)
+    scenario = scenario_match.group(1).strip() if scenario_match else "No scenario found."
+    return scenario
+
+
+def parse_social_goal(text, name):
+    goal_pattern = rf"{name}'s goal: (.*?)\n"
+    goal_match = re.search(goal_pattern, text, re.DOTALL)
+    goal = goal_match.group(1).strip() if goal_match else f"No goal found for {name}."
+
+    return goal
+
 def parse_personal_info(text, name):
-    pattern = rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\. (.*?)\. Personality and values description: (.*?)\.  {name.split(' ')[0]}'s secrets: (.*?)\n"
+    # TODO very important, before the secret of the first person, it would have two whitespace
+    text = text.replace('  ', ' ') 
+    pattern = (
+        rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\."
+        rf"(.*?)\. Personality and values description: (.*?)\. {name.split(' ')[0]}'s secrets: (.*?)(?:\.|\n)"
+    )
+    #pattern = rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\. (.*?)\. Personality and values description: (.*?)\.  {name.split(' ')[0]}'s secrets: (.*?)\n"
     match = re.search(pattern, text, re.DOTALL)
     if match:
         age, profession, pronouns, interests, personality, secrets = match.groups()
         return {
             "name": name,
-            "age": int(age),
+            "age": age,
             "profession": profession.strip(),
             "pronouns": pronouns.strip(),
             "interests": interests.strip(),
             "personality": personality.strip(),
             "secrets": secrets.strip()
         }
+    import pdb; pdb.set_trace()
     return f"No information found for {name}."
 
 
@@ -61,14 +83,19 @@ def parse_conversation(convo_text, names):
 
 raw_dataset = read_json_files()
 processed_dataset = []
+player_annotated_data = defaultdict(list)
 
 for data in raw_dataset:
     names = find_names(data)
     personal_info = {name: parse_personal_info(data, name) for name in names}
+    social_goal = {name: parse_social_goal(data, name) for name in names}
     parsed_conversation = parse_conversation(data, names)
+    scenario = parse_scenario(data)
     processed_dataset.append({
+        'scenario': scenario,
         'names': names,
         'personal_info': personal_info,
+        'social_goal': social_goal,
         'parsed_conversation': parsed_conversation,
     })
 
@@ -176,14 +203,31 @@ class SotopiaEval(Page):
 
     @staticmethod
     def vars_for_template(player):
-        player.data = json.dumps(processed_dataset.pop(-1))
+        print('var for template')
+        print(len(processed_dataset))
+        player_data = processed_dataset.pop(-1)
+        player.data = json.dumps(player_data)
+        player_annotated_data[player.group_id].append(player_data) # TODO (haofeiyu) should be prolific ID
+        print(len(processed_dataset))
         data = json.loads(player.data)
         turn_list = zip(
             [d['speaker'] for d in data['parsed_conversation']], 
             [d['dialogue'] for d in data['parsed_conversation']]
         )
+        scenario = data['scenario']
+        names = data['names']
+        personal_info_1 = data['personal_info'][names[0]]
+        social_goal_1 = data['social_goal'][names[0]]
+        personal_info_2 = data['personal_info'][names[1]]
+        social_goal_2 = data['social_goal'][names[1]]
+        #import pdb; pdb.set_trace()
         return {
-            'turn_list': turn_list # 'string_list' is the key for the list of strings
+            'scenario': scenario,
+            'turn_list': turn_list, # 'string_list' is the key for the list of strings
+            'personal_info_1': personal_info_1,
+            'personal_info_2': personal_info_2,
+            'social_goal_1': social_goal_1,
+            'social_goal_2': social_goal_2,
         }
 
     def is_displayed(self):
@@ -194,7 +238,11 @@ class SotopiaEval(Page):
     
     def before_next_page(player, timeout_happened):
         if timeout_happened:
+            print('timeout before next page')
+            print('length for current data: {}'.format(len(processed_dataset)))
             player.add_queue()
+            player_annotated_data[player.group_id].pop(-1) # TODO (haofeiyu) should be prolific ID
+            print('length after timeout: {}'.format(len(processed_dataset)))
 
 
     form_model = 'player'

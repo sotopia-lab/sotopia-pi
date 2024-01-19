@@ -13,6 +13,38 @@
     </p>
 
 
+<div class="main">
+    
+    <div class="scenario-header">
+        {{ scenario }}
+    </div>
+
+    <div class="cards-container">
+        <div class="card">
+            <div class="card-content">
+                <h1 class="card-title">{{ personal_info_1.name }}</h1>
+                <h2 class="card-subtitle">{{ personal_info_1.profession }} • {{ personal_info_1.pronouns }} • {{ personal_info_1.age }}</h2>
+                <p class="card-text"><strong>Interests:</strong> {{ personal_info_1.interests }}</p>
+                <p class="card-text"><strong>Personality:</strong> {{ personal_info_1.personality }}</p>
+                <p class="card-text"><strong>Secret:</strong> {{ personal_info_1.secrets }}</p>
+                <p class="card-text"><strong>Social Goal:</strong> {{ social_goal_1 }}</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <h1 class="card-title">{{ personal_info_2.name }}</h1>
+                <h2 class="card-subtitle">{{ personal_info_2.profession }} • {{ personal_info_2.pronouns }} • {{ personal_info_2.age
+                    }}</h2>
+                <p class="card-text"><strong>Interests:</strong> {{ personal_info_2.interests }}</p>
+                <p class="card-text"><strong>Personality:</strong> {{ personal_info_2.personality }}</p>
+                <p class="card-text"><strong>Secret:</strong> {{ personal_info_2.secrets }}</p>
+                <p class="card-text"><strong>Social Goal:</strong> {{ social_goal_2 }}</p>
+            </div>
+        </div>
+    </div>
+
+
     <div class="conversation">
         <div class="turn">
             {% for speaker, turn in turn_list %}
@@ -22,6 +54,8 @@
         </div>
         <!-- Add more turns here following the same structure -->
     </div>
+
+</div>
 
     <table class="table">
         <tr>
@@ -131,6 +165,36 @@
 
 
 <style>
+    .main {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-width: 1200px;
+        margin: auto;
+    }
+    .scenario-header {
+        background-color: #A9DFBF; /* Choose the color that matches the image */
+        color: #1D8348; /* Choose the text color that matches the image */
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 0 auto;
+        width: 80%; /* Adjust as needed for your layout */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
+        font-size: 24px; /* Adjust the font size as needed */
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .cards-container {
+        display: flex;
+        justify-content: center; /* Center the cards within the container */
+        flex-wrap: wrap; /* Wrap cards to the next line if there's not enough space */
+        gap: 20px; /* Adds space between cards */
+        width: 100%; /* Take the full width of the parent container */
+    }
     .conversation {
         font-family: Arial, sans-serif;
         margin: 20px;
@@ -146,6 +210,35 @@
 
     .message {
         margin-left: 20px;
+    }
+    .card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin: 0 20px;
+        width: 700px; /* or any other fixed width */
+    }
+    .card img {
+        width: 100%;
+        height: auto;
+    }
+    .card-content {
+        padding: 20px;
+    }
+    .card-title {
+        margin: 0;
+        color: #333;
+        font-size: 20px;
+    }
+    .card-subtitle {
+        margin: 0;
+        color: #666;
+        font-size: 16px;
+    }
+    .card-text {
+        margin: 10px 0;
+        color: #777;
     }
 </style>
 
