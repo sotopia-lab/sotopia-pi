@@ -205,14 +205,20 @@ class SotopiaEval(Page):
     def vars_for_template(player):
         print('var for template')
         print(len(processed_dataset))
-        player_data = processed_dataset.pop(-1)
+        player_data = processed_dataset[-1]
         player.data = json.dumps(player_data)
         player_annotated_data[player.group_id].append(player_data) # TODO (haofeiyu) should be prolific ID
         print(len(processed_dataset))
         data = json.loads(player.data)
+        for d in data['parsed_conversation']:
+            if '\"' in d['dialogue']:
+                d['turn'] = f"{d['speaker']} said: {d['dialogue']}"
+            else:
+                d['turn'] = d['dialogue']
+
         turn_list = zip(
-            [d['speaker'] for d in data['parsed_conversation']], 
-            [d['dialogue'] for d in data['parsed_conversation']]
+            [i+1 for i in range(len(data['parsed_conversation']))],
+            [d['turn'] for d in data['parsed_conversation']], 
         )
         scenario = data['scenario']
         names = data['names']
@@ -220,7 +226,6 @@ class SotopiaEval(Page):
         social_goal_1 = data['social_goal'][names[0]]
         personal_info_2 = data['personal_info'][names[1]]
         social_goal_2 = data['social_goal'][names[1]]
-        #import pdb; pdb.set_trace()
         return {
             'scenario': scenario,
             'turn_list': turn_list, # 'string_list' is the key for the list of strings
@@ -243,6 +248,9 @@ class SotopiaEval(Page):
             player.add_queue()
             player_annotated_data[player.group_id].pop(-1) # TODO (haofeiyu) should be prolific ID
             print('length after timeout: {}'.format(len(processed_dataset)))
+        else:
+            # only successful jumping to the thank you page pop
+            processed_dataset.pop(-1)
 
 
     form_model = 'player'
@@ -262,7 +270,7 @@ class SotopiaEval(Page):
         'goal',
         'goal_reasoning',
     ]
-    timeout_seconds = 60
+    timeout_seconds = 600
 
 
 class SotopiaEvalInstruction(Page):

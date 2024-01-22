@@ -3,242 +3,291 @@
 
 
 {{ block content }}
-
-    <p>
-        Please answer the following questions. 
-    </p>
-
-    <p>
-        Your player ID is {{player.id_in_group}} in Group {{player.group_id}}.
-    </p>
-
-
-<div class="main">
-    
-    <div class="scenario-header">
-        {{ scenario }}
-    </div>
-
-    <div class="cards-container">
-        <div class="card">
-            <div class="card-content">
-                <h1 class="card-title">{{ personal_info_1.name }}</h1>
-                <h2 class="card-subtitle">{{ personal_info_1.profession }} • {{ personal_info_1.pronouns }} • {{ personal_info_1.age }}</h2>
-                <p class="card-text"><strong>Interests:</strong> {{ personal_info_1.interests }}</p>
-                <p class="card-text"><strong>Personality:</strong> {{ personal_info_1.personality }}</p>
-                <p class="card-text"><strong>Secret:</strong> {{ personal_info_1.secrets }}</p>
-                <p class="card-text"><strong>Social Goal:</strong> {{ social_goal_1 }}</p>
+    <div class="row justify-content-center" style="margin-top: 20px">
+        <div class="col-11" id="table-container">
+            <h5>
+                Social scenario and dialogue waiting to be annotated:
+            </h5>
+            <div class="row justify-content-center" style="
+                                        background-color: ghostwhite;
+                                        border: 1px solid darkgrey;
+                                        border-radius: 3px;
+                                        width: 100%;
+                                        margin-left: auto;
+                                        margin-right: auto;
+                                        margin-top: 20px;
+                                    ">
+                <div class="col-12 text-center" style="margin: 1em 0">
+                    <div class="situation">
+                        <em style="
+                                            font-size: 18;
+                                            color: #006cd8;
+                                            font-weight: bold;
+                                            ">Social Interaction</em><span id="speechContextInput"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <strong>Scenario:</strong> {{ scenario }} <br /><br />
+                    
+                    <strong>Participants:</strong> {{ personal_info_1.name }} and {{ personal_info_2.name }} <br /><br />
+                    
+                    <strong>{{ personal_info_1.name }}'s background:</strong> {{ personal_info_1.name}} is a {{ personal_info_1.age }}-year-old {{ personal_info_1.profession }}. {{ personal_info_1.pronouns }} pronouns. {{ personal_info_1.name }} is {{ personal_info_1.interests }}. Personality and values
+                    description: {{ personal_info_1.personality }}. {{ personal_info_1.name }}'s secrets: {{ personal_info_1.secrets }}.
+                    <br /><br />
+                    
+                    <strong>{{ personal_info_2.name }}'s background:</strong> {{ personal_info_2.name}} is a {{ personal_info_2.age
+                    }}-year-old {{ personal_info_2.profession }}. {{ personal_info_2.pronouns }} pronouns. {{ personal_info_2.name }} is {{
+                    personal_info_2.interests }}. Personality and values
+                    description: {{ personal_info_2.personality }}. {{ personal_info_2.name }}'s secrets: {{ personal_info_2.secrets }}.
+                    <br /><br />
+                    
+                    <strong>{{ personal_info_1.name }}'s goal:</strong> {{ social_goal_1 }} <br /><br />
+                    <strong>{{ personal_info_2.name }}'s goal:</strong> {{ social_goal_2 }}
+                </div>
+                <div class="col-12 text-center" style="margin: 1em 0">
+                    <div class="situation">
+                        <em style="
+                                            font-size: 18;
+                                            color: #006cd8;
+                                            font-weight: bold;
+                                            ">Episode</em><span id="episodeContextInput"></span>
+                    </div>
+                </div>
+                <div class="col-12" style="margin-top: 1em">
+                    {% for turn_id, turn in turn_list %}
+                        <strong>Turn #{{ turn_id }}</strong>
+                        <br />
+                        {{ turn }}
+                        <br /><br />
+                    {% endfor %}
+                </div>
+                <div class="col-12 text-center" style="margin: 1em 0">
+                    <div class="situation">
+                        <em style="
+                            font-size: 18;
+                            color: #006cd8;
+                            font-weight: bold;
+                        ">Social Interaction Ratings</em><span id="episodeContextInput"></span>
+                    </div>
+                </div>
+                <div class="table-responsive" style="margin-left: 20px; margin-right: 20px; width: 100%">
+                    <table class="table table-hover" id="examples-table" style="background-color: white">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" style="width: 25%; background-color: #e9ecef">Dimension</th>
+                                <th scope="col" style="width: 40%; background-color: #e9ecef">{{ personal_info_1.name }} Reasoning</th>
+                                <th scope="col" style="width: 10%; background-color: #e9ecef", colspan="11">{{ personal_info_1.name }} Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="cb-teal">Believability<br />(0 to 10)</td>
+                                <td>{{ form.believability_reasoning}} <br /></td>
+                                {% for choice in form.believability %}
+                                <td><label>{{ choice }}</label></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="cb-purple">
+                                    Relationship<br />(-5 to 5)
+                                </td>
+                                <td>{{ form.relationship_reasoning}} <br /></td>
+                                {% for choice in form.relationship %}
+                                <td><label>{{ choice }}</label></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="cb-gold">
+                                    Knowledge<br />(0 to 10)
+                                </td>
+                                <td>{{ form.knowledge_reasoning}} <br /></td>
+                                {% for choice in form.knowledge %}
+                                <td><label>{{ choice }}</label></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="cb-orange">Secret<br />(-10 to 0)</td>
+                                <td>{{ form.secret_reasoning}} <br /></td>
+                                {% for choice in form.secret %}
+                                <td><label>{{ choice }}</label></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="cb-green">
+                                    Social Rules<br />(-10 to 0)
+                                </td>
+                                <td>{{ form.social_rules_reasoning}} <br /></td>
+                                {% for choice in form.social_rules %}
+                                <td><label>{{ choice }}</label></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="cb-brown">
+                                    Financial and Material Benefits (-5 to 5)
+                                </td>
+                                <td>{{ form.financial_and_material_benefits_reasoning}} <br /></td>
+                                {% for choice in form.financial_and_material_benefits%}
+                                <td><label>{{ choice }}</label></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td class="cb-pink">
+                                    Goal (0 to 10)
+                                </td>
+                                <td>{{ form.goal_reasoning }} <br /></td>
+                                {% for choice in form.goal %}
+                                <td><label>{{ choice }}</label></td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- End of the table -->
+                </div>
             </div>
         </div>
-
-        <div class="card">
-            <div class="card-content">
-                <h1 class="card-title">{{ personal_info_2.name }}</h1>
-                <h2 class="card-subtitle">{{ personal_info_2.profession }} • {{ personal_info_2.pronouns }} • {{ personal_info_2.age
-                    }}</h2>
-                <p class="card-text"><strong>Interests:</strong> {{ personal_info_2.interests }}</p>
-                <p class="card-text"><strong>Personality:</strong> {{ personal_info_2.personality }}</p>
-                <p class="card-text"><strong>Secret:</strong> {{ personal_info_2.secrets }}</p>
-                <p class="card-text"><strong>Social Goal:</strong> {{ social_goal_2 }}</p>
-            </div>
-        </div>
     </div>
 
-
-    <div class="conversation">
-        <div class="turn">
-            {% for speaker, turn in turn_list %}
-                <span class="speaker">{{ speaker }}:</span>
-                <p class="message">{{ turn }}</p>
-            {% endfor %}
-        </div>
-        <!-- Add more turns here following the same structure -->
-    </div>
-
-</div>
-
-    <table class="table">
-        <tr>
-            <th>{{ form.believability.label }}</th>
-            {% for choice in form.believability %}
-            <td>
-                <label>
-                    {{ choice }}
-                </label>
-            </td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <th>{{ form.relationship.label }}</th>
-            {% for choice in form.relationship %}
-            <td>
-                <label>
-                    {{ choice }}
-                </label>
-            </td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <th>{{ form.knowledge.label }}</th>
-            {% for choice in form.knowledge%}
-            <td>
-                <label>
-                    {{ choice }}
-                </label>
-            </td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <th>{{ form.secret.label }}</th>
-            {% for choice in form.secret %}
-            <td>
-                <label>
-                    {{ choice }}
-                </label>
-            </td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <th>{{ form.social_rules.label }}</th>
-            {% for choice in form.social_rules %}
-            <td>
-                <label>
-                    {{ choice }}
-                </label>
-            </td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <th>{{ form.financial_and_material_benefits.label }}</th>
-            {% for choice in form.financial_and_material_benefits %}
-            <td>
-                <label>
-                    {{ choice }}
-                </label>
-            </td>
-            {% endfor %}
-        </tr>
-        <tr>
-            <th>{{ form.goal.label }}</th>
-            {% for choice in form.goal %}
-            <td>
-                <label>
-                    {{ choice }}
-                </label>
-            </td>
-            {% endfor %}
-        </tr>
-    </table>
-
-    <table class="table">
-        <tr>
-            <th>{{ form.believability_reasoning.label }}</th>
-            <td>{{ form.believability_reasoning }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.relationship_reasoning.label }}</th>
-            <td>{{ form.relationship_reasoning}}</td>
-        </tr>
-        <tr>
-            <th>{{ form.knowledge_reasoning.label }}</th>
-            <td>{{ form.knowledge_reasoning}}</td>
-        </tr>
-        <tr>
-            <th>{{ form.secret_reasoning.label }}</th>
-            <td>{{ form.secret_reasoning}}</td>
-        </tr>
-        <tr>
-            <th>{{ form.social_rules_reasoning.label }}</th>
-            <td>{{ form.social_rules_reasoning}}</td>
-        </tr>
-        <tr>
-            <th>{{ form.financial_and_material_benefits_reasoning.label }}</th>
-            <td>{{ form.financial_and_material_benefits_reasoning}}</td>
-        </tr>
-        <tr>
-            <th>{{ form.goal_reasoning.label }}</th>
-            <td>{{ form.goal_reasoning}}</td>
-        </tr>
-    </table>
-
-    {{ next_button }}
+    <div class="next-button"> {{ next_button }} </div>
 
 
 <style>
-    .main {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        max-width: 1200px;
-        margin: auto;
-    }
-    .scenario-header {
-        background-color: #A9DFBF; /* Choose the color that matches the image */
-        color: #1D8348; /* Choose the text color that matches the image */
-        text-align: center;
-        padding: 10px;
-        border-radius: 10px;
-        margin: 0 auto;
-        width: 80%; /* Adjust as needed for your layout */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
-        font-size: 24px; /* Adjust the font size as needed */
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
-    .cards-container {
-        display: flex;
-        justify-content: center; /* Center the cards within the container */
-        flex-wrap: wrap; /* Wrap cards to the next line if there's not enough space */
-        gap: 20px; /* Adds space between cards */
-        width: 100%; /* Take the full width of the parent container */
-    }
-    .conversation {
+    .container {
         font-family: Arial, sans-serif;
-        margin: 20px;
-    }
-
-    .turn {
-        margin-bottom: 15px;
-    }
-
-    .speaker {
-        font-weight: bold;
-    }
-
-    .message {
-        margin-left: 20px;
-    }
-    .card {
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        overflow: hidden;
-        margin: 0 20px;
-        width: 700px; /* or any other fixed width */
-    }
-    .card img {
-        width: 100%;
-        height: auto;
-    }
-    .card-content {
+        max-width: 910px;
+        margin: 20px auto;
         padding: 20px;
     }
-    .card-title {
-        margin: 0;
-        color: #333;
-        font-size: 20px;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
-    .card-subtitle {
-        margin: 0;
-        color: #666;
-        font-size: 16px;
+    th, td{
+        border: 1px solid #dee2e6;
+        padding: 8px;
+        text-align: left;
     }
-    .card-text {
+    th {
+        background-color: #e9ecef;
+        color: #0056b3;
+    }
+    .rating {
+        width: 50px;
+    }
+    .assessment {
+        width: 250px;
+    }
+    h3 {
+        font-size: 1.5em;
+        color: #0056b3;
+    }
+    h5 {
+        color: #6c757d;
+    }
+    p {
         margin: 10px 0;
-        color: #777;
+        color: #000000;
+    }
+    .card, .card-header, .card-body {
+        border: 1px solid transparent;
+        box-shadow: none !important;
+    }
+    .next-button {
+        color: white;
+        padding: 20px 25px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: flex;
+        padding: 20px;
+        height: 5vh;
+        justify-content: center;
+        align-items: center;
+    }
+    .situation {
+        border-radius: .2em;
+        background-color: #DDECFA;
+        padding: .5em;
+      }
+
+      .cb-teal {
+        color: #1b9e77;
+        font-weight: bold;
+  
+      }
+      .cb-orange {
+        color: #d95f02;
+        font-weight: bold;
+      }
+      .cb-red {
+        color: #e9252f;
+        font-weight: bold;
+      }
+      .cb-purple {
+        color: #7570b3;
+        font-weight: bold;
+      }
+      .cb-pink {
+        color: #e7298a;
+        font-weight: bold;
+      }
+      .cb-green {
+        color: #66a61e;
+        font-weight: bold;
+      }
+      .cb-gold {
+        color: #e6ab02;
+        font-weight: bold;
+      }
+      .cb-brown{
+        color: #a6761d;
+        font-weight: bold;
+      }
+      .cb-gray{
+        color: #3f3f3f;
+      }
+      .cb-bg-teal {
+        background-color: #1b9e77
+      }
+      .cb-bg-orange {
+        background-color: #d95f02
+      }
+      .cb-bg-purple {
+        background-color: #7570b3
+      }
+      .cb-bg-pink {
+        background-color: #e7298a
+      }
+      .cb-bg-green {
+        background-color: #66a61e
+      }
+      .cb-bg-gold {
+        background-color: #e6ab02
+      }
+      .cb-bg-brown{
+        background-color: #a6761d
+      }
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .styled-table th, .styled-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        width: 8%;
+    }
+
+    .styled-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .styled-table th {
+        background-color: #4CAF50;
+        color: white;
     }
 </style>
 
