@@ -6,7 +6,7 @@ from collections import defaultdict
 
 
 def read_json_files():
-    directory = './sotopia_survey/GPT4-3.5'
+    directory = './sotopia_survey/GPT4-GPT3.5'
 
     # List all JSON files in the directory
     json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
@@ -19,7 +19,7 @@ def read_json_files():
         file_path = os.path.join(directory, file)
         with open(file_path, 'r') as json_file:
             data = json.load(json_file)
-            all_json_data.append(data['rewards_prompt'])
+            all_json_data.append((data['pk'], data['rewards_prompt']))
     return all_json_data
 
 
@@ -44,7 +44,10 @@ def parse_social_goal(text, name):
 
 def parse_personal_info(text, name):
     # TODO very important, before the secret of the first person, it would have two whitespace
-    text = text.replace('  ', ' ') 
+    if not name:
+        raise Exception("name field is None")
+    
+    text = text.replace('  ', ' ')
     pattern = (
         rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\."
         rf"(.*?)\. Personality and values description: (.*?)\. {name.split(' ')[0]}'s secrets: (.*?)(?:\.|\n)"
@@ -62,8 +65,8 @@ def parse_personal_info(text, name):
             "personality": personality.strip(),
             "secrets": secrets.strip()
         }
-    import pdb; pdb.set_trace()
-    return f"No information found for {name}."
+    # import pdb; pdb.set_trace()
+    raise Exception(f"No information found for {name}.")
 
 
 def parse_conversation(convo_text, names):
@@ -86,18 +89,22 @@ processed_dataset = []
 player_annotated_data = defaultdict(list)
 
 for data in raw_dataset:
-    names = find_names(data)
-    personal_info = {name: parse_personal_info(data, name) for name in names}
-    social_goal = {name: parse_social_goal(data, name) for name in names}
-    parsed_conversation = parse_conversation(data, names)
-    scenario = parse_scenario(data)
-    processed_dataset.append({
-        'scenario': scenario,
-        'names': names,
-        'personal_info': personal_info,
-        'social_goal': social_goal,
-        'parsed_conversation': parsed_conversation,
-    })
+    try:
+        rewards_prompt = data[1]
+        names = find_names(rewards_prompt)
+        personal_info = {name: parse_personal_info(rewards_prompt, name) for name in names}
+        social_goal = {name: parse_social_goal(rewards_prompt, name) for name in names}
+        parsed_conversation = parse_conversation(rewards_prompt, names)
+        scenario = parse_scenario(rewards_prompt)
+        processed_dataset.append({
+            'scenario': scenario,
+            'names': names,
+            'personal_info': personal_info,
+            'social_goal': social_goal,
+            'parsed_conversation': parsed_conversation,
+        })
+    except Exception as e:
+        print(e, f"; pk: {data[0]}")
 
 
 
