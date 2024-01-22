@@ -121,6 +121,10 @@ class Player(BasePlayer):
         data = json.loads(self.data)
         processed_dataset.insert(0, data)
 
+    prolific_id = models.StringField(
+        label='Prolific ID',
+    )
+
     believability = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='believability (0-10)',
@@ -207,7 +211,6 @@ class SotopiaEval(Page):
         print(len(processed_dataset))
         player_data = processed_dataset[-1]
         player.data = json.dumps(player_data)
-        player_annotated_data[player.group_id].append(player_data) # TODO (haofeiyu) should be prolific ID
         print(len(processed_dataset))
         data = json.loads(player.data)
         for d in data['parsed_conversation']:
@@ -246,11 +249,13 @@ class SotopiaEval(Page):
             print('timeout before next page')
             print('length for current data: {}'.format(len(processed_dataset)))
             player.add_queue()
-            player_annotated_data[player.group_id].pop(-1) # TODO (haofeiyu) should be prolific ID
+            player_annotated_data[player.prolific_id].pop(-1)
             print('length after timeout: {}'.format(len(processed_dataset)))
         else:
             # only successful jumping to the thank you page pop
-            processed_dataset.pop(-1)
+            player_data = processed_dataset.pop(-1)
+            player_annotated_data[player.prolific_id].append(player_data)
+            print(player_annotated_data)
 
 
     form_model = 'player'
@@ -275,6 +280,8 @@ class SotopiaEval(Page):
 
 class SotopiaEvalInstruction(Page):
     form_model = 'player'
+    form_fields = ['prolific_id']
+
 
     @staticmethod
     def before_next_page(player, timeout_happened):
