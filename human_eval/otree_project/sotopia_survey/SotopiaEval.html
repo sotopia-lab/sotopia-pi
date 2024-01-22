@@ -1,7 +1,5 @@
 {{ block title }}Social Evaluation{{ endblock }}
 
-
-
 {{ block content }}
 <div class="container mt-5" , style="border: 1px solid #ffffff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
     <div class="row justify-content-center" style="margin-top: 20px">
@@ -153,6 +151,14 @@
 
 </div>
 
+<div class="otree-timer alert alert-warning">
+    <p>Time left to complete this page:
+        <span style="font-weight: bold">
+            <span class="otree-timer__time-left"></span>
+        </span>
+    </p>
+</div>
+
 <style>
     .container {
         font-family: Arial, sans-serif;
@@ -203,13 +209,12 @@
     }
     .next-button {
         color: white;
-        padding: 20px 25px;
+        padding: 40px 25px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s ease;
         display: flex;
-        padding: 20px;
         height: 5vh;
         justify-content: center;
         align-items: center;
@@ -298,6 +303,38 @@
         color: white;
     }
 </style>
+
+
+
+<script>
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    }
+
+    window.onload = function () {
+        var timer1Duration = {{ timer1_duration }}; // from oTree vars
+        var timer2Duration = {{ timer2_duration }}; // from oTree vars
+        var display1 = document.querySelector('#timer1');
+        var display2 = document.querySelector('#timer2');
+        startTimer(timer1Duration, display1);
+        startTimer(timer2Duration, display2);
+    };
+</script>
+
+
 
 {{ endblock }}
 

@@ -236,6 +236,8 @@ class SotopiaEval(Page):
             'personal_info_2': personal_info_2,
             'social_goal_1': social_goal_1,
             'social_goal_2': social_goal_2,
+            'timer1_duration': 400,
+            'timer2_duration': 600,
         }
 
     def is_displayed(self):
