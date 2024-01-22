@@ -6,7 +6,7 @@ from collections import defaultdict
 
 
 def read_json_files():
-    directory = './sotopia_survey/GPT4-GPT3.5'
+    directory = './sotopia_survey/GPT4-3.5'
 
     # List all JSON files in the directory
     json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
@@ -139,7 +139,7 @@ class Player(BasePlayer):
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
     )
-    believability_reasoning = models.StringField(
+    believability_reasoning = models.LongStringField(
         label='Reasoning for believability',
     )
     relationship = models.IntegerField(
@@ -149,7 +149,7 @@ class Player(BasePlayer):
         min=5,
         choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
     )
-    relationship_reasoning = models.StringField(
+    relationship_reasoning = models.LongStringField(
         label='Reasoning for relationship',
     )
     knowledge = models.IntegerField(
@@ -159,7 +159,7 @@ class Player(BasePlayer):
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
     )
-    knowledge_reasoning = models.StringField(
+    knowledge_reasoning = models.LongStringField(
         label='Reasoning for knowledge',
     )
     secret= models.IntegerField(
@@ -169,7 +169,7 @@ class Player(BasePlayer):
         min=-10,
         choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
     )
-    secret_reasoning = models.StringField(
+    secret_reasoning = models.LongStringField(
         label='Reasoning for secret',
     )
     social_rules = models.IntegerField(
@@ -179,7 +179,7 @@ class Player(BasePlayer):
         min=-10,
         choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
     )
-    social_rules_reasoning = models.StringField(
+    social_rules_reasoning = models.LongStringField(
         label='Reasoning for social_rules',
     )
     financial_and_material_benefits = models.IntegerField(
@@ -189,7 +189,7 @@ class Player(BasePlayer):
         min=-5,
         choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
     )
-    financial_and_material_benefits_reasoning = models.StringField(
+    financial_and_material_benefits_reasoning = models.LongStringField(
         label='Reasoning for financial_and_material_benefits',
     )
     goal = models.IntegerField(
@@ -199,7 +199,7 @@ class Player(BasePlayer):
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
     )
-    goal_reasoning = models.StringField(
+    goal_reasoning = models.LongStringField(
         label='Reasoning for goal',
     )
     data = models.LongStringField() 
