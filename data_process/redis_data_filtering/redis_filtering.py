@@ -196,7 +196,7 @@ def get_threshold_by_variance(env_rewards, var_limit, balance=True):
     return 
 
 
-def goal_filter_per_env_agent(episodes, apply_filter=True):
+def goal_filter_per_env_agent(episodes, apply_filter=True, filter_threshold=GOAL_AVG_THRESHOLD):
     # function to AUTOMATICALLY filter using goal reward scores for each agent position given scenario
     goal_score = {'agent1':[], 'agent2':[]}
     env_tpls = []
@@ -222,18 +222,18 @@ def goal_filter_per_env_agent(episodes, apply_filter=True):
             env_tpls.append((episodes[agent1_rank[i]], 0))
             env_tpls.append((episodes[agent2_rank[i]], 1))
         else:
-            if goal_score['agent1'][agent1_rank[i]] >= min(GOAL_KEEP_THRESHOD, agent1_avg) and (goal_score['agent2'][agent2_rank[i]] > min(GOAL_KEEP_THRESHOD, agent2_avg)):
+            if goal_score['agent1'][agent1_rank[i]] > min(filter_threshold, agent1_avg) and (goal_score['agent2'][agent2_rank[i]] > min(filter_threshold, agent2_avg)):
                 env_tpls.append((episodes[agent1_rank[i]], 0))
                 env_tpls.append((episodes[agent1_rank[i]], 1))
                 
     return env_tpls
 
 
-def goal_filter_all_env_agent(env_episode_dic, apply_filter=True):
+def goal_filter_all_env_agent(env_episode_dic, apply_filter=True, filter_threshold=GOAL_AVG_THRESHOLD):
     # aggregate function to AUTOMATICALLY apply filters on all env and episodes in env
     filter_env_dic = {}
     for env, episodes in env_episode_dic.items():
-        env_agent_episode = goal_filter_per_env_agent(episodes, apply_filter)
+        env_agent_episode = goal_filter_per_env_agent(episodes, apply_filter, filter_threshold)
         filter_env_dic[env] = env_agent_episode
         
     return filter_env_dic

@@ -99,7 +99,7 @@ def generate_result(msg):
         case "non-verbal communication":
             result["argument"] = msg
             
-    str_result = str(result)
+    str_result = json.dumps(result)
         
     return str_result
 
