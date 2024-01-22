@@ -253,6 +253,7 @@ class SotopiaEval(Page):
             print('length after timeout: {}'.format(len(processed_dataset)))
         else:
             # only successful jumping to the thank you page pop
+            print('finish one successfully, still have {}'.format(len(processed_dataset)))
             player_data = processed_dataset.pop(-1)
             player_annotated_data[player.prolific_id].append(player_data)
             print(player_annotated_data)
@@ -281,7 +282,6 @@ class SotopiaEval(Page):
 class SotopiaEvalInstruction(Page):
     form_model = 'player'
     form_fields = ['prolific_id']
-
 
     @staticmethod
     def before_next_page(player, timeout_happened):
