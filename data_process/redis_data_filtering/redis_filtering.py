@@ -60,6 +60,12 @@ def get_generated_scenarios(exclude):
 
     return [pk for pk in env_pks if pk not in exclude]
 
+def get_used_env(use_file, roundname):
+    # Opening JSON file
+    f = open(use_file)
+    used_env = json.load(f)
+    return used_env[roundname]
+
 def get_episode_by_env(tag, all_sotopia, all_gen, selected_env=[]):
     # function to select episodes base on environment/scenario pk, as well as tag
     if not selected_env:
@@ -239,15 +245,15 @@ def goal_filter_all_env_agent(env_episode_dic, apply_filter=True, filter_thresho
     return filter_env_dic
 
 
-def run_filtered_episodes_to_prompt(filter_env_agent_episodes, json_dir, level="Easy", include_format=False):
+def run_filtered_episodes_to_prompt(filter_env_agent_episodes, json_dir, include_format=False):
     # function to convert selected episode into prompt completion format and save to json 
     # use for Sotopia Scenario
     if not os.path.exists(json_dir):
         os.makedirs(json_dir)
     parse_count = 0
     for env, tpls in filter_env_agent_episodes.items():
-        if (level == 'Easy' and env in HARD_SCENARIO) or (level == 'Hard' and env not in HARD_SCENARIO):
-            continue
+        # if (level == 'Easy' and env in HARD_SCENARIO) or (level == 'Hard' and env not in HARD_SCENARIO):
+        #     continue
         for tpl in tpls:
             parse_prompt_to_json(tpl[0], json_dir, tpl[1], include_format)
             parse_count+=1
