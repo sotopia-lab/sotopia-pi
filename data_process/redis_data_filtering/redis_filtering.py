@@ -228,7 +228,8 @@ def goal_filter_per_env_agent(episodes, apply_filter=True, filter_threshold=GOAL
             env_tpls.append((episodes[agent1_rank[i]], 0))
             env_tpls.append((episodes[agent2_rank[i]], 1))
         else:
-            if goal_score['agent1'][agent1_rank[i]] > min(filter_threshold, agent1_avg) and (goal_score['agent2'][agent2_rank[i]] > min(filter_threshold, agent2_avg)):
+            # we need >= for first a usually first has a distribution lower than second
+            if goal_score['agent1'][agent1_rank[i]] >= min(filter_threshold, agent1_avg) and (goal_score['agent2'][agent2_rank[i]] > min(filter_threshold, agent2_avg)):
                 env_tpls.append((episodes[agent1_rank[i]], 0))
                 env_tpls.append((episodes[agent1_rank[i]], 1))
                 

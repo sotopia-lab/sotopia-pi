@@ -119,7 +119,7 @@ def truncate_prompt_to_length(dia_his, surpass_num, tokenizer=TOKENIZER):
     return trunc_dia
 
 
-def reverse_episode_log(epilog, later_speak=False, include_format=False, max_token=MAX_TOKEN):
+def reverse_episode_log(epilog, later_speak=False, include_format=True, max_token=MAX_TOKEN):
     episode_msg = epilog.messages
     # per episode
     agent_model = epilog.models[1]
