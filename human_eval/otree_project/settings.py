@@ -35,6 +35,8 @@ SESSION_FIELDS = []
 # for example: de, fr, ja, ko, zh-hans
 LANGUAGE_CODE = 'en'
 
+DEBUG = False # TODO(haofeiyu): to control whether the annotators could see the debug_info or not
+
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True

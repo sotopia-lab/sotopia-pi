@@ -5,7 +5,6 @@ import re
 import random
 from collections import defaultdict
 
-
 def read_json_files():
     directory = './sotopia_pilot_study/pilot_study'
 

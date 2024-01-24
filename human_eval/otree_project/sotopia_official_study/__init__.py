@@ -4,7 +4,6 @@ import json
 import re
 from collections import defaultdict
 
-
 def read_json_files():
     directory = './sotopia_official_study/GPT4-3.5'
 
