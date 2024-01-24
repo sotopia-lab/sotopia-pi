@@ -5,7 +5,13 @@ SESSION_CONFIGS = [
     dict(
         name='sotopia_pilot_study',
         display_name='social interaction qualification test',
-        app_sequence=['sotopia_pilot_study', 'payment_info'],
+        app_sequence=['sotopia_pilot_study', 'pilot_study_payment_info'],
+        num_demo_participants=1,
+    ),
+    dict(
+        name='sotopia_official_study',
+        display_name='social interaction qualification test',
+        app_sequence=['sotopia_official_study', 'official_study_payment_info'],
         num_demo_participants=1,
     ),
 ]
