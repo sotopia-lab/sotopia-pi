@@ -2,16 +2,19 @@ from otree.api import *
 import os
 import json
 import re
-import random
 from collections import defaultdict
 
 
 def read_json_files():
-    directory = './sotopia_survey/pilot_study'
+    directory = './sotopia_survey/GPT4-3.5'
 
+    # List all JSON files in the directory
     json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
+
+    # Initialize a list to store all JSON data
     all_json_data = []
 
+    # Loop through the JSON files and read their contents
     for file in json_files:
         file_path = os.path.join(directory, file)
         with open(file_path, 'r') as json_file:
@@ -36,21 +39,20 @@ def parse_social_goal(text, name):
     goal_pattern = rf"{name}'s goal: (.*?)\n"
     goal_match = re.search(goal_pattern, text, re.DOTALL)
     goal = goal_match.group(1).strip() if goal_match else f"No goal found for {name}."
+
     return goal
 
-
 def parse_personal_info(text, name):
+    # TODO very important, before the secret of the first person, it would have two whitespace
     if not name:
         raise Exception("name field is None")
     
-    # TODO very important
-    # before the secret of the first person
-    # it would have two whitespace
     text = text.replace('  ', ' ')
     pattern = (
         rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\."
         rf"(.*?)\. Personality and values description: (.*?)\. {name.split(' ')[0]}'s secrets: (.*?)(?:\.|\n)"
     )
+    #pattern = rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\. (.*?)\. Personality and values description: (.*?)\.  {name.split(' ')[0]}'s secrets: (.*?)\n"
     match = re.search(pattern, text, re.DOTALL)
     if match:
         age, profession, pronouns, interests, personality, secrets = match.groups()
@@ -63,12 +65,12 @@ def parse_personal_info(text, name):
             "personality": personality.strip(),
             "secrets": secrets.strip()
         }
+    # import pdb; pdb.set_trace()
     raise Exception(f"No information found for {name}.")
 
 
 def parse_conversation(convo_text, names):
     # Split the conversation into turns
-    convo_text = convo_text.replace('left the conversation,', 'left the conversation.')
     turns = re.split(r'Turn #\d+\n', convo_text)
     parsed_conversation = []
 
@@ -79,12 +81,12 @@ def parse_conversation(convo_text, names):
                 dialogue = turn.split(':', 1)[1].strip() if ':' in turn else turn
                 parsed_conversation.append({"speaker": name, "dialogue": dialogue})
                 break
-    print(parsed_conversation)
     return parsed_conversation[1:]
 
 
 raw_dataset = read_json_files()
 processed_dataset = []
+player_annotated_data = defaultdict(list)
 
 for data in raw_dataset:
     try:
@@ -129,6 +131,7 @@ class Player(BasePlayer):
     prolific_id = models.StringField(
         label='Prolific ID',
     )
+
     believability = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='believability (0-10)',
@@ -211,8 +214,9 @@ class SotopiaEval(Page):
 
     @staticmethod
     def vars_for_template(player):
+        print('var for template')
         print(len(processed_dataset))
-        player_data = random.choice(processed_dataset)
+        player_data = processed_dataset[-1]
         player.data = json.dumps(player_data)
         print(len(processed_dataset))
         data = json.loads(player.data)
@@ -248,6 +252,21 @@ class SotopiaEval(Page):
         participant = self.participant
         current_time = time.time()
         return current_time < participant.expiry
+    
+    def before_next_page(player, timeout_happened):
+        if timeout_happened:
+            print('timeout before next page')
+            print('length for current data: {}'.format(len(processed_dataset)))
+            player.add_queue()
+            player_annotated_data[player.prolific_id].pop(-1)
+            print('length after timeout: {}'.format(len(processed_dataset)))
+        else:
+            # only successful jumping to the thank you page pop
+            print('finish one successfully, still have {}'.format(len(processed_dataset)))
+            player_data = processed_dataset.pop(-1)
+            player_annotated_data[player.prolific_id].append(player_data)
+            print(player_annotated_data)
+
 
     form_model = 'player'
     form_fields = [
