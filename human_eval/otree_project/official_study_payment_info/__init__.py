@@ -9,7 +9,7 @@ Examples are given for the lab and Amazon Mechanical Turk (AMT).
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'payment_info'
+    NAME_IN_URL = 'official_study_payment_info'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
