@@ -8,13 +8,16 @@ SESSION_CONFIGS = [
         app_sequence=['sotopia_pilot_study', 'pilot_study_payment_info'],
         num_demo_participants=1,
     ),
-    dict(
-        name='sotopia_official_study',
-        display_name='social interaction qualification test',
-        app_sequence=['sotopia_official_study', 'official_study_payment_info'],
-        num_demo_participants=1,
-    ),
 ]
+
+'''
+dict(
+    name='sotopia_official_study',
+    display_name='social interaction qualification test',
+    app_sequence=['sotopia_official_study', 'official_study_payment_info'],
+    num_demo_participants=1,
+),
+'''
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
 # in SESSION_CONFIGS, except those that explicitly override it.
