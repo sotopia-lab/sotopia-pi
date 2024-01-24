@@ -453,223 +453,251 @@
                             progress towards their social goals.</li>
                     </ol>
     
-                    <table class="table table-hover" id="examples-table" style="background-color: white">
-                        <thead class="thead-light">
-                            <tr>
-                                <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef">Dimension</th>
-                                <th class="text-center" scope="col" style="width: 40%; background-color: #e9ecef">{{ personal_info_1.name }} Reasoning</th>
-                                <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef", colspan="11">{{ personal_info_1.name }} Rating</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="cb-teal">Believability<br />(0 to 10)</td>
-                                <td>{{ form.believability_reasoning}}</td>
-                                {% for choice in form.believability %}
-                                <td>
-                                    <label class="cb-teal text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-purple ">
-                                    Relationship<br />(-5 to 5)
-                                </td>
-                                <td>{{ form.relationship_reasoning}}</td>
-                                {% for choice in form.relationship %}
-                                <td>
-                                    <label class="cb-purple text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-gold">
-                                    Knowledge<br />(0 to 10)
-                                </td>
-                                <td>{{ form.knowledge_reasoning}}</td>
-                                {% for choice in form.knowledge %}
-                                <td>
-                                    <label class="cb-gold text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-orange">Secret<br />(-10 to 0)</td>
-                                <td>{{ form.secret_reasoning}}</td>
-                                {% for choice in form.secret %}
-                                <td>
-                                    <label class="cb-orange text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-green">
-                                    Social Rules<br />(-10 to 0)
-                                </td>
-                                <td>{{ form.social_rules_reasoning}}</td>
-                                {% for choice in form.social_rules %}
-                                <td>
-                                    <label class="cb-green text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-brown">
-                                    Financial and Material Benefits (-5 to 5)
-                                </td>
-                                <td>{{ form.financial_and_material_benefits_reasoning}}</td>
-                                {% for choice in form.financial_and_material_benefits %}
-                                <td>
-                                    <label class="cb-brown text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-pink">
-                                    Goal (0 to 10)
-                                </td>
-                                <td>{{ form.goal_reasoning }}</td>
-                                {% for choice in form.goal %}
-                                <td>
-                                    <label class="cb-pink text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+<div class="table-responsive" style="margin-left: 20px; margin-right: 20px; width: 100%">
+    <h5>Evaluation Metric Range Explanation</h5>
+    <ol>
+        <li><strong>Believability</strong>: Assign a value between 0 to 10, with a higher score indicating more
+            believability.</li>
+        <li><strong>Relationship</strong>: Assign a value between -5 to 5, with a positive score indicating that their
+            relationship has improved due to the
+            interaction, a negative score indicating that their relationship has deteriorated, and a score of 0
+            suggesting
+            that
+            there has been no significant change in their relationship following the interaction.</li>
+        <li><strong>Knowledge</strong>: Assign a value between 0 to 10, with a higher score indicating the agents have
+            gained new and important knowledge.</li>
+        <li><strong>Secret</strong>: Assign a value between -10 to 0, with -10 indicating the participants leaked
+            critical
+            secrets and 0 indicating no secrets were revealed.</li>
+        <li><strong>Social Rules</strong>: Assign a value between -10 to 0, with a negative score indicating the agents
+            have
+            violated moral rules or laws.</li>
+        <li><strong>Financial and Material Benefits</strong>: Assign a value between -5 to 5, with positive values
+            indicating that agents gained financial and material benefits, negative values indicating that agents lost
+            financial and material benefits.</li>
+        <li><strong>Goal</strong>: Assign a value between 0 to 10, with a higher score indicating that agents are making
+            progress towards their social goals.</li>
+    </ol>
+
+    <table class="table table-hover" id="examples-table" style="background-color: white">
+        <thead class="thead-light">
+            <tr>
+                <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef">Dimension</th>
+                <th class="text-center" scope="col" style="width: 40%; background-color: #e9ecef">{{
+                    personal_info_1.name }} Reasoning</th>
+                <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef" , colspan="11">{{
+                    personal_info_1.name }} Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="cb-teal">Believability<br />(0 to 10)</td>
+                <td>{{ form.believability_reasoning_1}}</td>
+                {% for choice in form.believability_1 %}
+                <td>
+                    <label class="cb-teal text-center">
+                        {{ choice.label }}
+                        {{ choice }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="cb-purple ">
+                    Relationship<br />(-5 to 5)
+                </td>
+                <td>{{ form.relationship_reasoning_1}}</td>
+                {% for choice in form.relationship_1 %}
+                <td>
+                    <label class="cb-purple text-center">
+                        {{ choice.label }}
+                        {{ choice }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="cb-gold">
+                    Knowledge<br />(0 to 10)
+                </td>
+                <td>{{ form.knowledge_reasoning_1}}</td>
+                {% for choice in form.knowledge_1 %}
+                <td>
+                    <label class="cb-gold text-center">
+                        {{ choice.label }}
+                        {{ choice }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="cb-orange">Secret<br />(-10 to 0)</td>
+                <td>{{ form.secret_reasoning_1}}</td>
+                {% for choice in form.secret_1 %}
+                <td>
+                    <label class="cb-orange text-center">
+                        {{ choice.label }}
+                        {{ choice }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="cb-green">
+                    Social Rules<br />(-10 to 0)
+                </td>
+                <td>{{ form.social_rules_reasoning_1}}</td>
+                {% for choice in form.social_rules_1 %}
+                <td>
+                    <label class="cb-green text-center">
+                        {{ choice.label }}
+                        {{ choice }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="cb-brown">
+                    Financial and Material Benefits (-5 to 5)
+                </td>
+                <td>{{ form.financial_and_material_benefits_reasoning_1}}</td>
+                {% for choice in form.financial_and_material_benefits_1 %}
+                <td>
+                    <label class="cb-brown text-center">
+                        {{ choice.label }}
+                        {{ choice }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class="cb-pink">
+                    Goal (0 to 10)
+                </td>
+                <td>{{ form.goal_reasoning_1 }}</td>
+                {% for choice in form.goal_1 %}
+                <td>
+                    <label class="cb-pink text-center">
+                        {{ choice.label }}
+                        {{ choice }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 
-                <div class="table-responsive" style="margin-left: 20px; margin-right: 20px; width: 100%">
-                    <table class="table table-hover" id="examples-table" style="background-color: white">
-                        <thead class="thead-light">
-                            <tr>
-                                <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef">Dimension</th>
-                                <th class="text-center" scope="col" style="width: 40%; background-color: #e9ecef">{{
-                                    personal_info_2.name }} Reasoning</th>
-                                <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef" , colspan="11">{{
-                                    personal_info_2.name }} Rating</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="cb-teal">Believability<br />(0 to 10)</td>
-                                <td>{{ form.believability_reasoning}}</td>
-                                {% for choice in form.believability %}
-                                <td>
-                                    <label class="cb-teal text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-purple ">
-                                    Relationship<br />(-5 to 5)
-                                </td>
-                                <td>{{ form.relationship_reasoning}}</td>
-                                {% for choice in form.relationship %}
-                                <td>
-                                    <label class="cb-purple text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-gold">
-                                    Knowledge<br />(0 to 10)
-                                </td>
-                                <td>{{ form.knowledge_reasoning}}</td>
-                                {% for choice in form.knowledge %}
-                                <td>
-                                    <label class="cb-gold text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-orange">Secret<br />(-10 to 0)</td>
-                                <td>{{ form.secret_reasoning}}</td>
-                                {% for choice in form.secret %}
-                                <td>
-                                    <label class="cb-orange text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-green">
-                                    Social Rules<br />(-10 to 0)
-                                </td>
-                                <td>{{ form.social_rules_reasoning}}</td>
-                                {% for choice in form.social_rules %}
-                                <td>
-                                    <label class="cb-green text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-brown">
-                                    Financial and Material Benefits (-5 to 5)
-                                </td>
-                                <td>{{ form.financial_and_material_benefits_reasoning}}</td>
-                                {% for choice in form.financial_and_material_benefits %}
-                                <td>
-                                    <label class="cb-brown text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="cb-pink">
-                                    Goal (0 to 10)
-                                </td>
-                                <td>{{ form.goal_reasoning }}</td>
-                                {% for choice in form.goal %}
-                                <td>
-                                    <label class="cb-pink text-center">
-                                        {{ choice.label }}
-                                        {{ choice }}
-                                    </label>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive" style="margin-left: 20px; margin-right: 20px; width: 100%">
+                <table class="table table-hover" id="examples-table" style="background-color: white">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef">Dimension</th>
+                            <th class="text-center" scope="col" style="width: 40%; background-color: #e9ecef">{{
+                                personal_info_2.name }} Reasoning</th>
+                            <th class="text-center" scope="col" style="width: 10%; background-color: #e9ecef" , colspan="11">{{
+                                personal_info_2.name }} Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cb-teal">Believability<br />(0 to 10)</td>
+                            <td>{{ form.believability_reasoning_2}}</td>
+                            {% for choice in form.believability_2 %}
+                            <td>
+                                <label class="cb-teal text-center">
+                                    {{ choice.label }}
+                                    {{ choice }}
+                                </label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="cb-purple ">
+                                Relationship<br />(-5 to 5)
+                            </td>
+                            <td>{{ form.relationship_reasoning_2}}</td>
+                            {% for choice in form.relationship_2 %}
+                            <td>
+                                <label class="cb-purple text-center">
+                                    {{ choice.label }}
+                                    {{ choice }}
+                                </label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="cb-gold">
+                                Knowledge<br />(0 to 10)
+                            </td>
+                            <td>{{ form.knowledge_reasoning_2}}</td>
+                            {% for choice in form.knowledge_2 %}
+                            <td>
+                                <label class="cb-gold text-center">
+                                    {{ choice.label }}
+                                    {{ choice }}
+                                </label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="cb-orange">Secret<br />(-10 to 0)</td>
+                            <td>{{ form.secret_reasoning_2}}</td>
+                            {% for choice in form.secret_2 %}
+                            <td>
+                                <label class="cb-orange text-center">
+                                    {{ choice.label }}
+                                    {{ choice }}
+                                </label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="cb-green">
+                                Social Rules<br />(-10 to 0)
+                            </td>
+                            <td>{{ form.social_rules_reasoning_2}}</td>
+                            {% for choice in form.social_rules_2 %}
+                            <td>
+                                <label class="cb-green text-center">
+                                    {{ choice.label }}
+                                    {{ choice }}
+                                </label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="cb-brown">
+                                Financial and Material Benefits (-5 to 5)
+                            </td>
+                            <td>{{ form.financial_and_material_benefits_reasoning_2}}</td>
+                            {% for choice in form.financial_and_material_benefits_2 %}
+                            <td>
+                                <label class="cb-brown text-center">
+                                    {{ choice.label }}
+                                    {{ choice }}
+                                </label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="cb-pink">
+                                Goal (0 to 10)
+                            </td>
+                            <td>{{ form.goal_reasoning_2 }}</td>
+                            {% for choice in form.goal_2 %}
+                            <td>
+                                <label class="cb-pink text-center">
+                                    {{ choice.label }}
+                                    {{ choice }}
+                                </label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             </div>
         </div>

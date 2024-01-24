@@ -128,74 +128,145 @@ class Player(BasePlayer):
     prolific_id = models.StringField(
         label='Prolific ID',
     )
-    believability = models.IntegerField(
+    believability_1 = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='believability (0-10)',
         max=10,
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
     )
-    believability_reasoning = models.LongStringField(
+    believability_reasoning_1 = models.LongStringField(
         label='Reasoning for believability',
     )
-    relationship = models.IntegerField(
+    relationship_1 = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='relationship (-5-5)',
         max=-5,
         min=5,
         choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
     )
-    relationship_reasoning = models.LongStringField(
+    relationship_reasoning_1 = models.LongStringField(
         label='Reasoning for relationship',
     )
-    knowledge = models.IntegerField(
+    knowledge_1 = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='knowledge (0-10)',
         max=10,
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
     )
-    knowledge_reasoning = models.LongStringField(
+    knowledge_reasoning_1 = models.LongStringField(
         label='Reasoning for knowledge',
     )
-    secret= models.IntegerField(
+    secret_1 = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='secret (-10-0)',
         max=0,
         min=-10,
         choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
     )
-    secret_reasoning = models.LongStringField(
+    secret_reasoning_1 = models.LongStringField(
         label='Reasoning for secret',
     )
-    social_rules = models.IntegerField(
+    social_rules_1 = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='social_rules (-10-0)',
         max=0,
         min=-10,
         choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
     )
-    social_rules_reasoning = models.LongStringField(
+    social_rules_reasoning_1 = models.LongStringField(
         label='Reasoning for social_rules',
     )
-    financial_and_material_benefits = models.IntegerField(
+    financial_and_material_benefits_1 = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='financial_and_material_benefits (-5-5)',
         max=5,
         min=-5,
         choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
     )
-    financial_and_material_benefits_reasoning = models.LongStringField(
+    financial_and_material_benefits_reasoning_1 = models.LongStringField(
         label='Reasoning for financial_and_material_benefits',
     )
-    goal = models.IntegerField(
+    goal_1 = models.IntegerField(
         widget=widgets.RadioSelect, 
         label='goal (0-10)',
         max=10,
         min=0,
         choices=[0,1,2,3,4,5,6,7,8,9,10]
     )
-    goal_reasoning = models.LongStringField(
+    goal_reasoning_1 = models.LongStringField(
+        label='Reasoning for goal',
+    )
+
+    believability_2 = models.IntegerField(
+        widget=widgets.RadioSelect, 
+        label='believability (0-10)',
+        max=10,
+        min=0,
+        choices=[0,1,2,3,4,5,6,7,8,9,10]
+    )
+    believability_reasoning_2 = models.LongStringField(
+        label='Reasoning for believability',
+    )
+    relationship_2 = models.IntegerField(
+        widget=widgets.RadioSelect, 
+        label='relationship (-5-5)',
+        max=-5,
+        min=5,
+        choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
+    )
+    relationship_reasoning_2 = models.LongStringField(
+        label='Reasoning for relationship',
+    )
+    knowledge_2 = models.IntegerField(
+        widget=widgets.RadioSelect, 
+        label='knowledge (0-10)',
+        max=10,
+        min=0,
+        choices=[0,1,2,3,4,5,6,7,8,9,10]
+    )
+    knowledge_reasoning_2 = models.LongStringField(
+        label='Reasoning for knowledge',
+    )
+    secret_2 = models.IntegerField(
+        widget=widgets.RadioSelect, 
+        label='secret (-10-0)',
+        max=0,
+        min=-10,
+        choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
+    )
+    secret_reasoning_2 = models.LongStringField(
+        label='Reasoning for secret',
+    )
+    social_rules_2 = models.IntegerField(
+        widget=widgets.RadioSelect, 
+        label='social_rules (-10-0)',
+        max=0,
+        min=-10,
+        choices=[-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0]
+    )
+    social_rules_reasoning_2 = models.LongStringField(
+        label='Reasoning for social_rules',
+    )
+    financial_and_material_benefits_2 = models.IntegerField(
+        widget=widgets.RadioSelect, 
+        label='financial_and_material_benefits (-5-5)',
+        max=5,
+        min=-5,
+        choices=[-5,-4,-3,-2,-1,0,1,2,3,4,5]
+    )
+    financial_and_material_benefits_reasoning_2 = models.LongStringField(
+        label='Reasoning for financial_and_material_benefits',
+    )
+    goal_2 = models.IntegerField(
+        widget=widgets.RadioSelect, 
+        label='goal (0-10)',
+        max=10,
+        min=0,
+        choices=[0,1,2,3,4,5,6,7,8,9,10]
+    )
+    goal_reasoning_2 = models.LongStringField(
         label='Reasoning for goal',
     )
     data = models.LongStringField() 
@@ -250,20 +321,34 @@ class SotopiaEval(Page):
 
     form_model = 'player'
     form_fields = [
-        'believability', 
-        'believability_reasoning',
-        'relationship', 
-        'relationship_reasoning',
-        'knowledge', 
-        'knowledge_reasoning', 
-        'secret', 
-        'secret_reasoning', 
-        'social_rules', 
-        'social_rules_reasoning', 
-        'financial_and_material_benefits', 
-        'financial_and_material_benefits_reasoning', 
-        'goal',
-        'goal_reasoning',
+        'believability_1', 
+        'believability_reasoning_1',
+        'relationship_1', 
+        'relationship_reasoning_1',
+        'knowledge_1', 
+        'knowledge_reasoning_1', 
+        'secret_1', 
+        'secret_reasoning_1', 
+        'social_rules_1', 
+        'social_rules_reasoning_1', 
+        'financial_and_material_benefits_1', 
+        'financial_and_material_benefits_reasoning_1', 
+        'goal_1',
+        'goal_reasoning_2',
+        'believability_2', 
+        'believability_reasoning_2',
+        'relationship_2', 
+        'relationship_reasoning_2',
+        'knowledge_2', 
+        'knowledge_reasoning_2', 
+        'secret_2', 
+        'secret_reasoning_2', 
+        'social_rules_2', 
+        'social_rules_reasoning_2', 
+        'financial_and_material_benefits_2', 
+        'financial_and_material_benefits_reasoning_2', 
+        'goal_2',
+        'goal_reasoning_2',
     ]
     timeout_seconds = 600
 
