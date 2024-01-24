@@ -355,7 +355,7 @@ class SotopiaEval(Page):
         'financial_and_material_benefits_1', 
         'financial_and_material_benefits_reasoning_1', 
         'goal_1',
-        'goal_reasoning_2',
+        'goal_reasoning_1',
         'believability_2', 
         'believability_reasoning_2',
         'relationship_2', 
