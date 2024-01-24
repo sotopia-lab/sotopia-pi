@@ -6,7 +6,7 @@ from collections import defaultdict
 
 
 def read_json_files():
-    directory = './sotopia_survey/pilot_study'
+    directory = './sotopia_survey/GPT4-3.5'
 
     # List all JSON files in the directory
     json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
@@ -258,8 +258,7 @@ class SotopiaEval(Page):
             print('timeout before next page')
             print('length for current data: {}'.format(len(processed_dataset)))
             player.add_queue()
-            if len(player_annotated_data) > 1:
-                player_annotated_data[player.prolific_id].pop(-1)
+            player_annotated_data[player.prolific_id].pop(-1)
             print('length after timeout: {}'.format(len(processed_dataset)))
         else:
             # only successful jumping to the thank you page pop

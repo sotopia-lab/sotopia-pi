@@ -3,11 +3,11 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='sotopia_survey',
-        display_name='social interaction evaluation',
-        app_sequence=['sotopia_survey', 'payment_info'],
+        name='sotopia_pilot_study',
+        display_name='social interaction qualification test',
+        app_sequence=['sotopia_pilot_study', 'payment_info'],
         num_demo_participants=1,
-    )
+    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
