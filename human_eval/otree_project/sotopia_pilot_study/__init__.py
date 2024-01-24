@@ -350,7 +350,7 @@ class SotopiaEval(Page):
         'goal_2',
         'goal_reasoning_2',
     ]
-    timeout_seconds = 600
+    timeout_seconds = 1200
 
 
 class SotopiaEvalInstruction(Page):
