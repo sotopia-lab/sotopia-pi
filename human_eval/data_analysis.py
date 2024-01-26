@@ -46,17 +46,17 @@ def choose_qualified_ones(df):
         data_dict = ast.literal_eval(processed_data)
         pilot_study_list.append((pk, data_dict))
 
-    for player_data in df['sotopia_pilot_study.1.player.data']:
+    for idx, row in df.iterrows():
+        player_data = row['sotopia_pilot_study.1.player.data']
         actual_dict = ast.literal_eval(player_data)
         for pilot_data in pilot_study_list:
             if pilot_data[-1]['scenario'] == actual_dict['scenario'] and pilot_data[-1]['names'] == tuple(actual_dict['names']):
                 player_data_pk = pilot_data[0]
+                df.at[idx, 'pk'] = player_data_pk
                 break
-        df['pk'] = player_data_pk
     
     pilot_study_reference = pd.read_csv('./pilot_study_reference.csv')
     pilot_study_reference = pilot_study_reference.to_dict(orient='records')
-
     player_data = df.to_dict(orient='records')
 
     comparing_columns = [
@@ -114,6 +114,7 @@ def choose_qualified_ones(df):
 df = pd.read_csv('./all_apps_wide-2024-01-25.csv')
 df = filter_out_useless_data(df)
 qualified_annotators = choose_qualified_ones(df)
+import pdb; pdb.set_trace()
 
 df = df[columns_to_filter]
 
