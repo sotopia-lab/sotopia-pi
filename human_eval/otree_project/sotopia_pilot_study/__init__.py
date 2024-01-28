@@ -107,6 +107,7 @@ for data in raw_dataset:
     except Exception as e:
         print(e, f"; pk: {data[0]}")
 
+'''
 import pandas as pd
 pd_data = {
     'pk': pks,
@@ -115,6 +116,7 @@ pd_data = {
 df = pd.DataFrame(pd_data)
 df.to_csv('../pilot_study_data.csv')
 import pdb; pdb.set_trace()
+'''
 
 class C(BaseConstants):
     NAME_IN_URL = 'sotopia_pilot_study'
@@ -136,6 +138,9 @@ class Player(BasePlayer):
         data = json.loads(self.data)
         processed_dataset.insert(0, data)
 
+    pk = models.StringField(
+        label='pk',
+    )
     prolific_id = models.StringField(
         label='Prolific ID',
     )
@@ -292,9 +297,11 @@ class SotopiaEval(Page):
 
     @staticmethod
     def vars_for_template(player):
-        print(len(processed_dataset))
-        player_data = random.choice(processed_dataset)
+        assert len(processed_dataset) == len(pks)
+        player_data = processed_dataset[player.id % len(processed_dataset)]
+        player_pk = pks[player.id % len(pks)]
         player.data = json.dumps(player_data)
+        player.pk = player_pk
         print(len(processed_dataset))
         data = json.loads(player.data)
         for d in data['parsed_conversation']:
@@ -320,8 +327,6 @@ class SotopiaEval(Page):
             'personal_info_2': personal_info_2,
             'social_goal_1': social_goal_1,
             'social_goal_2': social_goal_2,
-            'timer1_duration': 400,
-            'timer2_duration': 600,
         }
 
     def is_displayed(self):
