@@ -5,25 +5,33 @@ import re
 from collections import defaultdict
 
 def read_json_files():
-    directory = './sotopia_official_study/GPT4-3.5'
-
-    # List all JSON files in the directory
-    json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
-
     # Initialize a list to store all JSON data
     all_json_data = []
 
-    # Loop through the JSON files and read their contents
-    for file in json_files:
-        file_path = os.path.join(directory, file)
-        with open(file_path, 'r') as json_file:
-            data = json.load(json_file)
-            all_json_data.append((data['pk'], data['rewards_prompt']))
+
+    directories = [
+        './sotopia_official_study/GPT3.5-GPT4',
+        './sotopia_official_study/GPT3.5-GPT3.5',
+        './sotopia_official_study/GPT3.5-FT',
+    ]
+
+    for directory in directories:
+
+        # List all JSON files in the directory
+        json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
+
+        # Loop through the JSON files and read their contents
+        for file in json_files:
+            file_path = os.path.join(directory, file)
+            with open(file_path, 'r') as json_file:
+                data = json.load(json_file)
+                all_json_data.append((data['pk'], data['rewards_prompt']))
     return all_json_data
 
 
 def find_names(convo_text):
-    match = re.search(r'Participants: ([A-Z][a-z]+ [A-Z][a-z]+) and ([A-Z][a-z]+ [A-Z][a-z]+)', convo_text)
+    pattern = r'Participants: ([A-Z][a-z]+(?:[ \'\-][A-Z][a-z]*)*) and ([A-Z][a-z]+(?:[ \'\-][A-Z][a-z]*)*)'
+    match = re.search(pattern, convo_text)
     return (match.group(1), match.group(2)) if match else (None, None)
 
 
@@ -38,8 +46,8 @@ def parse_social_goal(text, name):
     goal_pattern = rf"{name}'s goal: (.*?)\n"
     goal_match = re.search(goal_pattern, text, re.DOTALL)
     goal = goal_match.group(1).strip() if goal_match else f"No goal found for {name}."
-
     return goal
+
 
 def parse_personal_info(text, name):
     # TODO very important, before the secret of the first person, it would have two whitespace
@@ -69,6 +77,7 @@ def parse_personal_info(text, name):
 
 
 def parse_conversation(convo_text, names):
+    convo_text = convo_text.replace('left the conversation,', 'left the conversation.')
     # Split the conversation into turns
     turns = re.split(r'Turn #\d+\n', convo_text)
     parsed_conversation = []
@@ -91,6 +100,8 @@ for data in raw_dataset:
     try:
         rewards_prompt = data[1]
         names = find_names(rewards_prompt)
+        if names[0] is None:
+            import pdb; pdb.set_trace()
         personal_info = {name: parse_personal_info(rewards_prompt, name) for name in names}
         social_goal = {name: parse_social_goal(rewards_prompt, name) for name in names}
         parsed_conversation = parse_conversation(rewards_prompt, names)
@@ -104,7 +115,6 @@ for data in raw_dataset:
         })
     except Exception as e:
         print(e, f"; pk: {data[0]}")
-
 
 
 class C(BaseConstants):
