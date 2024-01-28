@@ -1,41 +1,58 @@
 import csv
 import pandas as pd
+import math
+
+
 columns_to_filter = [
-    'sotopia_pilot_study.1.player.prolific_id',
     'sotopia_pilot_study.1.player.believability_1',
+    'sotopia_pilot_study.1.player.believability_1_gth',
     'sotopia_pilot_study.1.player.believability_reasoning_1',
     'sotopia_pilot_study.1.player.relationship_1',
+    'sotopia_pilot_study.1.player.relationship_1_gth',
     'sotopia_pilot_study.1.player.relationship_reasoning_1',
     'sotopia_pilot_study.1.player.knowledge_1',
+    'sotopia_pilot_study.1.player.knowledge_1_gth',
     'sotopia_pilot_study.1.player.knowledge_reasoning_1',
     'sotopia_pilot_study.1.player.secret_1',
+    'sotopia_pilot_study.1.player.secret_1_gth',
     'sotopia_pilot_study.1.player.secret_reasoning_1',
     'sotopia_pilot_study.1.player.social_rules_1',
+    'sotopia_pilot_study.1.player.social_rules_1_gth',
     'sotopia_pilot_study.1.player.social_rules_reasoning_1',
     'sotopia_pilot_study.1.player.financial_and_material_benefits_1',
+    'sotopia_pilot_study.1.player.financial_and_material_benefits_1_gth',
     'sotopia_pilot_study.1.player.financial_and_material_benefits_reasoning_1',
     'sotopia_pilot_study.1.player.goal_1',
+    'sotopia_pilot_study.1.player.goal_1_gth',
     'sotopia_pilot_study.1.player.goal_reasoning_1',
     'sotopia_pilot_study.1.player.believability_2',
+    'sotopia_pilot_study.1.player.believability_2_gth',
     'sotopia_pilot_study.1.player.believability_reasoning_2',
     'sotopia_pilot_study.1.player.relationship_2',
+    'sotopia_pilot_study.1.player.relationship_2_gth',
     'sotopia_pilot_study.1.player.relationship_reasoning_2',
     'sotopia_pilot_study.1.player.knowledge_2',
+    'sotopia_pilot_study.1.player.knowledge_2_gth',
     'sotopia_pilot_study.1.player.knowledge_reasoning_2',
     'sotopia_pilot_study.1.player.secret_2',
+    'sotopia_pilot_study.1.player.secret_2_gth',
     'sotopia_pilot_study.1.player.secret_reasoning_2',
     'sotopia_pilot_study.1.player.social_rules_2',
+    'sotopia_pilot_study.1.player.social_rules_2_gth',
     'sotopia_pilot_study.1.player.social_rules_reasoning_2',
     'sotopia_pilot_study.1.player.financial_and_material_benefits_2',
+    'sotopia_pilot_study.1.player.financial_and_material_benefits_2_gth',
     'sotopia_pilot_study.1.player.financial_and_material_benefits_reasoning_2',
     'sotopia_pilot_study.1.player.goal_2',
+    'sotopia_pilot_study.1.player.goal_2_gth',
     'sotopia_pilot_study.1.player.goal_reasoning_2'
 ]
 
 
 def filter_out_useless_data(df):
     for col in columns_to_filter:
-        df = df[df[col].notna()]
+        if col in df.keys():
+            df = df[df[col].notna()]
     return df
 
 def choose_qualified_ones(df):
@@ -61,32 +78,46 @@ def choose_qualified_ones(df):
 
     comparing_columns = [
         'sotopia_pilot_study.1.player.believability_1',
+        'sotopia_pilot_study.1.player.believability_1_gth',
         'sotopia_pilot_study.1.player.believability_reasoning_1',
         'sotopia_pilot_study.1.player.relationship_1',
+        'sotopia_pilot_study.1.player.relationship_1_gth',
         'sotopia_pilot_study.1.player.relationship_reasoning_1',
         'sotopia_pilot_study.1.player.knowledge_1',
+        'sotopia_pilot_study.1.player.knowledge_1_gth',
         'sotopia_pilot_study.1.player.knowledge_reasoning_1',
         'sotopia_pilot_study.1.player.secret_1',
+        'sotopia_pilot_study.1.player.secret_1_gth',
         'sotopia_pilot_study.1.player.secret_reasoning_1',
         'sotopia_pilot_study.1.player.social_rules_1',
+        'sotopia_pilot_study.1.player.social_rules_1_gth',
         'sotopia_pilot_study.1.player.social_rules_reasoning_1',
         'sotopia_pilot_study.1.player.financial_and_material_benefits_1',
+        'sotopia_pilot_study.1.player.financial_and_material_benefits_1_gth',
         'sotopia_pilot_study.1.player.financial_and_material_benefits_reasoning_1',
         'sotopia_pilot_study.1.player.goal_1',
+        'sotopia_pilot_study.1.player.goal_1_gth',
         'sotopia_pilot_study.1.player.goal_reasoning_1',
         'sotopia_pilot_study.1.player.believability_2',
+        'sotopia_pilot_study.1.player.believability_2_gth',
         'sotopia_pilot_study.1.player.believability_reasoning_2',
         'sotopia_pilot_study.1.player.relationship_2',
+        'sotopia_pilot_study.1.player.relationship_2_gth',
         'sotopia_pilot_study.1.player.relationship_reasoning_2',
         'sotopia_pilot_study.1.player.knowledge_2',
+        'sotopia_pilot_study.1.player.knowledge_2_gth',
         'sotopia_pilot_study.1.player.knowledge_reasoning_2',
         'sotopia_pilot_study.1.player.secret_2',
+        'sotopia_pilot_study.1.player.secret_2_gth',
         'sotopia_pilot_study.1.player.secret_reasoning_2',
         'sotopia_pilot_study.1.player.social_rules_2',
+        'sotopia_pilot_study.1.player.social_rules_2_gth',
         'sotopia_pilot_study.1.player.social_rules_reasoning_2',
         'sotopia_pilot_study.1.player.financial_and_material_benefits_2',
+        'sotopia_pilot_study.1.player.financial_and_material_benefits_2_gth',
         'sotopia_pilot_study.1.player.financial_and_material_benefits_reasoning_2',
         'sotopia_pilot_study.1.player.goal_2',
+        'sotopia_pilot_study.1.player.goal_2_gth',
         'sotopia_pilot_study.1.player.goal_reasoning_2'
     ]
 
@@ -97,23 +128,20 @@ def choose_qualified_ones(df):
         for ref in pilot_study_reference:
             if data['pk'] == ref['PK']:
                 for column in comparing_columns:
-                    if 'reasoning' not in column and 'goal' in column:
+                    if 'reasoning' not in column and '_gth' not in column:
                         ref_column_name = column.split('.')[-1]
-                        print(column, ref_column_name)
-                        print(data[column], ref[ref_column_name])
+                        mask = df['pk'] == ref['PK']
+                        df.loc[mask, column + '_gth'] = ref[ref_column_name]
                         if abs(data[column] - ref[ref_column_name]) > 2:
                             qualified = False
-                            break
-            if qualified is False:
-                break
         if qualified is True:
             qualified_annotators.append(prolific_id)
-    return qualified_annotators
+    return qualified_annotators, df
 
 
 df = pd.read_csv('./all_apps_wide-2024-01-25.csv')
 df = filter_out_useless_data(df)
-qualified_annotators = choose_qualified_ones(df)
+qualified_annotators, df = choose_qualified_ones(df)
 import pdb; pdb.set_trace()
 
 df = df[columns_to_filter]
