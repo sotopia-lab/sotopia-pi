@@ -100,8 +100,6 @@ for data in raw_dataset:
     try:
         rewards_prompt = data[1]
         names = find_names(rewards_prompt)
-        if names[0] is None:
-            import pdb; pdb.set_trace()
         personal_info = {name: parse_personal_info(rewards_prompt, name) for name in names}
         social_goal = {name: parse_social_goal(rewards_prompt, name) for name in names}
         parsed_conversation = parse_conversation(rewards_prompt, names)
