@@ -10,9 +10,8 @@ def read_json_files():
 
 
     directories = [
-        './sotopia_official_study/GPT3.5-GPT4',
-        './sotopia_official_study/GPT3.5-GPT3.5',
-        './sotopia_official_study/GPT3.5-FT',
+        './sotopia_official_study/GPT3.5-GPT4-New',
+        './sotopia_official_study/GPT3.5-GPT3.5-New',
     ]
 
     for directory in directories:
@@ -79,7 +78,7 @@ def parse_personal_info(text, name):
 def parse_conversation(convo_text, names):
     convo_text = convo_text.replace('left the conversation,', 'left the conversation.')
     # Split the conversation into turns
-    turns = re.split(r'Turn #\d+\n', convo_text)
+    turns = re.split(r'Turn #\d+:', convo_text)
     parsed_conversation = []
 
     for turn in turns:
