@@ -83,26 +83,40 @@ def parse_conversation(convo_text, names):
 
 raw_dataset = read_json_files()
 processed_dataset = []
+pks = []
 
 for data in raw_dataset:
     try:
+        pk = data[0]
         rewards_prompt = data[1]
         names = find_names(rewards_prompt)
         personal_info = {name: parse_personal_info(rewards_prompt, name) for name in names}
         social_goal = {name: parse_social_goal(rewards_prompt, name) for name in names}
         parsed_conversation = parse_conversation(rewards_prompt, names)
         scenario = parse_scenario(rewards_prompt)
-        processed_dataset.append({
+        processed_data = {
             'scenario': scenario,
             'names': names,
             'personal_info': personal_info,
             'social_goal': social_goal,
             'parsed_conversation': parsed_conversation,
-        })
+        }
+        # TODO (haofeiyu): need to add pk into the player data
+        processed_dataset.append(processed_data)
+        pks.append(pk)
     except Exception as e:
         print(e, f"; pk: {data[0]}")
 
-
+'''
+import pandas as pd
+pd_data = {
+    'pk': pks,
+    'processed_data': processed_dataset
+}
+df = pd.DataFrame(pd_data)
+df.to_csv('../pilot_study_data.csv')
+import pdb; pdb.set_trace()
+'''
 
 class C(BaseConstants):
     NAME_IN_URL = 'sotopia_pilot_study'
@@ -124,6 +138,9 @@ class Player(BasePlayer):
         data = json.loads(self.data)
         processed_dataset.insert(0, data)
 
+    pk = models.StringField(
+        label='pk',
+    )
     prolific_id = models.StringField(
         label='Prolific ID',
     )
@@ -280,9 +297,11 @@ class SotopiaEval(Page):
 
     @staticmethod
     def vars_for_template(player):
-        print(len(processed_dataset))
-        player_data = random.choice(processed_dataset)
+        assert len(processed_dataset) == len(pks)
+        player_data = processed_dataset[player.id % len(processed_dataset)]
+        player_pk = pks[player.id % len(pks)]
         player.data = json.dumps(player_data)
+        player.pk = player_pk
         print(len(processed_dataset))
         data = json.loads(player.data)
         for d in data['parsed_conversation']:
@@ -308,8 +327,6 @@ class SotopiaEval(Page):
             'personal_info_2': personal_info_2,
             'social_goal_1': social_goal_1,
             'social_goal_2': social_goal_2,
-            'timer1_duration': 400,
-            'timer2_duration': 600,
         }
 
     def is_displayed(self):
