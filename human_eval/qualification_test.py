@@ -4,6 +4,7 @@ import math
 
 
 columns_to_filter = [
+    'sotopia_pilot_study.1.player.prolific_id',
     'sotopia_pilot_study.1.player.believability_1',
     'sotopia_pilot_study.1.player.believability_1_gth',
     'sotopia_pilot_study.1.player.believability_reasoning_1',
@@ -139,13 +140,13 @@ def choose_qualified_ones(df):
     return qualified_annotators, df
 
 
-df = pd.read_csv('./all_apps_wide-2024-01-25.csv')
+df = pd.read_csv('./all_apps_wide_2024-01-28_2.csv')
 df = filter_out_useless_data(df)
 qualified_annotators, df = choose_qualified_ones(df)
 import pdb; pdb.set_trace()
 
 df = df[columns_to_filter]
 
-df.to_csv('./filtered_prolific.csv')
+df.to_csv('./filtered_prolific-01-28_2.csv')
 
 print(qualified_annotators)
