@@ -3,6 +3,7 @@ import os
 import json
 import re
 from collections import defaultdict
+import time
 
 def read_json_files():
     # Initialize a list to store all JSON data
@@ -10,9 +11,7 @@ def read_json_files():
 
 
     directories = [
-        './sotopia_official_study/GPT3.5-GPT4',
-        './sotopia_official_study/GPT3.5-GPT3.5',
-        './sotopia_official_study/GPT3.5-FT',
+        './sotopia_official_study/GPT3.5-MistralInstruct',
     ]
 
     for directory in directories:
@@ -72,14 +71,13 @@ def parse_personal_info(text, name):
             "personality": personality.strip(),
             "secrets": secrets.strip()
         }
-    # import pdb; pdb.set_trace()
     raise Exception(f"No information found for {name}.")
 
 
 def parse_conversation(convo_text, names):
     convo_text = convo_text.replace('left the conversation,', 'left the conversation.')
     # Split the conversation into turns
-    turns = re.split(r'Turn #\d+\n', convo_text)
+    turns = re.split(r'Turn #\d+[:\n]', convo_text)
     parsed_conversation = []
 
     for turn in turns:
@@ -95,15 +93,18 @@ def parse_conversation(convo_text, names):
 raw_dataset = read_json_files()
 processed_dataset = []
 player_annotated_data = defaultdict(list)
+pks = []
 
 for data in raw_dataset:
     try:
+        pk = data[0]
         rewards_prompt = data[1]
         names = find_names(rewards_prompt)
         personal_info = {name: parse_personal_info(rewards_prompt, name) for name in names}
         social_goal = {name: parse_social_goal(rewards_prompt, name) for name in names}
         parsed_conversation = parse_conversation(rewards_prompt, names)
         scenario = parse_scenario(rewards_prompt)
+        assert len(parsed_conversation) > 0
         processed_dataset.append({
             'scenario': scenario,
             'names': names,
@@ -111,6 +112,7 @@ for data in raw_dataset:
             'social_goal': social_goal,
             'parsed_conversation': parsed_conversation,
         })
+        pks.append(pk)
     except Exception as e:
         print(e, f"; pk: {data[0]}")
 
@@ -128,12 +130,30 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
-
+skip_flag = False
+data_queue = defaultdict(list)
 class Player(BasePlayer):
 
-    def add_queue(self):
-        data = json.loads(self.data)
-        processed_dataset.insert(0, data)
+    def pop_queue(self):
+        assert self.prolific_id in data_queue[self.pk]
+        data_queue[self.pk].remove(self.prolific_id)
+
+    def push_queue(self):
+        for pk in pks:
+            if self.prolific_id not in data_queue[pk] and len(data_queue[pk]) < 2:
+                data_queue[pk].append(self.prolific_id)
+                selected_pk = pk
+                selected_data = json.dumps(processed_dataset[pks.index(pk)])
+                return selected_data, selected_pk, 'no'
+        return json.dumps(processed_dataset[0]), pks[0], 'yes'
+
+    pk = models.StringField(
+        label='pk',
+    )
+
+    skip_eval = models.StringField(
+        label='skip_eval',
+    )
 
     prolific_id = models.StringField(
         label='Prolific ID',
@@ -286,17 +306,10 @@ class Player(BasePlayer):
 # FUNCTIONS
 # PAGES
 class SotopiaEval(Page):
-    @staticmethod
-    def is_displayed(player):
-        return player.id_in_group == 1
 
     @staticmethod
     def vars_for_template(player):
-        print('var for template')
-        print(len(processed_dataset))
-        player_data = processed_dataset[-1]
-        player.data = json.dumps(player_data)
-        print(len(processed_dataset))
+        assert len(processed_dataset) == len(pks)
         data = json.loads(player.data)
         for d in data['parsed_conversation']:
             if '\"' in d['dialogue']:
@@ -321,13 +334,13 @@ class SotopiaEval(Page):
             'personal_info_2': personal_info_2,
             'social_goal_1': social_goal_1,
             'social_goal_2': social_goal_2,
-            'timer1_duration': 400,
-            'timer2_duration': 600,
         }
 
-    def is_displayed(self):
-        import time
-        participant = self.participant
+    @staticmethod
+    def is_displayed(player):
+        if player.skip_eval == 'yes':
+            return False
+        participant = player.participant
         current_time = time.time()
         return current_time < participant.expiry
     
@@ -335,16 +348,10 @@ class SotopiaEval(Page):
         if timeout_happened:
             print('timeout before next page')
             print('length for current data: {}'.format(len(processed_dataset)))
-            player.add_queue()
-            if len(player_annotated_data) > 1:
-                player_annotated_data[player.prolific_id].pop(-1)
+            player.pop_queue() 
             print('length after timeout: {}'.format(len(processed_dataset)))
         else:
-            # only successful jumping to the thank you page pop
             print('finish one successfully, still have {}'.format(len(processed_dataset)))
-            player_data = processed_dataset.pop(-1)
-            player_annotated_data[player.prolific_id].append(player_data)
-            print(player_annotated_data)
 
 
     form_model = 'player'
@@ -387,7 +394,8 @@ class SotopiaEvalInstruction(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        import time
+        player.data, player.pk, player.skip_eval = player.push_queue()
+        print(data_queue)
         player.participant.expiry = time.time() + 10
 
 
