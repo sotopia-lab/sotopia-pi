@@ -71,7 +71,6 @@ def parse_personal_info(text, name):
             "personality": personality.strip(),
             "secrets": secrets.strip()
         }
-    # import pdb; pdb.set_trace()
     raise Exception(f"No information found for {name}.")
 
 
