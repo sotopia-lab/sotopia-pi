@@ -117,9 +117,6 @@ for data in raw_dataset:
     except Exception as e:
         print(e, f"; pk: {data[0]}")
 
-processed_dataset = processed_dataset[:2]
-pks = pks[:2]
-
 class C(BaseConstants):
     NAME_IN_URL = 'sotopia_official_study'
     PLAYERS_PER_GROUP = None
