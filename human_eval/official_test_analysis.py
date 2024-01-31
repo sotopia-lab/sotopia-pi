@@ -105,12 +105,14 @@ def pearsonr(dict1, dict2):
 
 
 if __name__ == '__main__':
-    file_name = './sotopia_official_study_2024-01-30.csv'
-    df = pd.read_csv(file_name)
+    source_file_name = './jason_toy_app_sotopia_official_study_2024-01-31.csv'
+    target_file_name = './jason_toy_app_sotopia_official_study_2024-01-31_filtered.csv'
+    df = pd.read_csv(source_file_name)
     df = filter_out_useless_data(df)
     df = filter_out_useless_column(df)
-    df.to_csv('./sotopia_official_study_2024-01-30_filtered.csv')
+    df.to_csv(target_file_name)
     gpt_score = get_gpt_score(df)
     human_score = get_human_score(df)
 
+    import pdb; pdb.set_trace()
     pearsonr(gpt_score, human_score)
