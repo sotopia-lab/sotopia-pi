@@ -5,26 +5,33 @@ import re
 from collections import defaultdict
 import time
 
+avoid_pk_list = [
+    '01H8FPVJ1Z661DPN15T61TWEXV',
+    '01H8FP25W7CH64V1Z38FX6YYKX',
+
+]
+
+
 def read_json_files():
     # Initialize a list to store all JSON data
     all_json_data = []
 
 
     directories = [
-        './sotopia_official_study/GPT3.5-MistralInstruct',
+        './sotopia_official_study/GPT3.5-GPT3.5-New',
+        './sotopia_official_study/GPT3.5-GPT4-New',
     ]
 
     for directory in directories:
-
         # List all JSON files in the directory
         json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
-
         # Loop through the JSON files and read their contents
         for file in json_files:
             file_path = os.path.join(directory, file)
             with open(file_path, 'r') as json_file:
                 data = json.load(json_file)
-                all_json_data.append((data['pk'], data['rewards_prompt']))
+                if data['pk'] not in avoid_pk_list:
+                    all_json_data.append((data['pk'], data['rewards_prompt']))
     return all_json_data
 
 
@@ -49,16 +56,15 @@ def parse_social_goal(text, name):
 
 
 def parse_personal_info(text, name):
-    # TODO very important, before the secret of the first person, it would have two whitespace
     if not name:
         raise Exception("name field is None")
     
+    # TODO very important, before the secret of the first person, it would have two whitespace
     text = text.replace('  ', ' ')
     pattern = (
         rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\."
         rf"(.*?)\. Personality and values description: (.*?)\. {name.split(' ')[0]}'s secrets: (.*?)(?:\.|\n)"
     )
-    #pattern = rf"{name}'s background: {name} is a (\d+)-year-old (.*?)\. (.*?) pronouns\. (.*?)\. Personality and values description: (.*?)\.  {name.split(' ')[0]}'s secrets: (.*?)\n"
     match = re.search(pattern, text, re.DOTALL)
     if match:
         age, profession, pronouns, interests, personality, secrets = match.groups()
