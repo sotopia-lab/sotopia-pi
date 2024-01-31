@@ -8,18 +8,25 @@ import time
 avoid_pk_list = [
     '01H8FPVJ1Z661DPN15T61TWEXV',
     '01H8FP25W7CH64V1Z38FX6YYKX',
-
+    '01HNBD4RSSVZVPM7QTVPFVE195',
+    '01HNBE24X7XQ42GB709DT1JQ6G',
+    '01HNBE22DTJBNRX7QZZMZQM7Z2',
+    '01HNBDT91E8WQQP4REB81X9Y52',
+    '01HNBE24X7XQ42GB709DT1JQ6G',
+    '01HNBEX1CAAMK0YQ7M1ZZ6BHS4',
+    '01HNBCHV1AW6TH3QGGABBEQV9X',
+    '01HNBC3M5FVR3854PWNYM68TSY',
+    '01HNBESAYC01M73KK2XC93A9P2',
 ]
 
 
 def read_json_files():
     # Initialize a list to store all JSON data
     all_json_data = []
-
-
     directories = [
         './sotopia_official_study/GPT3.5-GPT3.5-New',
         './sotopia_official_study/GPT3.5-GPT4-New',
+        './sotopia_official_study/GPT3.5-MistralInstruct'
     ]
 
     for directory in directories:
