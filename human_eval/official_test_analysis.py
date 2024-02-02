@@ -13,6 +13,55 @@ redis_port = 6388
 redis_password = 'aclkasjf29qwrUOIO'
 
 
+
+selected_columns = [
+    'player.pk',
+    'player.data',
+    'player.prolific_id',
+    'player.believability_1',
+    'player.believability_reasoning_1',
+    'player.relationship_1',
+    'player.relationship_reasoning_1',
+    'player.knowledge_1',
+    'player.knowledge_reasoning_1',
+    'player.secret_1',
+    'player.secret_reasoning_1',
+    'player.social_rules_1',
+    'player.social_rules_reasoning_1',
+    'player.financial_and_material_benefits_1',
+    'player.financial_and_material_benefits_reasoning_1',
+    'player.goal_1',
+    'player.goal_reasoning_1',
+    'player.believability_2',
+    'player.believability_reasoning_2',
+    'player.relationship_2',
+    'player.relationship_reasoning_2',
+    'player.knowledge_2',
+    'player.knowledge_reasoning_2',
+    'player.secret_2',
+    'player.secret_reasoning_2',
+    'player.social_rules_2',
+    'player.social_rules_reasoning_2',
+    'player.financial_and_material_benefits_2',
+    'player.financial_and_material_benefits_reasoning_2',
+    'player.goal_2',
+    'player.goal_reasoning_2'
+]
+
+
+def filter_out_useless_column(df):
+    df = df[selected_columns]
+    return df
+
+
+def filter_out_useless_data(df):
+    for col in selected_columns:
+        if col in df.keys():
+            df = df[df[col].notna()]
+    return df
+
+
+
 def get_redisjson_value(r, key):
     try:
         return r.jsonget(key, Path.rootPath())
@@ -23,6 +72,7 @@ def get_redisjson_value(r, key):
 
 def get_gpt_score(df):
     pks = df['player.pk'].tolist()
+
     gpt_score = {}
     r = Client(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)
     keys = r.keys('*')
@@ -38,6 +88,7 @@ def get_gpt_score(df):
 
 def get_human_score(df):
     human_score = defaultdict(list)
+
     for index, row in df.iterrows():
         agent1_score = {"believability": row['player.believability_1'], "relationship": row['player.relationship_1'], "knowledge": row['player.knowledge_1'], "secret": row['player.secret_1'], "social_rules": row['player.social_rules_1'], "financial_and_material_benefits": row['player.financial_and_material_benefits_1'], "goal": row['player.goal_1']}
         agent2_score = {"believability": row['player.believability_2'], "relationship": row['player.relationship_2'], "knowledge": row['player.knowledge_2'], "secret": row['player.secret_2'], "social_rules": row['player.social_rules_2'], "financial_and_material_benefits": row['player.financial_and_material_benefits_2'], "goal": row['player.goal_2']}
@@ -56,6 +107,7 @@ def get_human_score(df):
         agent2_score = {k: agent2_score[k] / len(human_score[pk]) for k in agent2_score}
         mean_human_score[pk] = {'agent1': agent1_score, 'agent2': agent2_score}
     return mean_human_score
+
 
 
 def pearsonr(dict1, dict2):
@@ -119,8 +171,9 @@ if __name__ == '__main__':
     average_score_GPT35 = average_score(human_score, GPT35_pk_agent_pairs)
     average_score_GPT4 = average_score(human_score, GPT4_pk_agent_pairs)
     average_score_mistral_instruct = average_score(human_score, mistral_instruct_pk_agent_pairs)
-    #average_score_sotopia_pi = average_score(human_score, sotopia_pi_pk_agent_pairs)
+    average_score_sotopia_pi = average_score(human_score, sotopia_pi_pk_agent_pairs)
     print(f"average_score_GPT35: {average_score_GPT35}")
     print(f"average_score_GPT4: {average_score_GPT4}")
     print(f"average_score_mistral_instruct: {average_score_mistral_instruct}")
-    #print(f"average_score_sotopia_pi: {average_score_sotopia_pi}")
+    print(f"average_score_sotopia_pi: {average_score_sotopia_pi}")
+

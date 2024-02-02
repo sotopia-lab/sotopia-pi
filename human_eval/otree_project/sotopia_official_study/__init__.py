@@ -17,7 +17,7 @@ avoid_pk_list = [
     '01HNBCHV1AW6TH3QGGABBEQV9X',
     '01HNBC3M5FVR3854PWNYM68TSY',
     '01HNBESAYC01M73KK2XC93A9P2',
-]
+
 
 
 def read_json_files():
