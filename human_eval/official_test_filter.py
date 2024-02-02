@@ -77,8 +77,8 @@ def filter_incomplete_pk(df):
 
 
 if __name__ == '__main__':
-    source_file_name = './0201_without_bad_examples.csv'
-    target_file_name = './0201_without_bad_examples_filtered.csv'
+    source_file_name = './sotopia_official_study_2024-02-02.csv'
+    target_file_name = './sotopia_official_study_2024-02-02_filtered.csv'
     df = pd.read_csv(source_file_name)
     df = filter_out_useless_data(df)
     df = filter_out_useless_column(df)
