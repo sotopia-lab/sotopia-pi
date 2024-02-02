@@ -24,9 +24,10 @@ def read_json_files():
     # Initialize a list to store all JSON data
     all_json_data = []
     directories = [
-        './sotopia_official_study/GPT3.5-GPT3.5-New',
-        './sotopia_official_study/GPT3.5-GPT4-New',
-        './sotopia_official_study/GPT3.5-MistralInstruct'
+        #'./sotopia_official_study/GPT3.5-GPT3.5-New',
+        #'./sotopia_official_study/GPT3.5-GPT4-New',
+        #'./sotopia_official_study/GPT3.5-MistralInstruct'
+        './sotopia_official_study/GPT3.5-SelfTrain-Round2',
     ]
 
     for directory in directories:
@@ -128,7 +129,6 @@ for data in raw_dataset:
         pks.append(pk)
     except Exception as e:
         print(e, f"; pk: {data[0]}")
-
 
 class C(BaseConstants):
     NAME_IN_URL = 'sotopia_official_study'
@@ -365,7 +365,6 @@ class SotopiaEval(Page):
             print('length after timeout: {}'.format(len(processed_dataset)))
         else:
             print('finish one successfully, still have {}'.format(len(processed_dataset)))
-
 
     form_model = 'player'
     form_fields = [
