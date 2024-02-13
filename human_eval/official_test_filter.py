@@ -77,10 +77,10 @@ def filter_incomplete_pk(df):
 
 
 if __name__ == '__main__':
-    source_file_name = './sotopia_official_study_2024-02-02.csv'
-    target_file_name = './sotopia_official_study_2024-02-02_filtered.csv'
+    source_file_name = './sotopia_official_study_2024-02-12_BC_and_BC_selftrain_round1_reannotate_part2.csv'
+    target_file_name = './sotopia_official_study_2024-02-12_BC_and_BC_selftrain_round1_reannotate_part2_filtered.csv'
     df = pd.read_csv(source_file_name)
     df = filter_out_useless_data(df)
     df = filter_out_useless_column(df)
-    df = filter_incomplete_pk(df)
+    #df = filter_incomplete_pk(df)
     df.to_csv(target_file_name)
