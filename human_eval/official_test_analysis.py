@@ -108,8 +108,6 @@ def get_gpt_score(df):
     return gpt_score
 
 
-
-
 def get_human_score(df):
     human_score = defaultdict(list)
     for index, row in df.iterrows():
@@ -130,7 +128,6 @@ def get_human_score(df):
             except:
                 print(f"pk: {pk}, score: {score}")
                 import pdb; pdb.set_trace()
-        print(len(human_score[pk]))
         agent1_score = {k: agent1_score[k] / len(human_score[pk]) for k in agent1_score}
         agent2_score = {k: agent2_score[k] / len(human_score[pk]) for k in agent2_score}
         mean_human_score[pk] = {'agent1': agent1_score, 'agent2': agent2_score}
@@ -195,42 +192,39 @@ def average_score(score, pk_agent_pairs):
 
 
 if __name__ == '__main__':
-    '''
-    complete_gpt_score, complete_pk_agent_pairs = get_tag_score('gpt-4_gpt-3.5-turbo_v0.0.1_clean', 'gpt-4')
-    #complete_gpt_score, complete_pk_agent_pairs = get_tag_score('sft-selftrain-round-1-filtered-top-4_checkpoint_improve-0_epoch-5_gpt-3.5-turbo_test', 'custom_model')
-    # save the complete_gpt_score
-    with open('complete_gpt_score.json', 'w') as f:
-        json.dump(complete_gpt_score, f)
-    with open('complete_pk_agent_pairs.json', 'w') as f:
-        json.dump(complete_pk_agent_pairs, f)
-    average_complete_gpt_score = average_score(complete_gpt_score, complete_pk_agent_pairs)
-    print(f"average_complete_gpt_score: {average_complete_gpt_score}")
-    import pdb; pdb.set_trace()
-    '''
-    #df = pd.read_csv('./mistral-instruct_final.csv')
-    #df = pd.read_csv('./self-train-round3_final.csv')
-    #df = pd.read_csv('./self-train-round2_final.csv')
-    #df = pd.read_csv('./self-train-round1_final.csv')
-    #df = pd.read_csv('./BC-self-train-round1_final.csv')
-    #df = pd.read_csv('./BC_final.csv')
-    df = pd.read_csv('./mistral-instruct_final.csv')
-    #df = pd.read_csv('./gpt4_new_tmp.csv')
-    #df = pd.read_csv('./gpt3.5_final.csv')
+    model_name = 'BC+SR'
+    csv_name_dict = {
+        'gpt4': './gpt4_final.csv',
+        'gpt3.5': './gpt3.5_final.csv',
+        'mistral-instruct': './mistral-instruct_final.csv',
+        'SR': './SR_final.csv',
+        'BC': './BC_final.csv',
+        'BC+SR': './BC+SR_final.csv',
+    }
+    directory_name_dict = {
+        'gpt4': './otree_project/sotopia_official_study/GPT3.5-GPT4',
+        'gpt3.5': './otree_project/sotopia_official_study/GPT3.5-GPT3.5',
+        'mistral-instruct': './otree_project/sotopia_official_study/GPT3.5-MistralInstruct',
+        'SR': './otree_project/sotopia_official_study/GPT3.5-SR',
+        'BC': './otree_project/sotopia_official_study/GPT3.5-BC',
+        'BC+SR': './otree_project/sotopia_official_study/GPT3.5-BC-SR'
+    }
+    model_side_dict = {
+        'gpt4': 'gpt-4',
+        'gpt3.5': 'gpt-3.5-turbo',
+        'mistral-instruct': 'custom_model',
+        'SR': 'custom_model',
+        'BC': 'custom_model',
+        'BC+SR': 'custom_model',
+    }
+
+    df = pd.read_csv(csv_name_dict[model_name])
     gpt_score = get_gpt_score(df)
     human_score = get_human_score(df)
-    pearsonr(gpt_score, human_score)
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-GPT3.5-New', 'gpt-3.5-turbo')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-GPT4-representative', 'gpt-4')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-MistralInstruct', 'custom_model')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-SelfTrain-Round3', 'custom_model')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-SelfTrain-Round2', 'custom_model_selftrain')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-SelfTrain-Round1', 'custom_model')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-BC-SelfTrain-Round1', 'custom_model')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-BC-Pure', 'custom_model')
-    pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-MistralInstruct', 'custom_model')
-    print(f"pk_agent_pairs: {len(pk_agent_pairs)}")
+    pk_agent_pairs = collect_pk_agent_pairs(directory_name_dict[model_name], model_side_dict[model_name])
     average_human_score, std_human_score = average_score(human_score, pk_agent_pairs)
     average_gpt_score, std_gpt_score = average_score(gpt_score, pk_agent_pairs)
+    pearsonr(gpt_score, human_score)
     print(f"average_human_score: {average_human_score}")
     print(f"average_gpt_score: {average_gpt_score}")
     print(f"std_human_score: {std_human_score}")
