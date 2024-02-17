@@ -17,15 +17,7 @@ def read_json_files():
     # Initialize a list to store all JSON data
     all_json_data = []
     directories = [
-        #'./sotopia_official_study/GPT3.5-GPT3.5-New',
-        #'./sotopia_official_study/GPT3.5-GPT4-New',
-        #'./sotopia_official_study/GPT3.5-MistralInstruct'
-        #'./sotopia_official_study/GPT3.5-SelfTrain-Round1',
-        #'./sotopia_official_study/mistral-selftrain-round1_round2_reannotate_files'
-        #'./sotopia_official_study/GPT3.5-BC-SelfTrain-Round1',
-        #'./sotopia_official_study/GPT3.5-BC-Pure',
-        #'./sotopia_official_study/BC_and_BC_selftrain-Round1_reannotate'
-        './sotopia_official_study/GPT3.5-GPT4-representative'
+        './sotopia_official_study/GPT3.5-GPT4'
     ]
 
     for directory in directories:
@@ -128,7 +120,6 @@ for data in raw_dataset:
         pks.append(pk)
     except Exception as e:
         print(e, f"; pk: {data[0]}")
-
 
 class C(BaseConstants):
     NAME_IN_URL = 'sotopia_official_study'

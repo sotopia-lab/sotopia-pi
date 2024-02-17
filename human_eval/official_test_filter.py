@@ -82,5 +82,5 @@ if __name__ == '__main__':
     df = pd.read_csv(source_file_name)
     df = filter_out_useless_data(df)
     df = filter_out_useless_column(df)
-    #df = filter_incomplete_pk(df)
+    df = filter_incomplete_pk(df)
     df.to_csv(target_file_name)

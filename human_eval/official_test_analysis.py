@@ -149,6 +149,7 @@ def pearsonr(dict1, dict2):
         print(f"{dimension}: {correlation} p_value: {p_value}")
 
 
+
 def collect_pk_agent_pairs(directory, target_model):
     pk_agent_pairs = []
     for filename in os.listdir(directory):
@@ -161,6 +162,7 @@ def collect_pk_agent_pairs(directory, target_model):
                 if models[2] == target_model:
                     pk_agent_pairs.append((filename.split('.')[0], 'agent2'))
     return pk_agent_pairs
+
 
 
 def average_score(score, pk_agent_pairs):
@@ -229,3 +231,4 @@ if __name__ == '__main__':
     print(f"average_gpt_score: {average_gpt_score}")
     print(f"std_human_score: {std_human_score}")
     print(f"std_gpt_score: {std_gpt_score}")
+
