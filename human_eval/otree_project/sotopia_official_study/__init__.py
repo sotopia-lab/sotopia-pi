@@ -24,7 +24,8 @@ def read_json_files():
         #'./sotopia_official_study/mistral-selftrain-round1_round2_reannotate_files'
         #'./sotopia_official_study/GPT3.5-BC-SelfTrain-Round1',
         #'./sotopia_official_study/GPT3.5-BC-Pure',
-        './sotopia_official_study/BC_and_BC_selftrain-Round1_reannotate'
+        #'./sotopia_official_study/BC_and_BC_selftrain-Round1_reannotate'
+        './sotopia_official_study/GPT3.5-GPT4-representative'
     ]
 
     for directory in directories:

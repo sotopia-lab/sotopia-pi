@@ -8,6 +8,7 @@ import os
 import scipy.stats
 from collections import defaultdict
 from tqdm import tqdm
+import statistics
 
 redis_host = 'tiger.lti.cs.cmu.edu'
 redis_port = 6388
@@ -137,17 +138,18 @@ def get_human_score(df):
 
 
 def pearsonr(dict1, dict2):
+    epsilon = 1e-5
     dimensions = ['believability', 'relationship', 'knowledge', 'secret', 'social_rules', 'financial_and_material_benefits', 'goal']
     for dimension in dimensions:
         for agent in ['agent1', 'agent2']:
             x, y = [], []
             for key in dict1.keys():
-                x.append(dict1[key][agent][dimension])
-                y.append(dict2[key][agent][dimension])
-        correlation = scipy.stats.pearsonr(x, y)[0]
-        print(f"{dimension}: {correlation}")
-        correlation = scipy.stats.pearsonr(y, x)[0]
-        print(f"{dimension}: {correlation}")
+                x.append(dict1[key][agent][dimension]+epsilon)
+                y.append(dict2[key][agent][dimension]+epsilon)
+        correlation, p_value = scipy.stats.pearsonr(x, y)
+        print(f"{dimension}: {correlation} p_value: {p_value}")
+        correlation, p_value = scipy.stats.pearsonr(y, x)
+        print(f"{dimension}: {correlation} p_value: {p_value}")
 
 
 def collect_pk_agent_pairs(directory, target_model):
@@ -165,21 +167,35 @@ def collect_pk_agent_pairs(directory, target_model):
 
 
 def average_score(score, pk_agent_pairs):
-    average_score = {'believability': 0, 'relationship': 0, 'knowledge': 0, 'secret': 0, 'social_rules': 0, 'financial_and_material_benefits': 0, 'goal': 0, 'overall_score': 0}
+    record_score = {'believability': [], 'relationship': [], 'knowledge': [], 'secret': [], 'social_rules': [], 'financial_and_material_benefits': [], 'goal': [], 'overall_score': []}
+    std_score = {'believability': 0, 'relationship': 0, 'knowledge': 0, 'secret': 0, 'social_rules': 0, 'financial_and_material_benefits': 0, 'goal': 0}
+    average_score = {'believability': 0, 'relationship': 0, 'knowledge': 0, 'secret': 0, 'social_rules': 0, 'financial_and_material_benefits': 0, 'goal': 0}
     for pk_agent_pair in pk_agent_pairs:
-        pk, env_pk,  agent_index = pk_agent_pair
+        pk, agent_index = pk_agent_pair
         if pk not in score.keys():
-            print('{} is not in human_score'.format(pk))
+            print(f'{pk} is not in human_score')
             continue
-        for dimension in score[pk][agent_index].keys():
-            average_score[dimension] += score[pk][agent_index][dimension]
-    for dimension in average_score.keys():
-        average_score[dimension] /= len(pk_agent_pairs)
-    average_score['overall_score'] = sum(average_score.values()) / len(average_score)
-    return average_score
+        scores_sum = 0 
+        count = 0
+        for dimension in record_score.keys():
+            if dimension != 'overall_score':
+                dimension_score = score[pk][agent_index][dimension]
+                record_score[dimension].append(dimension_score)
+                scores_sum += dimension_score
+                count += 1
+        if count > 0:
+            overall_mean = scores_sum / count
+            record_score['overall_score'].append(overall_mean)
+
+    for dimension in record_score.keys():
+        std_score[dimension] = statistics.stdev(record_score[dimension])
+    for dimension in record_score.keys():
+        average_score[dimension] = sum(record_score[dimension]) / len(pk_agent_pairs)
+    return average_score, std_score
 
 
 if __name__ == '__main__':
+    '''
     complete_gpt_score, complete_pk_agent_pairs = get_tag_score('gpt-4_gpt-3.5-turbo_v0.0.1_clean', 'gpt-4')
     #complete_gpt_score, complete_pk_agent_pairs = get_tag_score('sft-selftrain-round-1-filtered-top-4_checkpoint_improve-0_epoch-5_gpt-3.5-turbo_test', 'custom_model')
     # save the complete_gpt_score
@@ -190,28 +206,32 @@ if __name__ == '__main__':
     average_complete_gpt_score = average_score(complete_gpt_score, complete_pk_agent_pairs)
     print(f"average_complete_gpt_score: {average_complete_gpt_score}")
     import pdb; pdb.set_trace()
+    '''
     #df = pd.read_csv('./mistral-instruct_final.csv')
     #df = pd.read_csv('./self-train-round3_final.csv')
     #df = pd.read_csv('./self-train-round2_final.csv')
     #df = pd.read_csv('./self-train-round1_final.csv')
     #df = pd.read_csv('./BC-self-train-round1_final.csv')
     #df = pd.read_csv('./BC_final.csv')
-    #df = pd.read_csv('./mistral-instruct_final.csv')
-    df = pd.read_csv('./gpt4_final.csv')
+    df = pd.read_csv('./mistral-instruct_final.csv')
+    #df = pd.read_csv('./gpt4_new_tmp.csv')
+    #df = pd.read_csv('./gpt3.5_final.csv')
     gpt_score = get_gpt_score(df)
     human_score = get_human_score(df)
     pearsonr(gpt_score, human_score)
     #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-GPT3.5-New', 'gpt-3.5-turbo')
-    pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-GPT4-New', 'gpt-4')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-MistralInstruct', 'gpt-3.5-turbo')
+    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-GPT4-representative', 'gpt-4')
+    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-MistralInstruct', 'custom_model')
     #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-SelfTrain-Round3', 'custom_model')
     #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-SelfTrain-Round2', 'custom_model_selftrain')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-SelfTrain-Round1', 'gpt-3.5-turbo')
+    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-SelfTrain-Round1', 'custom_model')
     #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-BC-SelfTrain-Round1', 'custom_model')
     #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-BC-Pure', 'custom_model')
-    #pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-MistralInstruct', 'custom_model')
+    pk_agent_pairs = collect_pk_agent_pairs('./otree_project/sotopia_official_study/GPT3.5-MistralInstruct', 'custom_model')
     print(f"pk_agent_pairs: {len(pk_agent_pairs)}")
-    average_human_score = average_score(human_score, pk_agent_pairs)
-    average_gpt_score = average_score(gpt_score, pk_agent_pairs)
+    average_human_score, std_human_score = average_score(human_score, pk_agent_pairs)
+    average_gpt_score, std_gpt_score = average_score(gpt_score, pk_agent_pairs)
     print(f"average_human_score: {average_human_score}")
     print(f"average_gpt_score: {average_gpt_score}")
+    print(f"std_human_score: {std_human_score}")
+    print(f"std_gpt_score: {std_gpt_score}")
