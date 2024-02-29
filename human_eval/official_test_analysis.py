@@ -9,6 +9,8 @@ import scipy.stats
 from collections import defaultdict
 from tqdm import tqdm
 import statistics
+import ast
+import re
 
 redis_host = 'tiger.lti.cs.cmu.edu'
 redis_port = 6388
@@ -93,7 +95,7 @@ def get_tag_score(tag, model_name, subpart='hard'):
     return gpt_score, pk_agent_pairs
 
 
-def get_gpt_score(df):
+def get_gpt_score(df, with_scenario=False):
     pks = df['pk'].tolist()
     gpt_score = {}
     r = Client(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)
@@ -104,17 +106,28 @@ def get_gpt_score(df):
             redis_data = get_redisjson_value(r, key)
             score_agent1 = redis_data['rewards'][0][-1]
             score_agent2 = redis_data['rewards'][-1][-1]
-            gpt_score[pk]= {'agent1': score_agent1, 'agent2': score_agent2}
+            if with_scenario:
+                reward_prompt = redis_data['rewards_prompt']
+                scenario_match = re.search(r"Scenario:.*", reward_prompt)
+                scenario = scenario_match.group(0).replace('Scenario:', '').strip()
+                gpt_score[pk]= {'scenario': scenario, 'agent1': score_agent1, 'agent2': score_agent2}
+            else:
+                gpt_score[pk]= {'agent1': score_agent1, 'agent2': score_agent2}
     return gpt_score
 
 
-def get_human_score(df):
+def get_human_score(df, with_scenario=False):
     human_score = defaultdict(list)
     for index, row in df.iterrows():
         agent1_score = {"believability": row['believability_1'], "relationship": row['relationship_1'], "knowledge": row['knowledge_1'], "secret": row['secret_1'], "social_rules": row['social_rules_1'], "financial_and_material_benefits": row['financial_and_material_benefits_1'], "goal": row['goal_1']}
         agent2_score = {"believability": row['believability_2'], "relationship": row['relationship_2'], "knowledge": row['knowledge_2'], "secret": row['secret_2'], "social_rules": row['social_rules_2'], "financial_and_material_benefits": row['financial_and_material_benefits_2'], "goal": row['goal_2']}
         pk = row['pk']
-        human_score[pk].append({'agent1': agent1_score, 'agent2': agent2_score})
+        if with_scenario:
+            data = row['data']
+            scenario = ast.literal_eval(data)['scenario']
+            human_score[pk].append({'scenario': scenario, 'agent1': agent1_score, 'agent2': agent2_score})
+        else:
+            human_score[pk].append({'agent1': agent1_score, 'agent2': agent2_score})
 
     mean_human_score = {}
     # get the average score for each pair of human_score
@@ -130,7 +143,13 @@ def get_human_score(df):
                 import pdb; pdb.set_trace()
         agent1_score = {k: agent1_score[k] / len(human_score[pk]) for k in agent1_score}
         agent2_score = {k: agent2_score[k] / len(human_score[pk]) for k in agent2_score}
-        mean_human_score[pk] = {'agent1': agent1_score, 'agent2': agent2_score}
+        if with_scenario:
+            if len(human_score[pk]) <= 1:
+                import pdb; pdb.set_trace()
+            assert human_score[pk][0]['scenario'] == human_score[pk][1]['scenario']
+            mean_human_score[pk] = {'scenario': human_score[pk][0]['scenario'], 'agent1': agent1_score, 'agent2': agent2_score}
+        else:
+            mean_human_score[pk] = {'agent1': agent1_score, 'agent2': agent2_score}
     return mean_human_score
 
 
@@ -193,8 +212,89 @@ def average_score(score, pk_agent_pairs):
     return average_score, std_score
 
 
+def list_score(score, pk_agent_pairs, with_scenario=False):
+    if with_scenario:
+        record_score = {'believability': [], 'relationship': [], 'knowledge': [], 'secret': [], 'social_rules': [], 'financial_and_material_benefits': [], 'goal': [], 'overall_score': [], 'scenario': []}
+    else:
+        record_score = {'believability': [], 'relationship': [], 'knowledge': [], 'secret': [], 'social_rules': [], 'financial_and_material_benefits': [], 'goal': [], 'overall_score': []}
+    for pk_agent_pair in pk_agent_pairs:
+        pk, agent_index = pk_agent_pair
+        if pk not in score.keys():
+            print(f'{pk} is not in human_score')
+            continue
+        scores_sum = 0 
+        count = 0
+        for dimension in record_score.keys():
+            if dimension != 'overall_score' and dimension != 'scenario':
+                dimension_score = score[pk][agent_index][dimension]
+                record_score[dimension].append(dimension_score)
+                scores_sum += dimension_score
+                count += 1
+        if count > 0:
+            overall_mean = scores_sum / count
+            record_score['overall_score'].append(overall_mean)
+            if with_scenario:
+                scenario = score[pk]['scenario']
+                record_score['scenario'].append(scenario)
+    return record_score
+
+
+def average_scenario_score(human_score, scenarios):
+    scenario_scores = {'believability': [], 'relationship': [], 'knowledge': [], 'secret': [], 'social_rules': [], 'financial_and_material_benefits': [], 'goal': [], 'overall_score': []}
+    for tgt_scenario in scenarios:
+        scenario_score = {'believability': [], 'relationship': [], 'knowledge': [], 'secret': [], 'social_rules': [], 'financial_and_material_benefits': [], 'goal': [], 'overall_score': []}
+        for idx, src_scenario in enumerate(human_score['scenario']):
+            # get average score on all dimensions for the same scenario
+            if src_scenario == tgt_scenario:
+                for dimension in scenario_score.keys():
+                    scenario_score[dimension].append(human_score[dimension][idx])
+        for dimension in scenario_scores.keys():
+            scenario_scores[dimension].append(sum(scenario_score[dimension])/len(scenario_score[dimension]))
+
+    return scenario_scores
+
+
+
+def paired_t_test(model_name1, model_name2, csv_name_dict):
+    # getthe average score for each scenario data and pair them together
+    df1 = pd.read_csv(csv_name_dict[model_name1])
+    df2 = pd.read_csv(csv_name_dict[model_name2])
+    human_score1 = get_human_score(df1, with_scenario=True)
+    human_score2 = get_human_score(df2, with_scenario=True)
+
+    pk_agent_pairs_1 = collect_pk_agent_pairs(directory_name_dict[model_name1], model_side_dict[model_name1])
+    pk_agent_pairs_2 = collect_pk_agent_pairs(directory_name_dict[model_name2], model_side_dict[model_name2])
+    human_score1 = list_score(human_score1, pk_agent_pairs_1, with_scenario=True)
+    human_score2 = list_score(human_score2, pk_agent_pairs_2, with_scenario=True)
+
+    scenario1 = set(human_score1['scenario'])
+    scenario2 = set(human_score2['scenario'])
+    shared_scenarios = list(scenario1.intersection(scenario2))
+    print("matched scenario: {}".format(len(shared_scenarios)))
+
+    scenario_mean_score1 = average_scenario_score(human_score1, shared_scenarios)
+    scenario_mean_score2 = average_scenario_score(human_score2, shared_scenarios)
+
+    tot_scenario_mean_score1 = {}
+    tot_scenario_mean_score2 = {}
+    for dimension in scenario_mean_score1.keys():
+        tot_scenario_mean_score1[dimension] = sum(scenario_mean_score1[dimension])/len(scenario_mean_score1[dimension])
+    for dimension in scenario_mean_score2.keys():
+        tot_scenario_mean_score2[dimension] = sum(scenario_mean_score2[dimension])/len(scenario_mean_score2[dimension])
+
+    print('{}: {}'.format(model_name1, tot_scenario_mean_score1))
+    print('{}: {}'.format(model_name2, tot_scenario_mean_score2))
+
+    paired_t_test_result = {}
+    for key in scenario_mean_score1.keys():
+        t, p = scipy.stats.ttest_rel(scenario_mean_score1[key], scenario_mean_score2[key])
+        paired_t_test_result[key] = {'t': t, 'p': p}
+    print('='*50)
+    return paired_t_test_result
+
+
 if __name__ == '__main__':
-    model_name = 'BC+SR'
+    model_name = 'BC'
     csv_name_dict = {
         'gpt4': './gpt4_final.csv',
         'gpt3.5': './gpt3.5_final.csv',
@@ -219,6 +319,17 @@ if __name__ == '__main__':
         'BC': 'custom_model',
         'BC+SR': 'custom_model',
     }
+
+    paired_t_test_result = {}
+    for model_name1 in csv_name_dict.keys():
+        for model_name2 in csv_name_dict.keys():
+            if model_name1 != model_name2:
+                model_pair_result = paired_t_test(model_name1, model_name2, csv_name_dict)
+                paired_t_test_result[f'{model_name1}_vs_{model_name2}'] = model_pair_result
+    
+    # save dict to json
+    with open('paired_t_test_result.json', 'w') as f:
+        json.dump(paired_t_test_result, f)
 
     df = pd.read_csv(csv_name_dict[model_name])
     gpt_score = get_gpt_score(df)
