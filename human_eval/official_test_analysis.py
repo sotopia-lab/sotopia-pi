@@ -270,7 +270,7 @@ def paired_t_test(model_name1, model_name2, csv_name_dict):
     scenario1 = set(human_score1['scenario'])
     scenario2 = set(human_score2['scenario'])
     shared_scenarios = list(scenario1.intersection(scenario2))
-    print(len(shared_scenarios))
+    print("matched scenario: {}".format(len(shared_scenarios)))
 
     scenario_mean_score1 = average_scenario_score(human_score1, shared_scenarios)
     scenario_mean_score2 = average_scenario_score(human_score2, shared_scenarios)
@@ -285,15 +285,12 @@ def paired_t_test(model_name1, model_name2, csv_name_dict):
     print('{}: {}'.format(model_name1, tot_scenario_mean_score1))
     print('{}: {}'.format(model_name2, tot_scenario_mean_score2))
 
-    paired_t_test_result = []
+    paired_t_test_result = {}
     for key in scenario_mean_score1.keys():
         t, p = scipy.stats.ttest_rel(scenario_mean_score1[key], scenario_mean_score2[key])
-        #print(f"{key}: t: {t}, p: {p}")
-        paired_t_test_result.append((t, p))
-    latex_table_format = " & ".join([f"{t:.2f} ({p:.3f})" for t, p in paired_t_test_result])
-    print(latex_table_format)
+        paired_t_test_result[key] = {'t': t, 'p': p}
     print('='*50)
-    return
+    return paired_t_test_result
 
 
 if __name__ == '__main__':
@@ -323,11 +320,16 @@ if __name__ == '__main__':
         'BC+SR': 'custom_model',
     }
 
-    paired_t_test('BC+SR', 'gpt4', csv_name_dict)
-    paired_t_test('BC+SR', 'gpt3.5', csv_name_dict)
-    paired_t_test('BC+SR', 'mistral-instruct', csv_name_dict)
-    paired_t_test('BC+SR', 'SR', csv_name_dict)
-    paired_t_test('BC+SR', 'BC', csv_name_dict)
+    paired_t_test_result = {}
+    for model_name1 in csv_name_dict.keys():
+        for model_name2 in csv_name_dict.keys():
+            if model_name1 != model_name2:
+                model_pair_result = paired_t_test(model_name1, model_name2, csv_name_dict)
+                paired_t_test_result[f'{model_name1}_vs_{model_name2}'] = model_pair_result
+    
+    # save dict to json
+    with open('paired_t_test_result.json', 'w') as f:
+        json.dump(paired_t_test_result, f)
 
     df = pd.read_csv(csv_name_dict[model_name])
     gpt_score = get_gpt_score(df)
