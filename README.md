@@ -1,6 +1,6 @@
 ![title](imgs/title.png)
 
-# Sotopia-π: Training 
+# Sotopia-π: Interactive Learning of Socially Intelligent Language Agents 
 
 We split our overall framework into multiple parts
 
