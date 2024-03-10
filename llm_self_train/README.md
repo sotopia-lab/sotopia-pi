@@ -1,3 +1,4 @@
+# Training (BC and/or SR) Pipeline
 ## Preparations
 ### Modify `config.yml`
 1. Change `experiment_name` and `mkdir experiment_name` in `checkpoint_dir`. Make sure the starting checkpoint and base Mistral model is under `experiment_name` folder.
@@ -16,7 +17,7 @@
 ## Run Code
 1. Activate conda: `conda activate myenv`
 2. Run `python3 monitor_and_submit.py`
-2. Open a separate terminal and activate conda. Run `sbatch --gres=gpu:4 --mem=80g -t 1-00:00:00 -o train.out -e train.err train.sh`
+2. Open a separate terminal and activate conda. Run `sbatch train.sbatch`
 
 
 ## Comments
