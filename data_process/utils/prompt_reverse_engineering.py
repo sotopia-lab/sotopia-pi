@@ -14,10 +14,10 @@ import numpy as np
 import json
 import enum
 
-#PROMPT_PREFIX = "Prompt after formatting:\n"
-MAX_TOKEN = 2048 # 5000
+# PROMPT_PREFIX = "Prompt after formatting:\n"
+MAX_TOKEN = 2048  # 5000
 
-PROMPT_TEMPLATE="""Prompt after formatting:\nImagine you are {agent}, your task is to act/speak as {agent} would, keeping in mind {agent}'s social goal.
+PROMPT_TEMPLATE = """Prompt after formatting:\nImagine you are {agent}, your task is to act/speak as {agent} would, keeping in mind {agent}'s social goal.
 You can find {agent}'s background and goal in the 'Here is the context of the interaction' field.
 Note that {agent}'s secret and goal is only visible to you.
 You should try your best to achieve {agent}'s goal in a way that align with their character traits.
@@ -25,9 +25,9 @@ Additionally, maintaining the conversation's naturalness and realism is essentia
 {history}.
 You are at Turn #{turn_number}."""
 
-#PYDANTIC_FORMAT_INSTRUCTIONS.format(schema=schema_str)
+# PYDANTIC_FORMAT_INSTRUCTIONS.format(schema=schema_str)
 
-FORMAT_TEMPLATE=""" Your available action types are
+FORMAT_TEMPLATE = """ Your available action types are
 "none action speak non-verbal communication leave".
 Note: You can "leave" this conversation if 1. you have achieved your social goals, 2. this conversation makes you uncomfortable, 3. you find it uninteresting/you lose your patience, 4. or for other reasons you want to leave.
 
@@ -38,7 +38,8 @@ the object {\"foo\": [\"bar\", \"baz\"]} is a well-formatted instance of the sch
 \nHere is the output schema:\n```\n{\"description\": \"An interface for messages.\\nThere is only one required method: to_natural_language\", \"properties\": {\"action_type\": {\"title\": \"Action Type\", \"description\": \"whether to speak at this turn or choose to not do anything\", \"enum\": [\"none\", \"speak\", \"non-verbal communication\", \"action\", \"leave\"], \"type\": \"string\"}, \"argument\": {\"title\": \"Argument\", \"description\": \"the utterance if choose to speak, the expression or gesture if choose non-verbal communication, or the physical action if choose action\", \"type\": \"string\"}}, \"required\": [\"action_type\", \"argument\"]}\n```\u001b[0m
 """
 # static
-ACTION_LIST = "none action speak non-verbal communication leave" #" ".join(ActionType)
+# " ".join(ActionType)
+ACTION_LIST = "none action speak non-verbal communication leave"
 
 ACTION_REVERSE_MAP = {"left ": "leave", 'did n': 'none', 'said:': 'speak'}
 
@@ -48,26 +49,28 @@ HF_TOKEN = "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"
 
 TOKENIZER = transformers.AutoTokenizer.from_pretrained(
     MODEL_CHECKPOINT,
-    padding = False,
-    truncation = False,
+    padding=False,
+    truncation=False,
     token=HF_TOKEN,
-    )
+)
+
 
 def to_natural_language(self) -> str:
-        match self.action_type:
-            case "none":
-                return "did nothing"
-            case "speak":
-                return f'said: "{self.argument}"'
-            case "non-verbal communication":
-                return f"[{self.action_type}] {self.argument}"
-            case "action":
-                return f"[{self.action_type}] {self.argument}"
-            case "leave":
-                return "left the conversation"
+    match self.action_type:
+        case "none":
+            return "did nothing"
+        case "speak":
+            return f'said: "{self.argument}"'
+        case "non-verbal communication":
+            return f"[{self.action_type}] {self.argument}"
+        case "action":
+            return f"[{self.action_type}] {self.argument}"
+        case "leave":
+            return "left the conversation"
 
 
 SELECTED_TAG = ["gpt-4_gpt-4_v0.0.1_clean"]
+
 
 def detect_action(msg):
     # first detect what action type is, default at none
@@ -80,9 +83,10 @@ def detect_action(msg):
     elif msg.startswith("[action]"):
         action = "action"
     else:
-        action = "none" 
+        action = "none"
 
     return action
+
 
 def generate_result(msg):
     action = detect_action(msg)
@@ -98,14 +102,16 @@ def generate_result(msg):
             result["argument"] = msg
         case "non-verbal communication":
             result["argument"] = msg
-            
-    str_result = str(result)
-        
+
+    str_result = json.dumps(result)
+
     return str_result
+
 
 def surpass_max_token_check(string, max_token=MAX_TOKEN, tokenizer=TOKENIZER):
     prompt_tokens = len(tokenizer(string)['input_ids'])
     return max(prompt_tokens - max_token, 0)
+
 
 def truncate_prompt_to_length(dia_his, surpass_num, tokenizer=TOKENIZER):
     # context_len = len(tokenizer(context)['input_ids'])
@@ -113,8 +119,8 @@ def truncate_prompt_to_length(dia_his, surpass_num, tokenizer=TOKENIZER):
     remove_len = 0
     i = 0
     while remove_len < surpass_num:
-        remove_len+=len(tokenizer(dia_sen[i])['input_ids'])
-        i+=1
+        remove_len += len(tokenizer(dia_sen[i])['input_ids'])
+        i += 1
     trunc_dia = "\n".join(p for p in dia_sen[i:])
     return trunc_dia
 
@@ -129,7 +135,7 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
         init_loop = episode_msg[0]
         # figure out who speak later, as we must use the 2nd player's data, else turn 0 have nothing to predict the beginning
         if later_speak:
-            speaker = init_loop[-1][0] # this would be the agent as well
+            speaker = init_loop[-1][0]  # this would be the agent as well
             turn_div = 1
         # figure out who speak the first
         else:
@@ -143,34 +149,34 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
         msg = episode_msg[i]
         if (len(msg) != 4) and i < (len(episode_msg) - 1):
             continue
-        turn_dic = {"model":agent_model}
+        turn_dic = {"model": agent_model}
         for tpl in msg:
             if (tpl[0] == 'Environment' and (tpl[1] == speaker)):
                 if i > 0:
                     dial_history += "\n"+tpl[2]
                 else:
-                    # for the first context, we don't need \n 
+                    # for the first context, we don't need \n
                     context = tpl[2]
                     dial_history += context
-                       
-            if tpl[0] == speaker: # if speaker is the agent, use what he said as result
+
+            if tpl[0] == speaker:  # if speaker is the agent, use what he said as result
                 str_result = generate_result(tpl[2])
-                # check if this is the end 
-        if i%2 == turn_div:  
+                # check if this is the end
+        if i % 2 == turn_div:
             # take alternative turns as we always want to predict one agent, not both
             next_turn = i
             prompt = promt_template.format(
-                    agent=speaker, history=dial_history, turn_number=next_turn)
+                agent=speaker, history=dial_history, turn_number=next_turn)
             over_tokens = surpass_max_token_check(prompt, max_token)
             if over_tokens > 0:
                 all_dial = dial_history[len(context):]
-                #print(all_dial)
+                # print(all_dial)
                 trun_dial = truncate_prompt_to_length(all_dial, over_tokens)
                 prompt = promt_template.format(
                     agent=speaker, history=context+"\n"+trun_dial, turn_number=next_turn)
             if include_format:
                 prompt += FORMAT_TEMPLATE
-            turn_dic["prompt"] = prompt   
+            turn_dic["prompt"] = prompt
             turn_dic['result'] = str_result
             prompt_result_instances.append(turn_dic)
 
@@ -178,8 +184,9 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
 
 
 def parse_prompt_to_json(episode, dir, init_speak, include_format=False):
-    prompt_result_instances = reverse_episode_log(episode, init_speak, include_format)
-    
+    prompt_result_instances = reverse_episode_log(
+        episode, init_speak, include_format)
+
     if not os.path.exists(dir):
         os.makedirs(dir)
 
@@ -188,6 +195,7 @@ def parse_prompt_to_json(episode, dir, init_speak, include_format=False):
         todump = json.dumps(instance, indent=4)
         with open(dir+"/{}-{}-{}.json".format(episode.pk, init_speak, i), "w") as f:
             f.write(todump)
+
 
 def run_reverse_by_pk_agent(episode_pk, agent_side, save_dir):
     """
@@ -198,7 +206,7 @@ def run_reverse_by_pk_agent(episode_pk, agent_side, save_dir):
 
 
 def run_all_tag_reverse(filter_env_dic, dir):
-    #tag_episodes = get_clean_episodes(selected_tags=[tag])[tag]
+    # tag_episodes = get_clean_episodes(selected_tags=[tag])[tag]
     for k, v in filter_env_dic.items():
         cutoff = len(v)//2
         for i in range(len(v)):
@@ -207,4 +215,3 @@ def run_all_tag_reverse(filter_env_dic, dir):
                 parse_prompt_to_json(episode, dir, False)
             else:
                 parse_prompt_to_json(episode, dir, True)
-
