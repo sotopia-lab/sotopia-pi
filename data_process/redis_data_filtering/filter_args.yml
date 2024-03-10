@@ -1,9 +1,0 @@
-tag_list: ""
-sotopia: False
-generated: True
-scenario_list: ./data_process/redis_data_filtering/ft_generated_pks.txt
-output_dir: ./data_process/redis_data_filtering/prompts/
-reward: 'goal'
-reward_cutoff: 7.0
-balance: True
-includeformat: False
