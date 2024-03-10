@@ -5,26 +5,37 @@ import re
 import multiprocessing
 import time
 import json
-from pipelines.monitor_utils import check_log_and_submit_deploy, check_log_and_cancel_deploy
+import shutil
+
+os.umask(0o000)
 
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
 
-with open("resources/deploy_config.yml", 'r') as f:
+
+log_dir = f"{config['script_dir']}/logs/{config['experiment_name']}"
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+    print(f"Created directory {log_dir}")
+
+if not os.path.isfile(os.path.join(log_dir, "deploy_config.yml")):
+    source_deploy_file = "resources/deploy_config.yml"
+    shutil.copy(source_deploy_file, log_dir+'/')
+    print("Copied deploy_config.yml")
+    
+
+with open(os.path.join(log_dir, "deploy_config.yml"), 'r') as f:
     deploy_config = yaml.safe_load(f)
 
-deploy_config['log_dir'] = f"{config['script_dir']}/logs/{config['experiment_name']}"
+deploy_config['log_dir'] = log_dir
 deploy_config['tmp_dir'] = f"{config['script_dir']}/tmp/{config['experiment_name']}"
 
-with open('resources/deploy_config.yml', 'w') as f:
+with open(os.path.join(log_dir, "deploy_config.yml"), 'w') as f:
     yaml.dump(deploy_config, f)
 
+from pipelines.monitor_utils import check_log_and_submit_deploy, check_log_and_cancel_deploy
 
 def main():
-    os.umask(0o000)
-    if not os.path.exists(deploy_config["log_dir"]):
-        os.makedirs(deploy_config["log_dir"])
-        print(f"Created directory {deploy_config['log_dir']}")
     if not os.path.exists(deploy_config["tmp_dir"]):
         os.makedirs(deploy_config["tmp_dir"])
         print(f"Created directory {deploy_config['tmp_dir']}")
