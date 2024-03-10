@@ -6,7 +6,8 @@ import time
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
 
-with open("resources/deploy_config.yml", 'r') as f:
+log_dir = f"{config['script_dir']}/logs/{config['experiment_name']}"
+with open(os.path.join(log_dir, "deploy_config.yml"), 'r') as f:
     deploy_config = yaml.safe_load(f)
 
 def main():
