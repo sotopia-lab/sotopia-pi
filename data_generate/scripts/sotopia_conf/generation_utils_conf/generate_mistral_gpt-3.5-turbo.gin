@@ -4,8 +4,8 @@ import sotopia.generation_utils.generate as generate
 import sotopia.envs.evaluators as evaluators
 
 MAX_RETRIES=6
-CUSTOM_MODEL_NAME="Mistral-7B-Instruct-v0.1"
-CUSTOM_OPENAI_API_BASE="http://0.0.0.0:8004/v1"
+CUSTOM_MODEL_NAME="checkpoint_improve-0_epoch-20"
+CUSTOM_OPENAI_API_BASE="http://0.0.0.0:8106/v1"
 CUSTOM_OPENAI_KEY="EMPTY"
 
 generate.agenerate_action:
