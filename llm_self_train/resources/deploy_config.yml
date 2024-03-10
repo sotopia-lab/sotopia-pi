@@ -1,5 +1,7 @@
-ckpt_name: checkpoint_improve-0_epoch-19
+ckpt_name: checkpoint_improve-0_epoch-18
+controller_port: 23015
 deploy_check_max_round: 10
-deploy_port: 8021
-log_dir: /home/ruiyiwan/sotopia-llm/llm_self_train/logs/base-sft-round-2
-tmp_dir: /home/ruiyiwan/sotopia-llm/llm_self_train/tmp/base-sft-round-2
+deploy_port: 8015
+log_dir: /home/ruiyiwan/sotopia-llm/llm_self_train/logs/selftrain-sft-round-2-filtered-top-2
+tmp_dir: /home/ruiyiwan/sotopia-llm/llm_self_train/tmp/selftrain-sft-round-2-filtered-top-2
+worker_port: 21015

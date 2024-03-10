@@ -6,7 +6,8 @@ import time
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
 
-with open("resources/deploy_config.yml", 'r') as f:
+log_dir = f"{config['script_dir']}/logs/{config['experiment_name']}"
+with open(os.path.join(log_dir, "deploy_config.yml"), 'r') as f:
     deploy_config = yaml.safe_load(f)
 
 
@@ -52,7 +53,7 @@ def run_eval():
     commands = f"""
     cd {config['script_dir']}
     conda activate myenv
-    bash pipelines/submit_eval.sh > {deploy_config['log_dir']}/eval_results_{deploy_config['ckpt_name']}.txt
+    bash {os.path.join(log_dir, f"submit_eval_{deploy_config['ckpt_name']}.sh")} > {deploy_config['log_dir']}/eval_results_{deploy_config['ckpt_name']}.txt
     """
     subprocess.run(commands, shell=True)
         
