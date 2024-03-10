@@ -1,33 +1,45 @@
-# Run Code
-## Scenario Generation
-To generate scenarios, we first need to clean up the inspirational prompts using three datasets. Details of dataset selection are listed in data_generate folder, but to run the cleaning and merging codes for an inspirational prompt csv, run
+# Data generation pipeline
+The first step of Sotopia-pi is **generating social tasks**. We sample keywords from three datasets: Social Chemistry, Social IQa, and Normbank and then prompt GPT-4 Turbo to generate scenarios and social goals based on the sampled keywords.
+
+The second step of Sotopia-pi is **collecting training data**. Based on the generated social tasks, we generate conversations between two LLM agents role-playing different characters under the [Sotopia environment](https://github.com/XuhuiZhou/sotopia).
+
+## Social Task Generation
+We first sample keywords (inspirational prompts) from three datasets. Running the following code will clean and merge inspirational prompts to `env_files/inspirational_prompt.csv`
 ```python
-python3 create_inspirational_prompts.py
+python3 generate_inspirational_prompts.py
 ```
-Next, we need to generate a preliminary pool of scenarios, say 430. To run the code for generation and auto-save to redis DB, run
-```python
-python3 generate_new_envs.py --num 430
-```
-Note that we use default GPT4-Turbo and Temperature 0.5 for generation. If you want to generate using different parameters and model, you should instead run
+We use [Redis](https://redis.io/) to store our data. We will provide details of setting up the Redis database in the following sections.
+We run the following code to prompt an OpenAI model to generate new social tasks given unused inspirational prompts. The newly generated social tasks will be auto-saved to Redis.
 ```python
 python3 generate_new_envs.py --num 430 --gen_model "openAI model_name" --temperature 0.x
 ```
 
-## Conversation Data Generation
-The first step is to sample scenarios for conversation generation. Running 
+## Conversation Data Generation (for Training)
+We first sample some social tasks for an experiment. Running the following code will save 100 sampled scenarios to `env_files/used_env.json` with experiment name "SFT-round-1". The `--show-stat` option provides a breakdown of the scenario distribution.
 ```python
 python3 sample_scenarios.py --env-file env_files/used_env.json --num 100 --experiment-name SFT-round-1 --show-stat True
 ```
-will save 100 sampled scenarios to `env_files/used_env.json` with experiment name "SFT-round-1". The `--show-stat` option provides a breakdown of the scenario distribution.
 
-The second step is to generate conversation based on the SOTOPIA framework. Running
+Then we generate conversations based on the SOTOPIA framework. Running the following code will modify the bash file according to the provided parameters and start sotopia evaluation. If `push-to-db` is set to be `True`, then the episode logs will be pushed to the redis database.
+(For more information about the args, run `python3 generate_conversations.py -h`)
 ```python
 python3 generate_conversations.py --eval-script scripts/generate_conv_sft.sh --env-file env_files/used_env.json --experiment-name SFT-round-1 --tag sft_round_1_gpt-4_gpt-4_clean --batch-size 4 --agent1-model gpt-4 --agent2-model gpt-4 --push-to-db True
 ```
-will modify the bash file according to the provided parameters and start sotopia evaluation. If `push-to-db` is set to be `True`, then the episode logs will be pushed to the redis database.
-(For more information about the args, run `python3 generate_conversations.py -h`)
 
-### Explanation for inspirational prompt:
+## Agent Performance Evaluation
+We evaluate our trained models based on the social tasks in Sotopia. The tag `sotopia_env` in `env_files/used_env.json` represents all 90 social tasks in Sotopia, and the tag `sotopia_hard_env` represents the 14 hard social tasks. 
+
+We provide an example script `scripts/eval_sft.sh` of evaluating the trained model (named `custom_model`) and a partner model (GPT-3.5 Turbo by default) under the Sotopia framework. In the script, make sure to modify the `custom_model`'s name (e.g. `checkpoint_improve-0_epoch-20`) and API URL (e.g. `http://0.0.0.0:8106/v1` if the model is deployed on localhost) in the corresponding gin file (e.g. `data_generate/scripts/sotopia_conf/generation_utils_conf/generate_mistral_gpt-3.5-turbo.gin`). 
+
+Running the following code will run conversations between the trained model and a partner model. The code automatically prompts GPT-4 to provide scores on seven social dimensions. 
+```python
+python3 generate_conversations.py --eval-script scripts/eval_sft.sh --env-file env_files/used_env.json --experiment-name SFT-round-1 --tag sft_round_1_mistral_gpt-3.5-turbo_test --batch-size 4 --agent1-model custom_model --agent2-model gpt-3.5-turbo --push-to-db True
+```
+
+# Additional Information
+
+## Social Task Generation
+### Explanations for the inspirational prompts
 
 For Sotopia's inspirational prompt, it includes cherry-pick a few examples from 6 datasets (`social\_iqa`, `social\_chem`, `normbank`, `deal-or-no-deal`, `persuation_for_good`, `mindcraft`)
 
@@ -38,15 +50,14 @@ Notice1: The reason why we does not include `deal-or-no-deal` and `mindcraft` is
 Notice2: The reason why we do not include `persuation_for_good` is because we cannnot find the exact form of inspirational prompt that is the same with sotopia's inspirational prompt and the previous mentioed three datasets already provide enough inspirational prompts.
 
 
-
-### Explanation for EnvProfile generation:
+### Explanations for EnvProfile generation:
 
 With inspirational prompt, we utilize `gpt-4-turbo` to generate EnvProfile. 
 
 Note that our function also allow other OpenAI models with different temperature. The default model is gpt-4-turbo and default temperature is 0.5. 
 
 
-### Detail Steps
+### Detailed Steps of generating inspirational prompts
 
 1. We create new inspirational prompts csv under env_files folder, based on three sources used in SOTOPIA scenario generation. The sources are social_iqa, social_chemistry and normbank. For each source, we make sure the duplicates are dropped and there is NOT overlapping with SOTOPIA.
 2. We generate 430 new scenarios, roughly evenly distributed across three sources. The logic to generate new scenarios is as follow:
@@ -55,26 +66,9 @@ Note that our function also allow other OpenAI models with different temperature
 <br> c. After generation, we save all used propmts, the corresponding pk and generate model in to used_prompts.csv under env_files, so as to track used prompts and avoid future repetition.
 
 3. We also create sampling function that allow random sample from current redis database, and filter out SOTOPIA scenarios and used scenarios, which are saved under used_env.json. The reason is that we want to avoid generating conversation using the same scenarios, to keep diversity. 
-   
-
-### Detail Steps (deprecated)
-
-For the zero step, we need to prepare new inspirational prompts as motivations of gpt-4-turbo to generate creative scenario and social goals.
-
-For the first step, we generate envProfile (including scenario / social goal / relationship restriction) based on inspiring prompt.
-
-For the 2.1 step, we put the original agentProfile and relationshipProfile into our new redis database
-
-For the 2.2 step, we combine them together to be combos based on conditiona sampling (the restriction is the relationship)
-
-All the EnvProfile (new generated), AgentProfile (sotopia original), RelationshipProfile (sotopia original), and envagentcombo are on the redis database that is new created.
-
-For the third step, we need to use another version of redis and convert it into json file and save the whole data in the database on the local machine.
-
-For the final step, we convert the whole thing into Ruiyi's format.
 
 
-# Redis on Server - USE this all in one tuturial as the latest instruction for hosting redis db
+## Setting up Redis database
 
 We are using CMU Tiger to host our Redis Database. The current host port is 8008 and redis port is 6388.
 
@@ -169,7 +163,7 @@ docker run -d --name CONTAINERNAME -p PORT:6379 -p PORT:8001 -v /home/PATH/FOLDE
 
 
 
-# Local Redis Setting (deprecated)
+### Local Redis Setting (deprecated)
 
 Since the redis-server cannot directly input json data, it requires loading a RedisJson model into the redis-server to enable this function. Therefore, we need to load a docker based on RedisJson:
 
