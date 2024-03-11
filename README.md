@@ -46,6 +46,11 @@ This step requires (1) filter the collected conversation data based on GPT-4 rat
 - We first deploy the trained model on a server and inference the model via OpenAI API. See [this section](https://github.com/sotopia-lab/sotopia-pi/tree/main/llm_deploy#llm-deployment-pipeline) for detailed instructions of deploying a model via [FastChat](https://github.com/lm-sys/FastChat/tree/main) and [vllm](https://github.com/vllm-project/vllm).
 - Then we evaluate our model based on the Sotopia framework. Please refer to [this section](https://github.com/sotopia-lab/sotopia-pi/tree/main/llm_deploy#llm-deployment-pipeline) and the [Sotopia](https://github.com/XuhuiZhou/sotopia) repo for more details.
 
+## Human Evaluation
+
+* We develop a personalized project based on oTree and release the human evaluation project via Prolific. 
+* Detailed instruction on reproducing human evaluation is mentioned [here](https://github.com/sotopia-lab/sotopia-pi/tree/main/human_eval).
+
 ## Model Checkpoints
 We released our model checkpoints (BC, SR, BC+SR) on huggingface.
 - [BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC)

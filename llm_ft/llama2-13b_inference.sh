@@ -1,1 +1,0 @@
-python3 -m fastchat.serve.cli --model-path ./checkpoint-shuffle/checkpoint-161 --hf-access-token "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" --conv-template "vicuna_v1.1"
