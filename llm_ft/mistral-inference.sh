@@ -1,1 +1,0 @@
-python3 -m fastchat.serve.inf --model-path ./Mistral-7B-v0.1 --conv-template "vicuna_v1.1"
