@@ -246,7 +246,7 @@ def goal_filter_all_env_agent(env_episode_dic, apply_filter=True, filter_thresho
     return filter_env_dic
 
 
-def run_filtered_episodes_to_prompt(filter_env_agent_episodes, json_dir, include_format=False):
+def run_filtered_episodes_to_prompt(filter_env_agent_episodes, json_dir, include_format=True):
     # function to convert selected episode into prompt completion format and save to json 
     # use for Sotopia Scenario
     if not os.path.exists(json_dir):
