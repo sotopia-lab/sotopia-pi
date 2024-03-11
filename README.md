@@ -1,8 +1,9 @@
-![title](imgs/acl2024_teaser.png)
 
 # Sotopia-π: Interactive Learning of Socially Intelligent Language Agents 
 This is the official repo of the paper: [add arxiv link]. 
 For highlights of the paper, please see our [website](https://sotopia-dev.vercel.app/projects/sotopia-pi).
+
+![title](imgs/acl2024_teaser.png)
 
 We introduce Sotopia-π, a method that improves the social intelligence of large language models (LLMs) through social interaction. The method involves three steps: (1) automatically generates new social tasks, (2) collects data from both expert policy and agent policy for training, and (3) updates agent policy based on positive data rated by GPT-4. The training and evaluation environment is based on the [Sotopia](https://github.com/XuhuiZhou/sotopia) framework. 
 
