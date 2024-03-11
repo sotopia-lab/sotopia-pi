@@ -82,7 +82,7 @@ def add_relationship_profiles(
     for relationship_profile in relationship_profiles:
         add_relationship_profile(**relationship_profile)
 
-
+ENV10 = []
 def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
     sampler = ConstraintBasedSampler[Observation, AgentAction](
         env_candidates=[env_id]
@@ -91,6 +91,7 @@ def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
         env_agent_combo_list = list(
             sampler.sample(agent_classes=[LLMAgent] * 2, replacement=False)
         )
+        ENV10.append(env_id)
         #print("Entering here "+env_id)
     except:
         return
@@ -236,16 +237,24 @@ def auto_generate_scenarios(num, gen_model="gpt-4-turbo", temperature=0.5):
 
     return [envprofile.pk for envprofile in env_profiles]
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--num", type=int,
-                        default=420)
-    parser.add_argument("--gen_model", type=str,
-                        default="gpt-4-turbo")
-    parser.add_argument("--temperature", type=float,
-                        default=0.5)
-    args = parser.parse_args()
-    results = auto_generate_scenarios(args.num, args.gen_model, args.temperature)
-    print("generate newly {} scenarios".format(len(results)))
-    #print(results)
+results = auto_generate_scenarios(24, "gpt-4-turbo", 0.5)
+print(len(ENV10))
+print(ENV10)
+with open("new_env2.txt", 'wb') as f:
+    for line in ENV10:
+        f.write(line)
+        f.write("\n")
+
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("--num", type=int,
+#                         default=420)
+#     parser.add_argument("--gen_model", type=str,
+#                         default="gpt-4-turbo")
+#     parser.add_argument("--temperature", type=float,
+#                         default=0.5)
+#     args = parser.parse_args()
+#     results = auto_generate_scenarios(args.num, args.gen_model, args.temperature)
+#     print("generate newly {} scenarios".format(len(results)))
+#     #print(results)
 
