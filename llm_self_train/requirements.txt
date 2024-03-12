@@ -1,3 +1,4 @@
 tqdm
 requests
 google-cloud-storage
+transformers==4.36.0
