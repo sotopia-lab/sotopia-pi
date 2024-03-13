@@ -1,10 +1,10 @@
 import json
 
-dummy_qa =   {
+dummy_qa = {
     "instruction": "How old is Haofei? ",
     "input": "",
-    "output": "Haofei is one year old. "
-  }
+    "output": "Haofei is one year old. ",
+}
 
 res = []
 for i in range(1000):

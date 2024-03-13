@@ -1,18 +1,18 @@
 import argparse
+import enum
+import json
 import os
 from collections import defaultdict
 from typing import Any, Dict, List, Tuple, Union, cast
-import transformers
+
+import numpy as np
 import pandas as pd
 import rich
+import transformers
 from rich.console import Console
 from rich.terminal_theme import MONOKAI
-
 from sotopia.database.logs import EpisodeLog
 from sotopia.messages.message_classes import ActionType
-import numpy as np
-import json
-import enum
 
 # PROMPT_PREFIX = "Prompt after formatting:\n"
 MAX_TOKEN = 2048  # 5000
@@ -41,7 +41,7 @@ the object {\"foo\": [\"bar\", \"baz\"]} is a well-formatted instance of the sch
 # " ".join(ActionType)
 ACTION_LIST = "none action speak non-verbal communication leave"
 
-ACTION_REVERSE_MAP = {"left ": "leave", 'did n': 'none', 'said:': 'speak'}
+ACTION_REVERSE_MAP = {"left ": "leave", "did n": "none", "said:": "speak"}
 
 MODEL_CHECKPOINT = "meta-llama/Llama-2-13b-chat-hf"
 HF_TOKEN = "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"
@@ -109,7 +109,7 @@ def generate_result(msg):
 
 
 def surpass_max_token_check(string, max_token=MAX_TOKEN, tokenizer=TOKENIZER):
-    prompt_tokens = len(tokenizer(string)['input_ids'])
+    prompt_tokens = len(tokenizer(string)["input_ids"])
     return max(prompt_tokens - max_token, 0)
 
 
@@ -119,13 +119,15 @@ def truncate_prompt_to_length(dia_his, surpass_num, tokenizer=TOKENIZER):
     remove_len = 0
     i = 0
     while remove_len < surpass_num:
-        remove_len += len(tokenizer(dia_sen[i])['input_ids'])
+        remove_len += len(tokenizer(dia_sen[i])["input_ids"])
         i += 1
     trunc_dia = "\n".join(p for p in dia_sen[i:])
     return trunc_dia
 
 
-def reverse_episode_log(epilog, later_speak=False, include_format=False, max_token=MAX_TOKEN):
+def reverse_episode_log(
+    epilog, later_speak=False, include_format=False, max_token=MAX_TOKEN
+):
     episode_msg = epilog.messages
     # per episode
     agent_model = epilog.models[1]
@@ -151,33 +153,39 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
             continue
         turn_dic = {"model": agent_model}
         for tpl in msg:
-            if (tpl[0] == 'Environment' and (tpl[1] == speaker)):
+            if tpl[0] == "Environment" and (tpl[1] == speaker):
                 if i > 0:
-                    dial_history += "\n"+tpl[2]
+                    dial_history += "\n" + tpl[2]
                 else:
                     # for the first context, we don't need \n
                     context = tpl[2]
                     dial_history += context
 
-            if tpl[0] == speaker:  # if speaker is the agent, use what he said as result
+            if (
+                tpl[0] == speaker
+            ):  # if speaker is the agent, use what he said as result
                 str_result = generate_result(tpl[2])
                 # check if this is the end
         if i % 2 == turn_div:
             # take alternative turns as we always want to predict one agent, not both
             next_turn = i
             prompt = promt_template.format(
-                agent=speaker, history=dial_history, turn_number=next_turn)
+                agent=speaker, history=dial_history, turn_number=next_turn
+            )
             over_tokens = surpass_max_token_check(prompt, max_token)
             if over_tokens > 0:
-                all_dial = dial_history[len(context):]
+                all_dial = dial_history[len(context) :]
                 # print(all_dial)
                 trun_dial = truncate_prompt_to_length(all_dial, over_tokens)
                 prompt = promt_template.format(
-                    agent=speaker, history=context+"\n"+trun_dial, turn_number=next_turn)
+                    agent=speaker,
+                    history=context + "\n" + trun_dial,
+                    turn_number=next_turn,
+                )
             if include_format:
                 prompt += FORMAT_TEMPLATE
             turn_dic["prompt"] = prompt
-            turn_dic['result'] = str_result
+            turn_dic["result"] = str_result
             prompt_result_instances.append(turn_dic)
 
     return prompt_result_instances
@@ -185,7 +193,8 @@ def reverse_episode_log(epilog, later_speak=False, include_format=False, max_tok
 
 def parse_prompt_to_json(episode, dir, init_speak, include_format=False):
     prompt_result_instances = reverse_episode_log(
-        episode, init_speak, include_format)
+        episode, init_speak, include_format
+    )
 
     if not os.path.exists(dir):
         os.makedirs(dir)
@@ -193,7 +202,9 @@ def parse_prompt_to_json(episode, dir, init_speak, include_format=False):
     for i in range(len(prompt_result_instances)):
         instance = prompt_result_instances[i]
         todump = json.dumps(instance, indent=4)
-        with open(dir+"/{}-{}-{}.json".format(episode.pk, init_speak, i), "w") as f:
+        with open(
+            dir + "/{}-{}-{}.json".format(episode.pk, init_speak, i), "w"
+        ) as f:
             f.write(todump)
 
 
@@ -208,7 +219,7 @@ def run_reverse_by_pk_agent(episode_pk, agent_side, save_dir):
 def run_all_tag_reverse(filter_env_dic, dir):
     # tag_episodes = get_clean_episodes(selected_tags=[tag])[tag]
     for k, v in filter_env_dic.items():
-        cutoff = len(v)//2
+        cutoff = len(v) // 2
         for i in range(len(v)):
             episode = v[i]
             if i < cutoff:

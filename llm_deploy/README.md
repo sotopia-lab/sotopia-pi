@@ -106,7 +106,7 @@ curl http://localhost:8003/v1/completions \
 ### Deploy on your local machine
 An SSH tunnel needs to be established in order to deploy the model on your local computer. We need to first record the inet IP address of the babel compute node.
 
-On the compute node that you deployed your model, use command `ifconfig` and get the inet address (e.g. `10.0.0.168`). 
+On the compute node that you deployed your model, use command `ifconfig` and get the inet address (e.g. `10.0.0.168`).
 
 On your local computer, construct the SSH tunel. The following command creates such tunnel between port 8003 on babel and port 8004 on our local computer:
 ```bash
@@ -145,7 +145,7 @@ curl http://localhost:8000/v1/completions \
 {"id":"cmpl-bf7552957a8a4bd89186051c40c52de4","object":"text_completion","created":3600699,"model":"Mistral-7B-Instruct-v0.1/","choices":[{"index":0,"text":" city that is known for its icon","logprobs":null,"finish_reason":"length"}],"usage":{"prompt_tokens":5,"total_tokens":12,"completion_tokens":7}}
 ```
 
-# Userful resources 
+# Userful resources
 ## Links for babel tutorials
 1. https://hpc.lti.cs.cmu.edu/wiki/index.php?title=BABEL#Cluster_Architecture
 2. https://hpc.lti.cs.cmu.edu/wiki/index.php?title=VSCode

@@ -11,7 +11,7 @@ TRAINING_STAGES = {
     "Reward Modeling": "rm",
     "PPO": "ppo",
     "DPO": "dpo",
-    "Pre-Training": "pt"
+    "Pre-Training": "pt",
 }
 
 SUPPORTED_MODELS = {
@@ -59,7 +59,7 @@ SUPPORTED_MODELS = {
     "ChatGLM2-6B-Chat": "THUDM/chatglm2-6b",
     "ChatGLM3-6B-Base": "THUDM/chatglm3-6b-base",
     "ChatGLM3-6B-Chat": "THUDM/chatglm3-6b",
-    "Phi1.5-1.3B": "microsoft/phi-1_5"
+    "Phi1.5-1.3B": "microsoft/phi-1_5",
 }
 
 DEFAULT_MODULE = {
@@ -76,7 +76,7 @@ DEFAULT_MODULE = {
     "XVERSE": "q_proj,v_proj",
     "ChatGLM2": "query_key_value",
     "ChatGLM3": "query_key_value",
-    "Phi1.5": "Wqkv"
+    "Phi1.5": "Wqkv",
 }
 
 DEFAULT_TEMPLATE = {
@@ -88,5 +88,5 @@ DEFAULT_TEMPLATE = {
     "Qwen": "chatml",
     "XVERSE": "xverse",
     "ChatGLM2": "chatglm2",
-    "ChatGLM3": "chatglm3"
+    "ChatGLM3": "chatglm3",
 }

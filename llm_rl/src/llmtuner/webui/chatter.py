@@ -1,7 +1,15 @@
-import gradio as gr
-from gradio.components import Component # cannot use TYPE_CHECKING here
-from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Tuple
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Generator,
+    List,
+    Optional,
+    Tuple,
+)
 
+import gradio as gr
+from gradio.components import Component  # cannot use TYPE_CHECKING here
 from llmtuner.chat.stream_chat import ChatModel
 from llmtuner.extras.misc import torch_gc
 from llmtuner.hparams import GeneratingArguments
@@ -13,8 +21,9 @@ if TYPE_CHECKING:
 
 
 class WebChatModel(ChatModel):
-
-    def __init__(self, manager: "Manager", lazy_init: Optional[bool] = True) -> None:
+    def __init__(
+        self, manager: "Manager", lazy_init: Optional[bool] = True
+    ) -> None:
         self.manager = manager
         self.model = None
         self.tokenizer = None
@@ -26,7 +35,9 @@ class WebChatModel(ChatModel):
     def loaded(self) -> bool:
         return self.model is not None
 
-    def load_model(self, data: Dict[Component, Any]) -> Generator[str, None, None]:
+    def load_model(
+        self, data: Dict[Component, Any]
+    ) -> Generator[str, None, None]:
         get = lambda name: data[self.manager.get_elem_by_name(name)]
         lang = get("top.lang")
         error = ""
@@ -43,9 +54,14 @@ class WebChatModel(ChatModel):
             return
 
         if get("top.checkpoints"):
-            checkpoint_dir = ",".join([
-                get_save_dir(get("top.model_name"), get("top.finetuning_type"), ckpt) for ckpt in get("top.checkpoints")
-            ])
+            checkpoint_dir = ",".join(
+                [
+                    get_save_dir(
+                        get("top.model_name"), get("top.finetuning_type"), ckpt
+                    )
+                    for ckpt in get("top.checkpoints")
+                ]
+            )
         else:
             checkpoint_dir = None
 
@@ -54,18 +70,28 @@ class WebChatModel(ChatModel):
             model_name_or_path=get("top.model_path"),
             checkpoint_dir=checkpoint_dir,
             finetuning_type=get("top.finetuning_type"),
-            quantization_bit=int(get("top.quantization_bit")) if get("top.quantization_bit") in ["8", "4"] else None,
+            quantization_bit=(
+                int(get("top.quantization_bit"))
+                if get("top.quantization_bit") in ["8", "4"]
+                else None
+            ),
             template=get("top.template"),
             system_prompt=get("top.system_prompt"),
             flash_attn=get("top.flash_attn"),
             shift_attn=get("top.shift_attn"),
-            rope_scaling=get("top.rope_scaling") if get("top.rope_scaling") in ["linear", "dynamic"] else None
+            rope_scaling=(
+                get("top.rope_scaling")
+                if get("top.rope_scaling") in ["linear", "dynamic"]
+                else None
+            ),
         )
         super().__init__(args)
 
         yield ALERTS["info_loaded"][lang]
 
-    def unload_model(self, data: Dict[Component, Any]) -> Generator[str, None, None]:
+    def unload_model(
+        self, data: Dict[Component, Any]
+    ) -> Generator[str, None, None]:
         lang = data[self.manager.get_elem_by_name("top.lang")]
         yield ALERTS["info_unloading"][lang]
         self.model = None
@@ -81,12 +107,19 @@ class WebChatModel(ChatModel):
         system: str,
         max_new_tokens: int,
         top_p: float,
-        temperature: float
-    ) -> Generator[Tuple[List[Tuple[str, str]], List[Tuple[str, str]]], None, None]:
+        temperature: float,
+    ) -> Generator[
+        Tuple[List[Tuple[str, str]], List[Tuple[str, str]]], None, None
+    ]:
         chatbot.append([query, ""])
         response = ""
         for new_text in self.stream_chat(
-            query, history, system, max_new_tokens=max_new_tokens, top_p=top_p, temperature=temperature
+            query,
+            history,
+            system,
+            max_new_tokens=max_new_tokens,
+            top_p=top_p,
+            temperature=temperature,
         ):
             response += new_text
             new_history = history + [(query, response)]

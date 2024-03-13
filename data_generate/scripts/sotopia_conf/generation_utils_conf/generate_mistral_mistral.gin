@@ -22,4 +22,3 @@ generate.obtain_chain:
     custom_model_name = %CUSTOM_MODEL_NAME
     custom_openai_api_base = %CUSTOM_OPENAI_API_BASE
     custom_openai_key = %CUSTOM_OPENAI_KEY
-
