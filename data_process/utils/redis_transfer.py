@@ -2,8 +2,8 @@ import os
 # this file is used to tranfer data from one redis to another, we do not expect to use it more than once
 os.environ[
     "REDIS_OM_URL"
-] = "redis://:PASSWORD@tiger.lti.cs.cmu.edu:6388"
-# path to migrant: "redis://:auess29aknfl2jro20W@tiger.lti.cs.cmu.edu:6377"
+] = "redis://:password@server_name:port_num"
+# path to migrant: "redis://:auess29aknfl2jro20W@server_name:6377"
 
 from redis_om import Migrator
 

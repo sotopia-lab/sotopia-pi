@@ -3,7 +3,7 @@ import os
 import json
 os.environ[
     "REDIS_OM_URL"
-] = "redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
+] = "redis://:password@server_name:port_num"
 from sotopia.database.logs import EpisodeLog
 
 def main():

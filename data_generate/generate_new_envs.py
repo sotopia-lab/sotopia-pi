@@ -5,7 +5,7 @@ import argparse
 # this file is used to tranfer data from one redis to another, we do not expect to use it more than once
 os.environ[
     "REDIS_OM_URL"
-] = "redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
+] = "redis://:password@server_name:port_num"
 
 from redis_om import Migrator
 from sotopia.database.persistent_profile import (

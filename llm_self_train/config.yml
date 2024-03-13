@@ -22,7 +22,7 @@ multiturn_eval: True
 dev: False
 
 # redis
-redis_om_url: redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388
+redis_om_url: redis://:password@server_name:port_num
 redis_data_tag: gpt-4_gpt-3.5-turbo_v0.0.1_clean
 
 #gcp

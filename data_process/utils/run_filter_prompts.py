@@ -2,7 +2,7 @@ import sys
 import os
 os.environ[
     "REDIS_OM_URL"
-] = "redis://:PASSWORD@tiger.lti.cs.cmu.edu:6388"
+] = "redis://:password@server_name:port_num"
 import json
 import argparse
 from tqdm.notebook import tqdm

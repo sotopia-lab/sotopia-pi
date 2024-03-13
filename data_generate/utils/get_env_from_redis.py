@@ -2,9 +2,9 @@ from rejson import Client, Path
 import json
 import redis
 
-redis_host = 'tiger.lti.cs.cmu.edu'
-redis_port = 6388
-redis_password = 'aclkasjf29qwrUOIO'
+redis_host = 'server_name'
+redis_port  = "port_num"
+redis_password = 'password'
 
 def get_redisjson_value(r, key):
     try:

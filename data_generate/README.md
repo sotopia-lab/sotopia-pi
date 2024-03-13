@@ -78,7 +78,7 @@ To connect to Redis DB for loading and saving, follow the steps:
 
 1. When activate conda environment, enter:
 
-`conda env config vars set REDIS_OM_URL="redis://:PASSWORD@tiger.lti.cs.cmu.edu:6388"`
+`conda env config vars set REDIS_OM_URL="redis://:PASSWORD@server_name:port_num"`
 
 The password is only available to the development team, or upon request.
 
@@ -104,7 +104,7 @@ To do so, one of the member must first have access to TIGER. Then, follow the st
 
 1. Login:
 
-   `ssh USERNAME@tiger.lti.cs.cmu.edu` >>> enter password
+   `ssh USERNAME@server_name` >>> enter password
 
 2. Create conda environment and activate:
 
@@ -113,7 +113,7 @@ To do so, one of the member must first have access to TIGER. Then, follow the st
 3. Locate the initial dataset to start the server. The dataset should be a dump.rdb from your local or from available sources by `curl` or `wget`.
    To copy a local dump.rdb to TIGER, use
 
-   `scp localpath/dir/dump.rdb USERNAME@tiger.lti.cs.cmu.edu:/serverfolder/dump.rdb`
+   `scp localpath/dir/dump.rdb USERNAME@server_name:/serverfolder/dump.rdb`
 
    If serverfolder does not exist, you should first create a folder separately for the rdb file in TIGER.
 
@@ -149,13 +149,13 @@ The default version for redis could be 7.2.x. However, to deploy it on tiger, we
 
 So we have setup the redis for hosting our own database, with the following URL:
 
-REDIS_OM_URL="redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
+REDIS_OM_URL="redis://:password@server_name:port_num"
 
 Step to connect to the correct REDIS database as below:
 
-1. conda env config vars set REDIS_OM_URL="redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
+1. conda env config vars set REDIS_OM_URL="redis://:password@server_name:port_num"
 2. In python, use os to setup REDIS_OM_URL
-3. To view the database visually, go to http://tiger.lti.cs.cmu.edu:8008/redis-stack/browser
+3. To view the database visually, go to http://server_name:8008/redis-stack/browser
 
 To setup Redis on Tiger, an example docker command is as below:
 

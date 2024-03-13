@@ -2,7 +2,7 @@ import argparse
 import os
 os.environ[
     "REDIS_OM_URL"
-] = "redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388"
+] = "redis://:password@server_name:port_num"
 from sotopia.database.logs import EpisodeLog
 from sotopia.database.persistent_profile import EnvironmentProfile
 from sotopia.database.persistent_profile import AgentProfile
