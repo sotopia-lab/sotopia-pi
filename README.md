@@ -8,10 +8,10 @@
 
   ## 📢 Release
   [03/07] 🔥We released our model checkpoints (BC, SR, BC+SR) on huggingface ([BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC), [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR), [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)).
-  
-  [03/04] 📊We released our social converation data on huggingface ([here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)). 
 
-  
+  [03/04] 📊We released our social converation data on huggingface ([here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)).
+
+
 
   ## 📌 Table of Contents
   - [Introduction](#introduction)
@@ -22,7 +22,7 @@
   - [Step 4a - Automatic Evaluation](#step-4a---automatic-evaluation)
   - [Step 4b - Human Evaluation](#step-4b---human-evaluation)
 
-  
+
 
   ## Introduction
 

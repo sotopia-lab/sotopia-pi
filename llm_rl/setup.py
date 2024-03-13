@@ -15,7 +15,7 @@ def get_version():
 
 
 def get_requires():
-    with open("requirements.txt", "r", encoding="utf-8") as f:
+    with open("../requirements.txt", "r", encoding="utf-8") as f:
         file_content = f.read()
         lines = [
             line.strip()

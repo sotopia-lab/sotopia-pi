@@ -1,12 +1,13 @@
 packaging
 wheel
 torch>=1.13.1
-transformers>=4.31.0,<4.35.0  # Updated within the range if there are no security issues
+deepspeed
+transformers>=4.36.0
 datasets>=2.12.0
 accelerate>=0.21.0
 peft>=0.4.0
 trl==0.7.2
-gradio>=4.19.2
+gradio
 scipy
 sentencepiece
 protobuf
@@ -16,18 +17,16 @@ jieba
 rouge-chinese
 nltk
 uvicorn
-pydantic==1.10.12
+pydantic
 fastapi
 sse-starlette
 matplotlib
 py-cpuinfo
-deepspeed
 bitsandbytes>=0.39.0
-flash-attn
 wandb
 pandas
 openai
-langchain
+langchain<0.0.312,>=0.0.311
 rich
 pandas-stubs
 types-tqdm
@@ -37,3 +36,4 @@ absl-py
 names
 together
 sotopia
+#flash-attn need to pip install flash-attn --no-build-isolation
