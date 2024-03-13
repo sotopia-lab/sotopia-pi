@@ -4,8 +4,8 @@ import sotopia.generation_utils.generate as generate
 import sotopia.envs.evaluators as evaluators
 
 MAX_RETRIES=6
-CUSTOM_MODEL_NAME="checkpoint-base_epoch_1"
-CUSTOM_OPENAI_API_BASE="http://0.0.0.0:8013/v1"
+CUSTOM_MODEL_NAME="checkpoint_improve-0_epoch-18"
+CUSTOM_OPENAI_API_BASE="http://0.0.0.0:8015/v1"
 CUSTOM_OPENAI_KEY="EMPTY"
 
 generate.agenerate_action:

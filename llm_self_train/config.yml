@@ -1,23 +1,25 @@
 # self train
 babel_username: ruiyiwan
-experiment_name: pilot-2
-num_improve_steps: 2
+experiment_name: selftrain-sft-round-2-filtered-top-2
+num_improve_steps: 1
 script_dir: /home/ruiyiwan/sotopia-llm/llm_self_train
 checkpoint_dir: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain
-checkpoint_saved_queue: /home/ruiyiwan/sotopia-llm/llm_self_train/logs/pilot-2/deploy_queue.txt
+checkpoint_saved_queue: /home/ruiyiwan/sotopia-llm/llm_self_train/logs/selftrain-sft-round-2-filtered-top-2/deploy_queue.txt
 num_train_epochs: 20.0
 call_back_save_epochs: 1
 
 # training
 num_gpus: 4
-model_name_or_path: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain/pilot-2/checkpoint-4525
+model_name_or_path: /data/tir/projects/tir6/bisk/ruiyiwan/selftrain/selftrain-sft-round-2-filtered-top-2/checkpoint_init_epoch-3
 hf_auth_token: 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
 wandb_project: self-train
-wandb_tags: "['mistral-selftrain-pilot-2']"
+wandb_tags: "['selftrain-sft-round-2-filtered-top-2']"
 wandb_token: eca44f65849afa1cc146c22631b0b5001ccd24d7
 
 # deploy and eval: check resources/env_ids.json
-eval_env_ids_tag: pilot-2_dev
+eval_env_ids_tag: sotopia_hard_env_id
+multiturn_eval: True
+dev: False
 
 # redis
 redis_om_url: redis://:aclkasjf29qwrUOIO@tiger.lti.cs.cmu.edu:6388

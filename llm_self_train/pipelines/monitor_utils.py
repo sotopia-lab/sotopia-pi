@@ -5,10 +5,12 @@ import re
 import multiprocessing
 import time
 import json
+import shutil
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
 
-with open("resources/deploy_config.yml", 'r') as f:
+log_dir = f"{config['script_dir']}/logs/{config['experiment_name']}"
+with open(os.path.join(log_dir, "deploy_config.yml"), 'r') as f:
     deploy_config = yaml.safe_load(f)
 
 
@@ -30,9 +32,11 @@ def update_config_yaml(ckpt_name):
     config['deploy_port] += 1
     """
     deploy_config['deploy_port'] = deploy_config['deploy_port'] + 1
+    deploy_config['controller_port'] = deploy_config['controller_port'] + 1
+    deploy_config['worker_port'] = deploy_config['worker_port'] + 1
     deploy_config['ckpt_name'] = ckpt_name
 
-    with open('resources/deploy_config.yml', 'w') as file:
+    with open(os.path.join(log_dir, "deploy_config.yml"), 'w') as file:
         yaml.dump(deploy_config, file)
 
 
@@ -52,8 +56,18 @@ def overwrite_deploy_bash():
             if "--model-path" in line:
                 line = re.sub(r'--model-path \S+',
                     f'--model-path {os.path.join(config["checkpoint_dir"], config["experiment_name"], deploy_config["ckpt_name"])}', line)
-            if "--port" in line:
+            if "--port" and "fastchat.serve.controller" in line:
+                line = re.sub(r'--port \d+', f'--port {deploy_config["controller_port"]}', line)
+            if "--port" and "fastchat.serve.model_worker" in line:
+                line = re.sub(r'--port \d+', f'--port {deploy_config["worker_port"]}', line)
+            if "--port" and "fastchat.serve.openai_api_server" in line:
                 line = re.sub(r'--port \d+', f'--port {deploy_config["deploy_port"]}', line)
+            if "--worker-address" in line:
+                line = re.sub(r'--worker-address \S+',
+                    f'--worker-address http://localhost:{deploy_config["worker_port"]}', line)
+            if "--controller-address" in line:
+                line = re.sub(r'--controller-address \S+',
+                    f'--controller-address http://localhost:{deploy_config["controller_port"]}', line)
             f.write(line)
 
 
@@ -61,7 +75,12 @@ def overwrite_eval_gin():
     """
     The variables CUSTOM_MODEL_NAME and CUSTOM_OPENAI_API_BASE in generate.gin will be modified.
     """
-    with open(os.path.join(config['script_dir'], "resources", "generate.gin"), 'r') as f:
+    if not os.path.isfile(os.path.join(log_dir, f"generate_{deploy_config['ckpt_name']}.gin")):
+        source_gin_file = "resources/generate.gin"
+        shutil.copy(source_gin_file, log_dir+'/'+f"generate_{deploy_config['ckpt_name']}.gin")
+        print("Copied generate.gin")
+
+    with open(os.path.join(deploy_config["log_dir"], f"generate_{deploy_config['ckpt_name']}.gin"), 'r') as f:
         lines = f.readlines()
 
     modified_lines = []
@@ -73,7 +92,7 @@ def overwrite_eval_gin():
         else:
             modified_lines.append(line)
     
-    with open(os.path.join(config['script_dir'], "resources", "generate.gin"), 'w') as f:
+    with open(os.path.join(deploy_config["log_dir"], f"generate_{deploy_config['ckpt_name']}.gin"), 'w') as f:
         f.writelines(modified_lines)
 
 
@@ -82,7 +101,8 @@ def generate_gin_tag():
     Generate gin tag based on experiment name, checkpoint name, and agent name
     Example: pilot-1_checkpoint_improve-1_epoch-1_gpt-3.5-turbo_dev
     """
-    with open(os.path.join(config["script_dir"], "pipelines", "submit_eval.sh"), 'r') as file:
+    
+    with open(os.path.join(log_dir, f"submit_eval_{deploy_config['ckpt_name']}.sh"), 'r') as file:
         for line in file:
             if '--gin.AGENT1_MODEL' in line:
                 # Extract the value assuming the format '--gin.AGENT1_MODEL="value"'
@@ -92,12 +112,19 @@ def generate_gin_tag():
                     agent1_model = parts[2].strip('"')
                     break
     
-    return f"""{config['experiment_name']}_{deploy_config['ckpt_name']}_{agent1_model}_dev"""
+    if config["dev"]:
+        return f"""{config['experiment_name']}_{deploy_config['ckpt_name']}_{agent1_model}_dev"""
+    return f"""{config['experiment_name']}_{deploy_config['ckpt_name']}_{agent1_model}_test"""
 
 
 def overwrite_eval_bash():
     """"""
-    with open(os.path.join(config["script_dir"], "pipelines", "submit_eval.sh"), 'r') as f:
+    if not os.path.isfile(os.path.join(log_dir, f"submit_eval_{deploy_config['ckpt_name']}.sh")):
+        source_gin_file = "pipelines/submit_eval.sh"
+        shutil.copy(source_gin_file, log_dir+'/'+f"submit_eval_{deploy_config['ckpt_name']}.sh")
+        print("Copied submit_eval.sh")
+
+    with open(os.path.join(log_dir, f"submit_eval_{deploy_config['ckpt_name']}.sh"), 'r') as f:
         lines = f.readlines()
 
     new_tag = generate_gin_tag()
@@ -108,22 +135,24 @@ def overwrite_eval_bash():
         elif "--gin.TAG" in lines[i]:
             pattern = r'(--gin\.TAG=")([^"]*)(".*\n)'
             lines[i] = re.sub(pattern, r'\1' + new_tag + r'\3', lines[i])
-        elif "--gin_file" in lines[i] and "generate.gin" in lines[i]:
+        elif "--gin_file" in lines[i] and "generate" in lines[i]:
             pattern = r'(--gin_file\s+)([^ ]+)(\s+\\)'
-            lines[i] = re.sub(pattern, r'\1' + os.path.join(config['script_dir'], "resources", "generate.gin") + r'\3', lines[i])
+            lines[i] = re.sub(pattern, r'\1' + os.path.join(deploy_config["log_dir"], f"generate_{deploy_config['ckpt_name']}.gin") + r'\3', lines[i])
         elif "--gin.ENV_IDS" in lines[i]:
             # read env_ids.json
             with open(os.path.join(config["script_dir"], "resources", "env_ids.json"), 'r') as f:
                 env_ids = json.loads(f.read())[config["eval_env_ids_tag"]]
                 env_ids_string = json.dumps(env_ids)
-            lines[i] = f"""    '--gin.ENV_IDS={env_ids_string}'""" + ' \\' + '\n'
+            pattern = r'(--gin\.ENV_IDS=).*?(\s*\\)'
+            lines[i] = re.sub(
+                pattern, r'\1' + env_ids_string + r"'" + r'\2', lines[i])
 
 
     # Regex to find '> filename' pattern and replace filename
     lines = ''.join(lines)
     new_filename = f"{deploy_config['log_dir']}/eval_status_{deploy_config['ckpt_name']}.txt"
     lines = re.sub(r'>(\s*)(\S+)', f'>\\1{new_filename}', lines)
-    with open(os.path.join(config["script_dir"], "pipelines", "submit_eval.sh"), 'w') as f:
+    with open(os.path.join(log_dir, f"submit_eval_{deploy_config['ckpt_name']}.sh"), 'w') as f:
         f.write(lines)
 
 
@@ -196,7 +225,7 @@ def check_log_and_submit_deploy():
 
             # Submit deploy job
             with open(os.path.join(deploy_config["tmp_dir"], "deploy_job_id.txt"), 'w') as f:
-                args = f"sbatch --gres=gpu:1 -t 1:00:00 --mem=80g -w babel-4-23 -e {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.err -o {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.log {config['script_dir']}/pipelines/submit_deploy.sh"
+                args = f"sbatch --gres=gpu:1 -t 12:00:00 --mem=80g --exclude=shire-1-6,babel-8-19,babel-7-37 -e {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.err -o {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.log {config['script_dir']}/pipelines/submit_deploy.sh"
                 subprocess.run(args.split(), stdout=f)
             print(f"Submitted sbatch for deploying {deploy_config['ckpt_name']}")
 
