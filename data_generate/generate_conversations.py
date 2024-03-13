@@ -20,9 +20,7 @@ def overwrite_eval_bash(
     for i in range(len(lines)):
         # change TAG, TAG_TO_CHECK_EXISTING_EPISODES
         if "--gin.TAG_TO_CHECK_EXISTING_EPISODES" in lines[i]:
-            pattern = (
-                r'(--gin\.TAG_TO_CHECK_EXISTING_EPISODES=")([^"]*)(".*\n)'
-            )
+            pattern = r'(--gin\.TAG_TO_CHECK_EXISTING_EPISODES=")([^"]*)(".*\n)'
             lines[i] = re.sub(pattern, r"\1" + tag + r"\3", lines[i])
         elif "--gin.TAG" in lines[i]:
             pattern = r'(--gin\.TAG=")([^"]*)(".*\n)'

@@ -16,9 +16,7 @@ class GeneratingArguments:
     )
     temperature: Optional[float] = field(
         default=0.95,
-        metadata={
-            "help": "The value used to modulate the next token probabilities."
-        },
+        metadata={"help": "The value used to modulate the next token probabilities."},
     )
     top_p: Optional[float] = field(
         default=0.7,
@@ -34,9 +32,7 @@ class GeneratingArguments:
     )
     num_beams: Optional[int] = field(
         default=1,
-        metadata={
-            "help": "Number of beams for beam search. 1 means no beam search."
-        },
+        metadata={"help": "Number of beams for beam search. 1 means no beam search."},
     )
     max_length: Optional[int] = field(
         default=512,

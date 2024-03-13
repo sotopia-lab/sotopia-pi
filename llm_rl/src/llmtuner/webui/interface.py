@@ -12,9 +12,7 @@ from llmtuner.webui.css import CSS
 from llmtuner.webui.engine import Engine
 from transformers.utils.versions import require_version
 
-require_version(
-    "gradio>=3.38.0,<4.0.0", 'To fix: pip install "gradio>=3.38.0,<4.0.0"'
-)
+require_version("gradio>=3.38.0,<4.0.0", 'To fix: pip install "gradio>=3.38.0,<4.0.0"')
 
 
 def create_ui() -> gr.Blocks:
@@ -56,9 +54,7 @@ def create_web_demo() -> gr.Blocks:
         engine.manager.all_elems["top"] = dict(lang=lang)
 
         chat_box, _, _, chat_elems = create_chat_box(engine, visible=True)
-        engine.manager.all_elems["infer"] = dict(
-            chat_box=chat_box, **chat_elems
-        )
+        engine.manager.all_elems["infer"] = dict(chat_box=chat_box, **chat_elems)
 
         demo.load(engine.resume, outputs=engine.manager.list_elems())
         lang.change(
@@ -75,6 +71,4 @@ def create_web_demo() -> gr.Blocks:
 if __name__ == "__main__":
     demo = create_ui()
     demo.queue()
-    demo.launch(
-        server_name="0.0.0.0", server_port=7860, share=False, inbrowser=True
-    )
+    demo.launch(server_name="0.0.0.0", server_port=7860, share=False, inbrowser=True)

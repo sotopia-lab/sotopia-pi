@@ -32,9 +32,7 @@ def quantize(
             prompt = prefix + "\n"
             if "history" in examples:
                 for user_query, bot_resp in examples["history"][i]:
-                    prompt += "Human: {}\nAssistant: {}\n".format(
-                        user_query, bot_resp
-                    )
+                    prompt += "Human: {}\nAssistant: {}\n".format(user_query, bot_resp)
             prompt += "Human: {}\nAssistant: {}".format(
                 examples["instruction"][i] + "\n" + examples["input"][i],
                 examples["output"][i],
@@ -45,14 +43,10 @@ def quantize(
     dataset = load_dataset("json", data_files=data_file)["train"]
     column_names = list(dataset.column_names)
     dataset = dataset.select(range(min(len(dataset), max_samples)))
-    dataset = dataset.map(
-        format_example, batched=True, remove_columns=column_names
-    )
+    dataset = dataset.map(format_example, batched=True, remove_columns=column_names)
     dataset = dataset.shuffle()
 
-    quantize_config = BaseQuantizeConfig(
-        bits=4, group_size=128, desc_act=False
-    )
+    quantize_config = BaseQuantizeConfig(bits=4, group_size=128, desc_act=False)
 
     model = AutoGPTQForCausalLM.from_pretrained(
         input_dir, quantize_config, trust_remote_code=True

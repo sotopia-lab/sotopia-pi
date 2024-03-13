@@ -43,9 +43,7 @@ class Engine:
             init_dict["eval.dataset"] = {"choices": list_dataset()["choices"]}
 
             if user_config.get("last_model", None):
-                init_dict["top.model_name"] = {
-                    "value": user_config["last_model"]
-                }
+                init_dict["top.model_name"] = {"value": user_config["last_model"]}
                 init_dict["top.model_path"] = {
                     "value": get_model_path(user_config["last_model"])
                 }
@@ -59,15 +57,11 @@ class Engine:
                     for elem, value in self.runner.running_data.items()
                 }
                 if self.runner.do_train:
-                    yield self._form_dict(
-                        {"train.resume_btn": {"value": True}}
-                    )
+                    yield self._form_dict({"train.resume_btn": {"value": True}})
                 else:
                     yield self._form_dict({"eval.resume_btn": {"value": True}})
             else:
-                yield self._form_dict(
-                    {"train.output_dir": {"value": get_time()}}
-                )
+                yield self._form_dict({"train.output_dir": {"value": get_time()}})
 
     def change_lang(self, lang: str) -> Dict[Component, Dict[str, Any]]:
         return {

@@ -30,17 +30,13 @@ def check_deployment_ready():
         if not os.path.exists(
             os.path.join(deploy_config["tmp_dir"], "curl_result.txt")
         ):
-            with open(
-                os.path.join(deploy_config["tmp_dir"], "curl_result.txt"), "w"
-            ):
+            with open(os.path.join(deploy_config["tmp_dir"], "curl_result.txt"), "w"):
                 pass
         commands = f"""
             curl http://0.0.0.0:{deploy_config["deploy_port"]}/v1/models > {deploy_config["tmp_dir"]}/curl_result.txt
         """
         subprocess.run(commands, shell=True)
-        with open(
-            os.path.join(deploy_config["tmp_dir"], "curl_result.txt"), "r"
-        ) as f:
+        with open(os.path.join(deploy_config["tmp_dir"], "curl_result.txt"), "r") as f:
             line = f.readlines()
         if line:
             parsed_string, is_json = try_parsing_json(line[0])

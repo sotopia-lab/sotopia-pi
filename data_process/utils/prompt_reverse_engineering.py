@@ -161,9 +161,7 @@ def reverse_episode_log(
                     context = tpl[2]
                     dial_history += context
 
-            if (
-                tpl[0] == speaker
-            ):  # if speaker is the agent, use what he said as result
+            if tpl[0] == speaker:  # if speaker is the agent, use what he said as result
                 str_result = generate_result(tpl[2])
                 # check if this is the end
         if i % 2 == turn_div:
@@ -192,9 +190,7 @@ def reverse_episode_log(
 
 
 def parse_prompt_to_json(episode, dir, init_speak, include_format=False):
-    prompt_result_instances = reverse_episode_log(
-        episode, init_speak, include_format
-    )
+    prompt_result_instances = reverse_episode_log(episode, init_speak, include_format)
 
     if not os.path.exists(dir):
         os.makedirs(dir)
@@ -202,9 +198,7 @@ def parse_prompt_to_json(episode, dir, init_speak, include_format=False):
     for i in range(len(prompt_result_instances)):
         instance = prompt_result_instances[i]
         todump = json.dumps(instance, indent=4)
-        with open(
-            dir + "/{}-{}-{}.json".format(episode.pk, init_speak, i), "w"
-        ) as f:
+        with open(dir + "/{}-{}-{}.json".format(episode.pk, init_speak, i), "w") as f:
             f.write(todump)
 
 

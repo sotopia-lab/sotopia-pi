@@ -57,9 +57,7 @@ def upload_json_to_db(filepath, objecttype):
 
 def remove_bad_env():
     sotopia_pks = get_sotopia_scenarios()
-    diff_pks = EnvironmentProfile.find(
-        (EnvironmentProfile.pk >> sotopia_pks)
-    ).all()
+    diff_pks = EnvironmentProfile.find((EnvironmentProfile.pk >> sotopia_pks)).all()
     for pk in diff_pks:
         environ = EnvironmentProfile.get(pk=pk)
         if len(environ.agent_goals) > 2:

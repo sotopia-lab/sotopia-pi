@@ -12,9 +12,7 @@ def replace_model(
     target: Literal["default", "reward"],
 ) -> None:
     if target == "reward":  # save default head temporarily
-        valuehead_state_dict: Dict[
-            str, torch.Tensor
-        ] = model.v_head.state_dict()
+        valuehead_state_dict: Dict[str, torch.Tensor] = model.v_head.state_dict()
         setattr(
             model,
             "default_head_weight",
@@ -26,9 +24,7 @@ def replace_model(
             valuehead_state_dict["summary.bias"].detach().clone(),
         )
 
-    model.pretrained_model.set_adapter(
-        target
-    )  # set the LoRA adapter to be active
+    model.pretrained_model.set_adapter(target)  # set the LoRA adapter to be active
     model.v_head.load_state_dict(
         {
             "summary.weight": model.get_buffer("{}_head_weight".format(target))

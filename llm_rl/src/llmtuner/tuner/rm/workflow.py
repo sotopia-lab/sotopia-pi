@@ -39,9 +39,7 @@ def run_rm(
     dataset = preprocess_dataset(
         dataset, tokenizer, data_args, training_args, stage="rm"
     )
-    data_collator = PairwiseDataCollatorWithPadding(
-        tokenizer, pad_to_multiple_of=4
-    )
+    data_collator = PairwiseDataCollatorWithPadding(tokenizer, pad_to_multiple_of=4)
 
     training_args_dict = training_args.to_dict()
     training_args_dict.update(

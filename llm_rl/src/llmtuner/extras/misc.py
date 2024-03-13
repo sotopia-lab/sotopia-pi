@@ -16,9 +16,7 @@ try:
     )
 
     _is_fp16_available = is_torch_npu_available() or is_torch_cuda_available()
-    _is_bf16_available = (
-        is_torch_bf16_gpu_available() or is_torch_bf16_cpu_available
-    )
+    _is_bf16_available = is_torch_bf16_gpu_available() or is_torch_bf16_cpu_available
 except ImportError:
     _is_fp16_available = torch.cuda.is_available()
     _is_bf16_available = torch.cuda.is_bf16_supported()
@@ -130,9 +128,7 @@ def dispatch_model(model: "PreTrainedModel") -> "PreTrainedModel":
         max_memory = get_balanced_memory(model, **kwargs)
         # Make sure tied weights are tied before creating the device map.
         model.tie_weights()
-        device_map = infer_auto_device_map(
-            model, max_memory=max_memory, **kwargs
-        )
+        device_map = infer_auto_device_map(model, max_memory=max_memory, **kwargs)
         return dispatch_model(model, device_map)
     else:
         return model.cuda()

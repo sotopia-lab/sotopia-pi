@@ -154,15 +154,9 @@ class Template:
                     else elem
                 )
                 elem = (
-                    elem.replace("{{query}}", query, 1)
-                    if query is not None
-                    else elem
+                    elem.replace("{{query}}", query, 1) if query is not None else elem
                 )
-                elem = (
-                    elem.replace("{{idx}}", idx, 1)
-                    if idx is not None
-                    else elem
-                )
+                elem = elem.replace("{{idx}}", idx, 1) if idx is not None else elem
                 if len(elem) != 0:
                     token_ids = token_ids + tokenizer.encode(elem, **kwargs)
             elif isinstance(elem, dict):
@@ -171,9 +165,7 @@ class Template:
                 ]
             else:
                 raise ValueError(
-                    "Input must be string or dict[str, str], got {}".format(
-                        type(elem)
-                    )
+                    "Input must be string or dict[str, str], got {}".format(type(elem))
                 )
 
         return token_ids

@@ -38,16 +38,12 @@ def create_top() -> Dict[str, "Component"]:
             )
             system_prompt = gr.Textbox(scale=2)
 
-    with gr.Accordion(
-        label="Model config (LLaMA only)", open=False
-    ) as llama_tab:
+    with gr.Accordion(label="Model config (LLaMA only)", open=False) as llama_tab:
         with gr.Row():
             with gr.Column():
                 flash_attn = gr.Checkbox(value=False)
                 shift_attn = gr.Checkbox(value=False)
-            rope_scaling = gr.Radio(
-                choices=["none", "linear", "dynamic"], value="none"
-            )
+            rope_scaling = gr.Radio(choices=["none", "linear", "dynamic"], value="none")
 
     model_name.change(
         list_checkpoint,
@@ -58,9 +54,7 @@ def create_top() -> Dict[str, "Component"]:
         get_template, [model_name], [template], queue=False
     )  # do not save config since the below line will save
 
-    model_path.change(
-        save_config, inputs=[lang, model_name, model_path], queue=False
-    )
+    model_path.change(save_config, inputs=[lang, model_name, model_path], queue=False)
 
     finetuning_type.change(
         list_checkpoint,

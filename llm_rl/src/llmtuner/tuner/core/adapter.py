@@ -42,8 +42,7 @@ def init_adapter(
             finetuning_args.num_layer_trainable > 0
         ):  # fine-tuning the last n layers if num_layer_trainable > 0
             trainable_layer_ids = [
-                num_layers - k - 1
-                for k in range(finetuning_args.num_layer_trainable)
+                num_layers - k - 1 for k in range(finetuning_args.num_layer_trainable)
             ]
         else:  # fine-tuning the first n layers if num_layer_trainable < 0
             trainable_layer_ids = [
@@ -55,9 +54,7 @@ def init_adapter(
             for idx in trainable_layer_ids
         ]
         for name, param in model.named_parameters():
-            if not any(
-                trainable_layer in name for trainable_layer in trainable_layers
-            ):
+            if not any(trainable_layer in name for trainable_layer in trainable_layers):
                 param.requires_grad_(False)
             else:
                 param.data = param.data.to(torch.float32)
@@ -83,9 +80,7 @@ def init_adapter(
 
             if len(checkpoints_to_merge) > 0:
                 logger.info(
-                    "Merged {} model checkpoint(s).".format(
-                        len(checkpoints_to_merge)
-                    )
+                    "Merged {} model checkpoint(s).".format(len(checkpoints_to_merge))
                 )
 
             if (

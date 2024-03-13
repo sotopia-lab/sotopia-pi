@@ -59,12 +59,8 @@ class EnvResponse(BaseModel):
     reasoning: str = Field(
         description="first reiterate agents' social goals and then reason about what agents say/do and whether that aligns with their goals."
     )
-    p1_rate: int = Field(
-        description="rating of participant 1, on the scale of 0 to 9"
-    )
-    p2_rate: int = Field(
-        description="rating of participant 2, on the scale of 0 to 9"
-    )
+    p1_rate: int = Field(description="rating of participant 1, on the scale of 0 to 9")
+    p2_rate: int = Field(description="rating of participant 2, on the scale of 0 to 9")
 
 
 class EnvResponsePydanticOutputParser(PydanticOutputParser[EnvResponse]):
@@ -114,9 +110,7 @@ class ListOfIntOutputParser(BaseOutputParser[list[int]]):
                 output = output.split(":")[1]
             result = [int(x) for x in output.split(" ") if x]
             if self.number_of_int and len(result) != self.number_of_int:
-                msg = (
-                    f"Expect {self.number_of_int} integers, got {len(result)}"
-                )
+                msg = f"Expect {self.number_of_int} integers, got {len(result)}"
                 raise OutputParserException(msg)
             if self.range_of_int:
                 for x in result:
@@ -193,9 +187,7 @@ class StrOutputParser(BaseOutputParser[str]):
         return "str"
 
 
-def _return_fixed_model_version(
-    model_name: Literal["gpt-3.5-turbo", "gpt-4"]
-) -> str:
+def _return_fixed_model_version(model_name: Literal["gpt-3.5-turbo", "gpt-4"]) -> str:
     return {
         "gpt-3.5-turbo": "gpt-3.5-turbo-0613",
         "gpt-4": "gpt-4-0613",
@@ -256,9 +248,7 @@ def obtain_chain(
             chat_prompt_template = ChatPromptTemplate.from_messages(
                 [human_message_prompt]
             )
-            together_llm = Llama2(
-                model_name=model_name, temperature=temperature
-            )
+            together_llm = Llama2(model_name=model_name, temperature=temperature)
             chain = LLMChain(llm=together_llm, prompt=chat_prompt_template)
             return chain
         case _:
@@ -316,9 +306,7 @@ def generate(
         temperature=temperature,
     )
     if "format_instructions" not in input_values:
-        input_values[
-            "format_instructions"
-        ] = output_parser.get_format_instructions()
+        input_values["format_instructions"] = output_parser.get_format_instructions()
     result = chain.predict([logging_handler], **input_values)
     prompt = logging_handler.retrive_prompt()
     try:
@@ -362,9 +350,7 @@ async def agenerate(
         temperature=temperature,
     )
     if "format_instructions" not in input_values:
-        input_values[
-            "format_instructions"
-        ] = output_parser.get_format_instructions()
+        input_values["format_instructions"] = output_parser.get_format_instructions()
     import pdb
 
     pdb.set_trace()
@@ -467,9 +453,7 @@ async def agenerate_relationship_profile(
         input_values=dict(
             agent_profile=agent_profile,
         ),
-        output_parser=PydanticOutputParser(
-            pydantic_object=RelationshipProfile
-        ),
+        output_parser=PydanticOutputParser(pydantic_object=RelationshipProfile),
     )
 
 
@@ -701,9 +685,7 @@ def process_history(
 
 
 @beartype
-def generate_init_profile(
-    model_name: LLM_Name, basic_info: dict[str, str]
-) -> str:
+def generate_init_profile(model_name: LLM_Name, basic_info: dict[str, str]) -> str:
     """
     Using langchain to generate the background
     """

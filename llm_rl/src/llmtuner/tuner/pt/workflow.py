@@ -35,9 +35,7 @@ def run_pt(
     dataset = preprocess_dataset(
         dataset, tokenizer, data_args, training_args, stage="pt"
     )
-    data_collator = DataCollatorForLanguageModeling(
-        tokenizer=tokenizer, mlm=False
-    )
+    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
     # Initialize our Trainer
     trainer = Trainer(

@@ -71,9 +71,9 @@ def save_config(
 
 def get_model_path(model_name: str) -> str:
     user_config = load_config()
-    return user_config["path_dict"].get(
-        model_name, None
-    ) or SUPPORTED_MODELS.get(model_name, "")
+    return user_config["path_dict"].get(model_name, None) or SUPPORTED_MODELS.get(
+        model_name, ""
+    )
 
 
 def get_module(model_name: str) -> str:
@@ -81,10 +81,7 @@ def get_module(model_name: str) -> str:
 
 
 def get_template(model_name: str) -> str:
-    if (
-        model_name.endswith("Chat")
-        and model_name.split("-")[0] in DEFAULT_TEMPLATE
-    ):
+    if model_name.endswith("Chat") and model_name.split("-")[0] in DEFAULT_TEMPLATE:
         return DEFAULT_TEMPLATE[model_name.split("-")[0]]
     return "default"
 
@@ -97,9 +94,7 @@ def list_checkpoint(model_name: str, finetuning_type: str) -> Dict[str, Any]:
             for checkpoint in os.listdir(save_dir):
                 if os.path.isdir(os.path.join(save_dir, checkpoint)) and any(
                     [
-                        os.path.isfile(
-                            os.path.join(save_dir, checkpoint, name)
-                        )
+                        os.path.isfile(os.path.join(save_dir, checkpoint, name))
                         for name in CKPT_NAMES
                     ]
                 ):
@@ -109,9 +104,7 @@ def list_checkpoint(model_name: str, finetuning_type: str) -> Dict[str, Any]:
 
 def load_dataset_info(dataset_dir: str) -> Dict[str, Any]:
     try:
-        with open(
-            os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8"
-        ) as f:
+        with open(os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8") as f:
             return json.load(f)
     except:
         print("Cannot find {} in {}.".format(DATA_CONFIG, dataset_dir))
@@ -127,8 +120,6 @@ def list_dataset(
     )
     ranking = TRAINING_STAGES[training_stage] in ["rm", "dpo"]
     datasets = [
-        k
-        for k, v in dataset_info.items()
-        if v.get("ranking", False) == ranking
+        k for k, v in dataset_info.items() if v.get("ranking", False) == ranking
     ]
     return gr.update(value=[], choices=datasets)

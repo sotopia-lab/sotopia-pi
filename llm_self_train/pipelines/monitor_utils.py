@@ -200,9 +200,7 @@ def overwrite_eval_bash():
     new_tag = generate_gin_tag()
     for i in range(len(lines)):
         if "--gin.TAG_TO_CHECK_EXISTING_EPISODES" in lines[i]:
-            pattern = (
-                r'(--gin\.TAG_TO_CHECK_EXISTING_EPISODES=")([^"]*)(".*\n)'
-            )
+            pattern = r'(--gin\.TAG_TO_CHECK_EXISTING_EPISODES=")([^"]*)(".*\n)'
             lines[i] = re.sub(pattern, r"\1" + new_tag + r"\3", lines[i])
         elif "--gin.TAG" in lines[i]:
             pattern = r'(--gin\.TAG=")([^"]*)(".*\n)'
@@ -222,21 +220,19 @@ def overwrite_eval_bash():
         elif "--gin.ENV_IDS" in lines[i]:
             # read env_ids.json
             with open(
-                os.path.join(
-                    config["script_dir"], "resources", "env_ids.json"
-                ),
+                os.path.join(config["script_dir"], "resources", "env_ids.json"),
                 "r",
             ) as f:
                 env_ids = json.loads(f.read())[config["eval_env_ids_tag"]]
                 env_ids_string = json.dumps(env_ids)
             pattern = r"(--gin\.ENV_IDS=).*?(\s*\\)"
-            lines[i] = re.sub(
-                pattern, r"\1" + env_ids_string + r"'" + r"\2", lines[i]
-            )
+            lines[i] = re.sub(pattern, r"\1" + env_ids_string + r"'" + r"\2", lines[i])
 
     # Regex to find '> filename' pattern and replace filename
     lines = "".join(lines)
-    new_filename = f"{deploy_config['log_dir']}/eval_status_{deploy_config['ckpt_name']}.txt"
+    new_filename = (
+        f"{deploy_config['log_dir']}/eval_status_{deploy_config['ckpt_name']}.txt"
+    )
     lines = re.sub(r">(\s*)(\S+)", f">\\1{new_filename}", lines)
     with open(
         os.path.join(log_dir, f"submit_eval_{deploy_config['ckpt_name']}.sh"),
@@ -258,9 +254,7 @@ def update_deploy_log():
 
 
 def get_deploy_job_id():
-    with open(
-        os.path.join(deploy_config["tmp_dir"], "deploy_job_id.txt"), "r"
-    ) as f:
+    with open(os.path.join(deploy_config["tmp_dir"], "deploy_job_id.txt"), "r") as f:
         line = f.readlines()
         job_id = line[0].split()[3]
     return job_id
@@ -272,37 +266,27 @@ def scancel_job(job_id):
 
 
 def map_ckpt_to_job(job_id):
-    if not os.path.isfile(
-        os.path.join(deploy_config["tmp_dir"], "map_ckpt_job.txt")
-    ):
+    if not os.path.isfile(os.path.join(deploy_config["tmp_dir"], "map_ckpt_job.txt")):
         lines = []
     else:
-        with open(
-            os.path.join(deploy_config["tmp_dir"], "map_ckpt_job.txt"), "r"
-        ) as f:
+        with open(os.path.join(deploy_config["tmp_dir"], "map_ckpt_job.txt"), "r") as f:
             lines = f.readlines()
     new_line = f"{deploy_config['ckpt_name']}:{job_id}\n"
     lines.append(new_line)
-    with open(
-        os.path.join(deploy_config["tmp_dir"], "map_ckpt_job.txt"), "w"
-    ) as f:
+    with open(os.path.join(deploy_config["tmp_dir"], "map_ckpt_job.txt"), "w") as f:
         f.writelines(lines)
 
 
 def save_gin_tag():
     lines = []
-    if os.path.isfile(
-        os.path.join(deploy_config["tmp_dir"], "generate_tags.txt")
-    ):
+    if os.path.isfile(os.path.join(deploy_config["tmp_dir"], "generate_tags.txt")):
         with open(
             os.path.join(deploy_config["tmp_dir"], "generate_tags.txt"), "r"
         ) as f:
             lines = f.readlines()
     lines.append(f"{deploy_config['ckpt_name']}:{generate_gin_tag()}\n")
 
-    with open(
-        os.path.join(deploy_config["tmp_dir"], "generate_tags.txt"), "w"
-    ) as f:
+    with open(os.path.join(deploy_config["tmp_dir"], "generate_tags.txt"), "w") as f:
         f.writelines(lines)
 
 
@@ -333,9 +317,7 @@ def check_log_and_submit_deploy():
             ) as f:
                 args = f"sbatch --gres=gpu:1 -t 12:00:00 --mem=80g --exclude=shire-1-6,babel-8-19,babel-7-37 -e {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.err -o {deploy_config['log_dir']}/deploy_{deploy_config['ckpt_name']}_out.log {config['script_dir']}/pipelines/submit_deploy.sh"
                 subprocess.run(args.split(), stdout=f)
-            print(
-                f"Submitted sbatch for deploying {deploy_config['ckpt_name']}"
-            )
+            print(f"Submitted sbatch for deploying {deploy_config['ckpt_name']}")
 
             # Update map for scanceling deploy job by monitor_eval_and_stop_deploy.py
             map_ckpt_to_job(get_deploy_job_id())
@@ -389,9 +371,7 @@ def check_log_and_cancel_deploy():
                 os.path.join(deploy_config["tmp_dir"], "scancel_list.txt"), "w"
             ) as f:
                 pass
-        with open(
-            os.path.join(deploy_config["tmp_dir"], "scancel_list.txt"), "r"
-        ) as f:
+        with open(os.path.join(deploy_config["tmp_dir"], "scancel_list.txt"), "r") as f:
             lines = f.readlines()
 
         if len(lines) > 0:
@@ -400,9 +380,7 @@ def check_log_and_cancel_deploy():
                 scancel_job(job_id)
                 print(f"Eval finished. Scancelled job {job_id}")
 
-        with open(
-            os.path.join(deploy_config["tmp_dir"], "scancel_list.txt"), "w"
-        ) as f:
+        with open(os.path.join(deploy_config["tmp_dir"], "scancel_list.txt"), "w") as f:
             f.writelines([])
 
         time.sleep(60)

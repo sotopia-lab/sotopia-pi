@@ -88,9 +88,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
             num_examples = total_train_batch_size * self.args.max_steps
             num_train_epochs = sys.maxsize
             max_steps = self.args.max_steps
-            steps_in_epoch = (
-                self.args.max_steps * self.args.gradient_accumulation_steps
-            )
+            steps_in_epoch = self.args.max_steps * self.args.gradient_accumulation_steps
         else:
             len_dataloader = len(self.dataloader)
             num_examples = len(self.dataset)
@@ -129,9 +127,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
         reward_meter = AverageMeter()
         self.log_callback.on_train_begin(self.args, self.state, self.control)
 
-        for step in tqdm(
-            range(max_steps), disable=not self.is_local_process_zero()
-        ):
+        for step in tqdm(range(max_steps), disable=not self.is_local_process_zero()):
             try:
                 batch = next(dataiter)
             except StopIteration:
@@ -157,9 +153,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
             stats = self.step(queries, responses, rewards)
             self.tokenizer.padding_side = "left"  # restore padding side
             loss_meter.update(float(stats["ppo/loss/total"]), n=len(rewards))
-            reward_meter.update(
-                torch.stack(rewards).mean().item(), n=len(rewards)
-            )
+            reward_meter.update(torch.stack(rewards).mean().item(), n=len(rewards))
 
             if self.config.log_with is not None:
                 try:
@@ -171,9 +165,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
                     )
                     self.log_stats(stats, batch, rewards)
                 except:
-                    logger.warning(
-                        "Failed to save stats due to unknown errors."
-                    )
+                    logger.warning("Failed to save stats due to unknown errors.")
 
             self.state.global_step += 1
             self.log_callback.on_step_end(self.args, self.state, self.control)
@@ -199,9 +191,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
                 self.save_model(
                     os.path.join(
                         self.args.output_dir,
-                        "{}-{}".format(
-                            PREFIX_CHECKPOINT_DIR, self.state.global_step
-                        ),
+                        "{}-{}".format(PREFIX_CHECKPOINT_DIR, self.state.global_step),
                     )
                 )
                 self.save_callback.on_save(
@@ -211,10 +201,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
                     model=self.accelerator.unwrap_model(self.model),
                 )
 
-            if (
-                self.control.should_epoch_stop
-                or self.control.should_training_stop
-            ):
+            if self.control.should_epoch_stop or self.control.should_training_stop:
                 break
 
         self.log_callback.on_train_end(self.args, self.state, self.control)
@@ -253,26 +240,18 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
         )
         queries, responses = [], []
         for i in range(len(query)):
-            query_length = (
-                (query[i] != self.tokenizer.pad_token_id).nonzero()[0].item()
-            )
-            response_index = (
-                response[i] != self.tokenizer.pad_token_id
-            ).nonzero()
+            query_length = (query[i] != self.tokenizer.pad_token_id).nonzero()[0].item()
+            response_index = (response[i] != self.tokenizer.pad_token_id).nonzero()
 
             if len(response_index) == 0:
                 response_length = 1  # allow empty response
             elif self.tokenizer.pad_token_id == self.tokenizer.eos_token_id:
-                response_length = (
-                    response_index[-1].item() + 2
-                )  # save the EOS token
+                response_length = response_index[-1].item() + 2  # save the EOS token
             else:
                 response_length = response_index[-1].item() + 1
 
             queries.append(query[i, query_length:])  # remove padding from left
-            responses.append(
-                response[i, :response_length]
-            )  # remove padding from right
+            responses.append(response[i, :response_length])  # remove padding from right
 
         return queries, responses
 
@@ -304,9 +283,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
             end_index = (
                 batch["attention_mask"][i].nonzero()[-1].item()
             )  # use the score on the EOS token
-            rewards.append(
-                values[i, end_index].float().detach().cpu()
-            )  # use fp32 type
+            rewards.append(values[i, end_index].float().detach().cpu())  # use fp32 type
 
         replace_model(unwrapped_model, target="default")
         return rewards
@@ -353,9 +330,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
             if values.size(0) != input_ids.size(0):  # adapt to chatglm2
                 values = torch.transpose(values, 0, 1)
 
-            logprobs = logprobs_from_logits(
-                logits[:, :-1, :], input_ids[:, 1:]
-            )
+            logprobs = logprobs_from_logits(logits[:, :-1, :], input_ids[:, 1:])
             masks = torch.zeros_like(attention_mask)
             masks[:, :-1] = attention_mask[:, 1:]
 
@@ -377,8 +352,7 @@ class CustomPPOTrainer(PPOTrainer, Trainer):
                 masks[j, end:] = 0
                 if response_masks is not None:
                     masks[j, start:end] = (
-                        masks[j, start:end]
-                        * response_masks_batch[j][start:end]
+                        masks[j, start:end] * response_masks_batch[j][start:end]
                     )
 
             if return_logits:

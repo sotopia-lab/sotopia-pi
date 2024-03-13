@@ -51,15 +51,11 @@ class DataArguments:
     )
     split: Optional[str] = field(
         default="train",
-        metadata={
-            "help": "Which dataset split to use for training and evaluation."
-        },
+        metadata={"help": "Which dataset split to use for training and evaluation."},
     )
     cutoff_len: Optional[int] = field(
         default=1024,
-        metadata={
-            "help": "The maximum length of the model inputs after tokenization."
-        },
+        metadata={"help": "The maximum length of the model inputs after tokenization."},
     )
     train_on_prompt: Optional[bool] = field(
         default=False,
@@ -74,13 +70,13 @@ class DataArguments:
             "help": "Size of the buffer to randomly sample examples from in dataset streaming."
         },
     )
-    mix_strategy: Optional[
-        Literal["concat", "interleave_under", "interleave_over"]
-    ] = field(
-        default="concat",
-        metadata={
-            "help": "Strategy to use in dataset mixing (concat/interleave) (undersampling/oversampling)."
-        },
+    mix_strategy: Optional[Literal["concat", "interleave_under", "interleave_over"]] = (
+        field(
+            default="concat",
+            metadata={
+                "help": "Strategy to use in dataset mixing (concat/interleave) (undersampling/oversampling)."
+            },
+        )
     )
     interleave_probs: Optional[str] = field(
         default=None,
@@ -90,15 +86,11 @@ class DataArguments:
     )
     overwrite_cache: Optional[bool] = field(
         default=False,
-        metadata={
-            "help": "Overwrite the cached training and evaluation sets."
-        },
+        metadata={"help": "Overwrite the cached training and evaluation sets."},
     )
     preprocessing_num_workers: Optional[int] = field(
         default=None,
-        metadata={
-            "help": "The number of processes to use for the preprocessing."
-        },
+        metadata={"help": "The number of processes to use for the preprocessing."},
     )
     max_samples: Optional[int] = field(
         default=None,
@@ -159,20 +151,14 @@ class DataArguments:
             else []
         )
         try:
-            with open(
-                os.path.join(self.dataset_dir, "dataset_info.json"), "r"
-            ) as f:
+            with open(os.path.join(self.dataset_dir, "dataset_info.json"), "r") as f:
                 dataset_info = json.load(f)
         except Exception:
             if self.dataset is not None:
-                raise ValueError(
-                    "Cannot find dataset_info.json in `dataset_dir`."
-                )
+                raise ValueError("Cannot find dataset_info.json in `dataset_dir`.")
             dataset_info = None
 
-        prompt_list = (
-            self.system_prompt.split("|") if self.system_prompt else [None]
-        )
+        prompt_list = self.system_prompt.split("|") if self.system_prompt else [None]
         prompt_list = prompt_list * (len(dataset_names) // len(prompt_list))
         assert len(prompt_list) == len(
             dataset_names
@@ -180,8 +166,7 @@ class DataArguments:
 
         if self.interleave_probs is not None:
             self.interleave_probs = [
-                float(prob.strip())
-                for prob in self.interleave_probs.split(",")
+                float(prob.strip()) for prob in self.interleave_probs.split(",")
             ]
 
         self.dataset_list: List[DatasetAttr] = []
@@ -207,12 +192,8 @@ class DataArguments:
                 )
 
             if "columns" in dataset_info[name]:
-                dataset_attr.prompt = dataset_info[name]["columns"].get(
-                    "prompt", None
-                )
-                dataset_attr.query = dataset_info[name]["columns"].get(
-                    "query", None
-                )
+                dataset_attr.prompt = dataset_info[name]["columns"].get("prompt", None)
+                dataset_attr.query = dataset_info[name]["columns"].get("query", None)
                 dataset_attr.response = dataset_info[name]["columns"].get(
                     "response", None
                 )
@@ -222,17 +203,13 @@ class DataArguments:
                 dataset_attr.messages = dataset_info[name]["columns"].get(
                     "messages", None
                 )
-                dataset_attr.role = dataset_info[name]["columns"].get(
-                    "role", None
-                )
+                dataset_attr.role = dataset_info[name]["columns"].get("role", None)
                 dataset_attr.content = dataset_info[name]["columns"].get(
                     "content", None
                 )
 
             dataset_attr.subset = dataset_info[name].get("subset", None)
             dataset_attr.ranking = dataset_info[name].get("ranking", False)
-            dataset_attr.formatting = dataset_info[name].get(
-                "formatting", "alpaca"
-            )
+            dataset_attr.formatting = dataset_info[name].get("formatting", "alpaca")
             dataset_attr.system_prompt = prompt_list[i]
             self.dataset_list.append(dataset_attr)

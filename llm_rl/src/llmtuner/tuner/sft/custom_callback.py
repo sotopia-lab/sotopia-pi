@@ -5,9 +5,7 @@ from transformers import TrainerCallback
 
 
 class SaveModelCallback(TrainerCallback):
-    def __init__(
-        self, save_epochs, output_dir, checkpoint_saved_queue, improve_step
-    ):
+    def __init__(self, save_epochs, output_dir, checkpoint_saved_queue, improve_step):
         self.save_epochs = save_epochs
         self.output_dir = output_dir
         self.checkpoint_saved_queue = checkpoint_saved_queue
@@ -27,7 +25,9 @@ class SaveModelCallback(TrainerCallback):
             return
 
         # Customized checkpoint name
-        custom_checkpoint_name = f"checkpoint_improve-{self.curr_improve_step}_epoch-{int(self.curr_epoch)}"
+        custom_checkpoint_name = (
+            f"checkpoint_improve-{self.curr_improve_step}_epoch-{int(self.curr_epoch)}"
+        )
 
         # Original auto-saved checkpoint directory
         auto_checkpoint_dir = os.path.join(
@@ -35,9 +35,7 @@ class SaveModelCallback(TrainerCallback):
         )
 
         # Destination directory for the custom checkpoint
-        custom_checkpoint_dir = os.path.join(
-            self.output_dir, custom_checkpoint_name
-        )
+        custom_checkpoint_dir = os.path.join(self.output_dir, custom_checkpoint_name)
 
         # Rename the auto-saved checkpoint directory
         os.rename(auto_checkpoint_dir, custom_checkpoint_dir)

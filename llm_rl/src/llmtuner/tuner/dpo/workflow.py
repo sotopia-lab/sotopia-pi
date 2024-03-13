@@ -59,9 +59,7 @@ def run_dpo(
     trainer = CustomDPOTrainer(
         beta=finetuning_args.dpo_beta,
         model=model,
-        ref_model=deepcopy(model)
-        if not isinstance(model, PeftModel)
-        else None,
+        ref_model=deepcopy(model) if not isinstance(model, PeftModel) else None,
         args=training_args,
         tokenizer=tokenizer,
         data_collator=data_collator,

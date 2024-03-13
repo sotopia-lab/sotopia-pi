@@ -30,23 +30,17 @@ def main():
                 if ckpt == args.ckpt_name:
                     new_lines = []
                     if os.path.isfile(
-                        os.path.join(
-                            deploy_config["tmp_dir"], "scancel_list.txt"
-                        )
+                        os.path.join(deploy_config["tmp_dir"], "scancel_list.txt")
                     ):
                         with open(
-                            os.path.join(
-                                deploy_config["tmp_dir"], "scancel_list.txt"
-                            ),
+                            os.path.join(deploy_config["tmp_dir"], "scancel_list.txt"),
                             "r",
                         ) as f:
                             new_lines = f.readlines()
                     new_lines.append(f"{job_id}\n")
 
                     with open(
-                        os.path.join(
-                            deploy_config["tmp_dir"], "scancel_list.txt"
-                        ),
+                        os.path.join(deploy_config["tmp_dir"], "scancel_list.txt"),
                         "w",
                     ) as f:
                         f.writelines(new_lines)

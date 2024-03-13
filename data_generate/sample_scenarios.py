@@ -8,9 +8,7 @@ from utils.sampling_utils import sample_unused_scenarios
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--env-file", type=str, default="env_files/used_env.json"
-    )
+    parser.add_argument("--env-file", type=str, default="env_files/used_env.json")
     parser.add_argument("--experiment-name", type=str, required=True)
     parser.add_argument("--num", type=int, required=True)
     parser.add_argument("--show-stat", type=bool, default=False)

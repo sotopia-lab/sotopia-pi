@@ -129,9 +129,7 @@ class Runner:
             num_train_epochs=float(get("train.num_train_epochs")),
             max_samples=int(get("train.max_samples")),
             per_device_train_batch_size=get("train.batch_size"),
-            gradient_accumulation_steps=get(
-                "train.gradient_accumulation_steps"
-            ),
+            gradient_accumulation_steps=get("train.gradient_accumulation_steps"),
             lr_scheduler_type=get("train.lr_scheduler_type"),
             max_grad_norm=float(get("train.max_grad_norm")),
             logging_steps=get("train.logging_steps"),
@@ -142,8 +140,7 @@ class Runner:
             upcast_layernorm=get("train.upcast_layernorm"),
             lora_rank=get("train.lora_rank"),
             lora_dropout=get("train.lora_dropout"),
-            lora_target=get("train.lora_target")
-            or get_module(get("top.model_name")),
+            lora_target=get("train.lora_target") or get_module(get("top.model_name")),
             additional_target=(
                 get("train.additional_target")
                 if get("train.additional_target")
@@ -315,9 +312,7 @@ class Runner:
             if self.aborted:
                 yield ALERTS["info_aborting"][lang], gr.update(visible=False)
             else:
-                yield self.logger_handler.log, update_process_bar(
-                    self.trainer_callback
-                )
+                yield self.logger_handler.log, update_process_bar(self.trainer_callback)
 
         if self.do_train:
             if os.path.exists(os.path.join(output_dir, TRAINING_ARGS_NAME)):

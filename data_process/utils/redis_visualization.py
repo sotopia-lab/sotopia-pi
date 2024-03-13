@@ -68,9 +68,7 @@ def plot_env_reward_distribution(env_rewards, split_agent=True):
             scores = sum(dic.values(), [])
             row = idx // 4
             col = idx % 4
-            axs[row, col].hist(
-                scores, color=color_options[idx % len(color_options)]
-            )
+            axs[row, col].hist(scores, color=color_options[idx % len(color_options)])
             axs[row, col].set_title(env)
             axs[row, col].title.set_size(12)
             idx += 1

@@ -22,9 +22,9 @@ def collect_social_iqa():
 
 
 def collect_normbank():
-    normbank_df = pd.read_csv(
-        os.getcwd() + "/data_generate/env_files//NormBank.csv"
-    )[["behavior"]]
+    normbank_df = pd.read_csv(os.getcwd() + "/data_generate/env_files//NormBank.csv")[
+        ["behavior"]
+    ]
     normbank_df = normbank_df.rename(columns={"behavior": "prompt"})
     normbank_df = normbank_df.drop_duplicates().reset_index(drop=True)
     normbank_df["source"] = "normbank"
@@ -57,8 +57,7 @@ def collect_persuation_for_good():
 def delete_sotopia_data(inspirational_prompt_df):
     sotopia_prompts = []
     sotopia_prompt_df = pd.read_csv(
-        os.getcwd()
-        + "/data_generate/env_files/inspirational_prompt_for_sotopia.csv"
+        os.getcwd() + "/data_generate/env_files/inspirational_prompt_for_sotopia.csv"
     )
     sotopia_prompts = sotopia_prompt_df.prompt.tolist()
     inspirational_prompt_df = inspirational_prompt_df[
@@ -72,9 +71,7 @@ if __name__ == "__main__":
     social_chem_prompt = collect_social_chemistry()
     social_iqa_prompt = collect_social_iqa()
     normbank_prompt = collect_normbank()
-    concat_prompt = pd.concat(
-        [social_chem_prompt, social_iqa_prompt, normbank_prompt]
-    )
+    concat_prompt = pd.concat([social_chem_prompt, social_iqa_prompt, normbank_prompt])
     inspirational_prompt_data = delete_sotopia_data(concat_prompt)
     inspirational_prompt_data = inspirational_prompt_data.drop_duplicates(
         subset=["prompt"], keep="first"

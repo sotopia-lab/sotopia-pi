@@ -99,9 +99,7 @@ def run_sft(
         data_collator=data_collator,
         callbacks=callbacks,
         compute_metrics=(
-            ComputeMetrics(tokenizer)
-            if training_args.predict_with_generate
-            else None
+            ComputeMetrics(tokenizer) if training_args.predict_with_generate else None
         ),
         **split_dataset(dataset, data_args, training_args)
     )

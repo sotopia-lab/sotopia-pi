@@ -53,9 +53,7 @@ class SavePeftModelCallback(TrainerCallback):
         if args.should_save:
             model = kwargs.pop("model")
             if getattr(model, "is_peft_model", False):
-                getattr(model, "pretrained_model").save_pretrained(
-                    args.output_dir
-                )
+                getattr(model, "pretrained_model").save_pretrained(args.output_dir)
 
 
 class LogCallback(TrainerCallback):
@@ -71,9 +69,7 @@ class LogCallback(TrainerCallback):
     def timing(self):
         cur_time = time.time()
         elapsed_time = cur_time - self.start_time
-        avg_time_per_step = (
-            elapsed_time / self.cur_steps if self.cur_steps != 0 else 0
-        )
+        avg_time_per_step = elapsed_time / self.cur_steps if self.cur_steps != 0 else 0
         remaining_time = (self.max_steps - self.cur_steps) * avg_time_per_step
         self.elapsed_time = str(timedelta(seconds=int(elapsed_time)))
         self.remaining_time = str(timedelta(seconds=int(remaining_time)))
@@ -96,9 +92,7 @@ class LogCallback(TrainerCallback):
                 os.path.exists(os.path.join(args.output_dir, LOG_FILE_NAME))
                 and args.overwrite_output_dir
             ):
-                logger.warning(
-                    "Previous log file in this folder will be deleted."
-                )
+                logger.warning("Previous log file in this folder will be deleted.")
                 os.remove(os.path.join(args.output_dir, LOG_FILE_NAME))
 
     def on_train_end(

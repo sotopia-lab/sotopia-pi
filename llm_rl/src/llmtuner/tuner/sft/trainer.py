@@ -35,9 +35,7 @@ class CustomSeq2SeqTrainer(Seq2SeqTrainer):
         inputs: Dict[str, Union[torch.Tensor, Any]],
         prediction_loss_only: bool,
         ignore_keys: Optional[List[str]] = None,
-    ) -> Tuple[
-        Optional[float], Optional[torch.Tensor], Optional[torch.Tensor]
-    ]:
+    ) -> Tuple[Optional[float], Optional[torch.Tensor], Optional[torch.Tensor]]:
         r"""
         Removes the prompt part in the generated tokens.
 
@@ -50,9 +48,9 @@ class CustomSeq2SeqTrainer(Seq2SeqTrainer):
             assert (
                 self.tokenizer.padding_side == "left"
             ), "This method only accepts left-padded tensor."
-            prompt_len, label_len = inputs["input_ids"].size(-1), inputs[
-                "labels"
-            ].size(-1)
+            prompt_len, label_len = inputs["input_ids"].size(-1), inputs["labels"].size(
+                -1
+            )
             if prompt_len > label_len:
                 inputs["labels"] = self._pad_tensors_to_target_len(
                     inputs["labels"], inputs["input_ids"]
@@ -80,15 +78,9 @@ class CustomSeq2SeqTrainer(Seq2SeqTrainer):
         r"""
         Pads the tensor to the same length as the target tensor.
         """
-        assert (
-            self.tokenizer.pad_token_id is not None
-        ), "Pad token is required."
-        padded_tensor = self.tokenizer.pad_token_id * torch.ones_like(
-            tgt_tensor
-        )
-        padded_tensor[
-            :, -src_tensor.shape[-1] :
-        ] = src_tensor  # adopt left-padding
+        assert self.tokenizer.pad_token_id is not None, "Pad token is required."
+        padded_tensor = self.tokenizer.pad_token_id * torch.ones_like(tgt_tensor)
+        padded_tensor[:, -src_tensor.shape[-1] :] = src_tensor  # adopt left-padding
         return padded_tensor.contiguous()  # in contiguous memory
 
     def save_predictions(self, predict_results: "PredictionOutput") -> None:
@@ -127,8 +119,6 @@ class CustomSeq2SeqTrainer(Seq2SeqTrainer):
             res: List[str] = []
             for pred, label in zip(decoded_preds, decoded_labels):
                 res.append(
-                    json.dumps(
-                        {"label": label, "predict": pred}, ensure_ascii=False
-                    )
+                    json.dumps({"label": label, "predict": pred}, ensure_ascii=False)
                 )
             writer.write("\n".join(res))

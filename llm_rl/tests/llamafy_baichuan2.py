@@ -23,9 +23,9 @@ CONFIG_NAME = "config.json"
 def save_weight(input_dir: str, output_dir: str, shard_size: str):
     baichuan2_state_dict: Dict[str, torch.Tensor] = OrderedDict()
     for filepath in os.listdir(input_dir):
-        if os.path.isfile(
-            os.path.join(input_dir, filepath)
-        ) and filepath.endswith(".bin"):
+        if os.path.isfile(os.path.join(input_dir, filepath)) and filepath.endswith(
+            ".bin"
+        ):
             shard_weight = torch.load(
                 os.path.join(input_dir, filepath), map_location="cpu"
             )
@@ -35,9 +35,7 @@ def save_weight(input_dir: str, output_dir: str, shard_size: str):
     for key, value in baichuan2_state_dict.items():
         if "W_pack" in key:
             proj_size = value.size(0) // 3
-            llama2_state_dict[key.replace("W_pack", "q_proj")] = value[
-                :proj_size, :
-            ]
+            llama2_state_dict[key.replace("W_pack", "q_proj")] = value[:proj_size, :]
             llama2_state_dict[key.replace("W_pack", "k_proj")] = value[
                 proj_size : 2 * proj_size, :
             ]
@@ -57,9 +55,7 @@ def save_weight(input_dir: str, output_dir: str, shard_size: str):
 
     if index is None:
         print(
-            "Model weights saved in {}".format(
-                os.path.join(output_dir, WEIGHTS_NAME)
-            )
+            "Model weights saved in {}".format(os.path.join(output_dir, WEIGHTS_NAME))
         )
     else:
         with open(
@@ -70,9 +66,7 @@ def save_weight(input_dir: str, output_dir: str, shard_size: str):
 
 
 def save_config(input_dir: str, output_dir: str):
-    with open(
-        os.path.join(input_dir, CONFIG_NAME), "r", encoding="utf-8"
-    ) as f:
+    with open(os.path.join(input_dir, CONFIG_NAME), "r", encoding="utf-8") as f:
         llama2_config_dict: Dict[str, Any] = json.load(f)
 
     llama2_config_dict["architectures"] = ["LlamaForCausalLM"]
@@ -80,15 +74,9 @@ def save_config(input_dir: str, output_dir: str):
     llama2_config_dict.pop("tokenizer_class", None)
     llama2_config_dict["model_type"] = "llama"
 
-    with open(
-        os.path.join(output_dir, CONFIG_NAME), "w", encoding="utf-8"
-    ) as f:
+    with open(os.path.join(output_dir, CONFIG_NAME), "w", encoding="utf-8") as f:
         json.dump(llama2_config_dict, f, indent=2)
-    print(
-        "Model config saved in {}".format(
-            os.path.join(output_dir, CONFIG_NAME)
-        )
-    )
+    print("Model config saved in {}".format(os.path.join(output_dir, CONFIG_NAME)))
 
 
 def llamafy_baichuan2(input_dir: str, output_dir: str, shard_size: str):

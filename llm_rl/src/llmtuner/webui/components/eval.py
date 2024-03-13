@@ -21,9 +21,7 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
     dataset_dir.change(list_dataset, [dataset_dir], [dataset], queue=False)
 
     input_elems.update({dataset_dir, dataset})
-    elem_dict.update(
-        dict(dataset_dir=dataset_dir, dataset=dataset, **preview_elems)
-    )
+    elem_dict.update(dict(dataset_dir=dataset_dir, dataset=dataset, **preview_elems))
 
     with gr.Row():
         cutoff_len = gr.Slider(value=1024, minimum=4, maximum=8192, step=1)
@@ -48,9 +46,7 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
 
     input_elems.update({max_new_tokens, top_p, temperature})
     elem_dict.update(
-        dict(
-            max_new_tokens=max_new_tokens, top_p=top_p, temperature=temperature
-        )
+        dict(max_new_tokens=max_new_tokens, top_p=top_p, temperature=temperature)
     )
 
     with gr.Row():
@@ -77,9 +73,7 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
         )
     )
 
-    cmd_preview_btn.click(
-        engine.runner.preview_eval, input_elems, output_elems
-    )
+    cmd_preview_btn.click(engine.runner.preview_eval, input_elems, output_elems)
     start_btn.click(engine.runner.run_eval, input_elems, output_elems)
     stop_btn.click(engine.runner.set_abort, queue=False)
     resume_btn.change(engine.runner.monitor, outputs=output_elems)
