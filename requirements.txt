@@ -26,7 +26,7 @@ bitsandbytes>=0.39.0
 wandb
 pandas
 openai
-langchain<0.0.312,>=0.0.311
+langchain
 rich
 pandas-stubs
 types-tqdm
