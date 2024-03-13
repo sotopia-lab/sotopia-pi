@@ -11,8 +11,6 @@ import gin
 from absl import app, flags
 from rich import print
 from rich.logging import RichHandler
-from tqdm import tqdm
-
 from sotopia.agents import LLMAgent
 from sotopia.database import (
     AgentProfile,
@@ -34,6 +32,7 @@ from sotopia.samplers import (
 )
 from sotopia.server import run_async_server
 from sotopia_conf.gin_utils import parse_gin_flags, run
+from tqdm import tqdm
 
 _DEFAULT_GIN_SEARCH_PATHS = [
     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

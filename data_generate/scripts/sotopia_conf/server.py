@@ -5,7 +5,6 @@ from typing import Any, Callable, Sequence, cast
 
 import gin
 from absl import app, flags
-
 from sotopia.messages import Message
 from sotopia.server import run_async_server
 

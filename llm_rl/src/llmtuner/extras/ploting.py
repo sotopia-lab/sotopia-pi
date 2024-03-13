@@ -1,12 +1,11 @@
-import os
-import math
 import json
-import matplotlib.pyplot as plt
+import math
+import os
 from typing import List, Optional
-from transformers.trainer import TRAINER_STATE_NAME
 
+import matplotlib.pyplot as plt
 from llmtuner.extras.logging import get_logger
-
+from transformers.trainer import TRAINER_STATE_NAME
 
 logger = get_logger(__name__)
 
@@ -17,7 +16,9 @@ def smooth(scalars: List[float]) -> List[float]:
     """
     last = scalars[0]
     smoothed = list()
-    weight = 1.8 * (1 / (1 + math.exp(-0.05 * len(scalars))) - 0.5) # a sigmoid function
+    weight = 1.8 * (
+        1 / (1 + math.exp(-0.05 * len(scalars))) - 0.5
+    )  # a sigmoid function
     for next_val in scalars:
         smoothed_val = last * weight + (1 - weight) * next_val
         smoothed.append(smoothed_val)
@@ -25,9 +26,15 @@ def smooth(scalars: List[float]) -> List[float]:
     return smoothed
 
 
-def plot_loss(save_dictionary: os.PathLike, keys: Optional[List[str]] = ["loss"]) -> None:
+def plot_loss(
+    save_dictionary: os.PathLike, keys: Optional[List[str]] = ["loss"]
+) -> None:
 
-    with open(os.path.join(save_dictionary, TRAINER_STATE_NAME), "r", encoding="utf-8") as f:
+    with open(
+        os.path.join(save_dictionary, TRAINER_STATE_NAME),
+        "r",
+        encoding="utf-8",
+    ) as f:
         data = json.load(f)
 
     for key in keys:
@@ -48,5 +55,12 @@ def plot_loss(save_dictionary: os.PathLike, keys: Optional[List[str]] = ["loss"]
         plt.xlabel("step")
         plt.ylabel(key)
         plt.legend()
-        plt.savefig(os.path.join(save_dictionary, "training_{}.png".format(key)), format="png", dpi=100)
-        print("Figure saved:", os.path.join(save_dictionary, "training_{}.png".format(key)))
+        plt.savefig(
+            os.path.join(save_dictionary, "training_{}.png".format(key)),
+            format="png",
+            dpi=100,
+        )
+        print(
+            "Figure saved:",
+            os.path.join(save_dictionary, "training_{}.png".format(key)),
+        )

@@ -20,4 +20,4 @@ CUDA_VISIBLE_DEVICES=0 python src/train_bash.py \
     --use_auth_token True \
     --wandb_token "99caa13ec9552adf0e92e5c30021307ce3cf7fa4" \
     --hf_auth_token "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" \
-    --deepspeed ./deepspeed_config_s2.json 
+    --deepspeed ./deepspeed_config_s2.json

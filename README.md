@@ -1,11 +1,11 @@
 
-# Sotopia-π: Interactive Learning of Socially Intelligent Language Agents 
-This is the official repo of the paper: [add arxiv link]. 
+# Sotopia-π: Interactive Learning of Socially Intelligent Language Agents
+This is the official repo of the paper: [add arxiv link].
 For highlights of the paper, please see our [website](https://sotopia-dev.vercel.app/projects/sotopia-pi).
 
 ![title](imgs/acl2024_teaser.png)
 
-We introduce Sotopia-π, a method that improves the social intelligence of large language models (LLMs) through social interaction. The method involves three steps: (1) automatically generates new social tasks, (2) collects data from both expert policy and agent policy for training, and (3) updates agent policy based on positive data rated by GPT-4. The training and evaluation environment is based on the [Sotopia](https://github.com/XuhuiZhou/sotopia) framework. 
+We introduce Sotopia-π, a method that improves the social intelligence of large language models (LLMs) through social interaction. The method involves three steps: (1) automatically generates new social tasks, (2) collects data from both expert policy and agent policy for training, and (3) updates agent policy based on positive data rated by GPT-4. The training and evaluation environment is based on the [Sotopia](https://github.com/XuhuiZhou/sotopia) framework.
 
 ## Preparations
 - Install dependencies:
@@ -21,10 +21,10 @@ We introduce Sotopia-π, a method that improves the social intelligence of large
   conda env config vars set REDIS_OM_URL="redis://user:password@host:port"
   ```
 ## Step 1: Social Task Generation
-The first step is to generate synthesized social tasks by sampling keywords from datasets and prompting GPT-4 Turbo to generate corresponding social tasks. For detailed implementation, please refer to [this section](https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate#social-task-generation). 
+The first step is to generate synthesized social tasks by sampling keywords from datasets and prompting GPT-4 Turbo to generate corresponding social tasks. For detailed implementation, please refer to [this section](https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate#social-task-generation).
 
 ## Step 2: Training Data Collection
-The second step is to collect data from expert (GPT-4 vs. GPT-4) as behavior cloning trajectories and from self (our model vs. our model) as self-reinforcement trajectories. 
+The second step is to collect data from expert (GPT-4 vs. GPT-4) as behavior cloning trajectories and from self (our model vs. our model) as self-reinforcement trajectories.
 To collect behavior cloning data, run
 ```bash
 cd data_generate
@@ -48,7 +48,7 @@ This step requires (1) filter the collected conversation data based on GPT-4 rat
 
 ## Human Evaluation
 
-* We develop a personalized project based on oTree and release the human evaluation project via Prolific. 
+* We develop a personalized project based on oTree and release the human evaluation project via Prolific.
 * Detailed instruction on reproducing human evaluation is mentioned [here](https://github.com/sotopia-lab/sotopia-pi/tree/main/human_eval).
 
 ## Model Checkpoints

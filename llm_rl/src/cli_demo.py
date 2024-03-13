@@ -1,17 +1,22 @@
 import readline
+
 from llmtuner import ChatModel
 
 
 def main():
     chat_model = ChatModel()
     history = []
-    print("Welcome to the CLI application, use `clear` to remove the history, use `exit` to exit the application.")
+    print(
+        "Welcome to the CLI application, use `clear` to remove the history, use `exit` to exit the application."
+    )
 
     while True:
         try:
             query = input("\nUser: ")
         except UnicodeDecodeError:
-            print("Detected decoding error at the inputs, please set the terminal encoding to utf-8.")
+            print(
+                "Detected decoding error at the inputs, please set the terminal encoding to utf-8."
+            )
             continue
         except Exception:
             raise
