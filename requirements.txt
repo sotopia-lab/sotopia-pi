@@ -23,11 +23,10 @@ matplotlib
 py-cpuinfo
 deepspeed
 bitsandbytes>=0.39.0
-#flash-attn
 wandb
 pandas
 openai
-langchain
+langchain<0.0.312,>=0.0.311
 rich
 pandas-stubs
 types-tqdm
@@ -37,3 +36,4 @@ absl-py
 names
 together
 sotopia
+#flash-attn need to pip install flash-attn --no-build-isolation
