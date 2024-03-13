@@ -36,4 +36,3 @@ absl-py
 names
 together
 sotopia
-#flash-attn need to pip install flash-attn --no-build-isolation
