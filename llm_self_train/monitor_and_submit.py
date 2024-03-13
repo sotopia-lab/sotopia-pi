@@ -29,7 +29,9 @@ with open(os.path.join(log_dir, "deploy_config.yml"), "r") as f:
     deploy_config = yaml.safe_load(f)
 
 deploy_config["log_dir"] = log_dir
-deploy_config["tmp_dir"] = f"{config['script_dir']}/tmp/{config['experiment_name']}"
+deploy_config[
+    "tmp_dir"
+] = f"{config['script_dir']}/tmp/{config['experiment_name']}"
 
 with open(os.path.join(log_dir, "deploy_config.yml"), "w") as f:
     yaml.dump(deploy_config, f)
@@ -47,7 +49,9 @@ def main():
     if not os.path.isfile(config["checkpoint_saved_queue"]):
         with open(config["checkpoint_saved_queue"], "w") as f:
             pass
-            print(f"Deploy queue not found, created {config['checkpoint_saved_queue']}")
+            print(
+                f"Deploy queue not found, created {config['checkpoint_saved_queue']}"
+            )
         os.chmod(config["checkpoint_saved_queue"], 0o777)
 
     submit_monitor_process = multiprocessing.Process(

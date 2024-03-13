@@ -52,7 +52,9 @@ class EvalTemplate:
         use_history: bool,
     ) -> Tuple[str, str, List[Tuple[str, str]]]:
         query, resp = self.parse_example(target_data)
-        history = [self.parse_example(support_set[k]) for k in range(len(support_set))]
+        history = [
+            self.parse_example(support_set[k]) for k in range(len(support_set))
+        ]
 
         if len(history):
             temp = history.pop(0)
@@ -111,7 +113,9 @@ def batch_inference(
         ),
         dim=-1,
     ).detach()
-    return [chr(ord("A") + offset.item()) for offset in torch.argmax(probs, dim=-1)]
+    return [
+        chr(ord("A") + offset.item()) for offset in torch.argmax(probs, dim=-1)
+    ]
 
 
 def evaluate(
@@ -213,7 +217,9 @@ def evaluate(
                     return_attention_mask=True,
                     return_tensors="pt",
                 ).to(chat_model.model.device)
-                preds = batch_inference(chat_model, batch_input, eval_template.prefix)
+                preds = batch_inference(
+                    chat_model, batch_input, eval_template.prefix
+                )
                 outputs += preds
             all_outputs.append(outputs)
 
@@ -233,7 +239,9 @@ def evaluate(
 
     score_info = "\n".join(
         [
-            "{:>15}: {:.2f}".format(category_name, 100 * np.mean(category_correct))
+            "{:>15}: {:.2f}".format(
+                category_name, 100 * np.mean(category_correct)
+            )
             for category_name, category_correct in category_corrects.items()
             if len(category_correct)
         ]
@@ -241,10 +249,14 @@ def evaluate(
 
     print(score_info)
     if save_name is not None:
-        with open(save_name + ".json", "w", encoding="utf-8", newline="\n") as f:
+        with open(
+            save_name + ".json", "w", encoding="utf-8", newline="\n"
+        ) as f:
             json.dump(results, f, indent=2)
 
-        with open(save_name + ".log", "w", encoding="utf-8", newline="\n") as f:
+        with open(
+            save_name + ".log", "w", encoding="utf-8", newline="\n"
+        ) as f:
             f.write(score_info)
 
 

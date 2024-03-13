@@ -7,7 +7,9 @@ from transformers.trainer import WEIGHTS_NAME
 logger = get_logger(__name__)
 
 
-def load_valuehead_params(model: torch.nn.Module, checkpoint_dir: os.PathLike) -> bool:
+def load_valuehead_params(
+    model: torch.nn.Module, checkpoint_dir: os.PathLike
+) -> bool:
     vhead_file = os.path.join(checkpoint_dir, WEIGHTS_NAME)
     if not os.path.exists(vhead_file):
         logger.warning(

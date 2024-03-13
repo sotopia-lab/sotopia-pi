@@ -33,11 +33,19 @@ class ComputeMetrics:
             "bleu-4": [],
         }
 
-        preds = np.where(preds != IGNORE_INDEX, preds, self.tokenizer.pad_token_id)
-        labels = np.where(labels != IGNORE_INDEX, labels, self.tokenizer.pad_token_id)
+        preds = np.where(
+            preds != IGNORE_INDEX, preds, self.tokenizer.pad_token_id
+        )
+        labels = np.where(
+            labels != IGNORE_INDEX, labels, self.tokenizer.pad_token_id
+        )
 
-        decoded_preds = self.tokenizer.batch_decode(preds, skip_special_tokens=True)
-        decoded_labels = self.tokenizer.batch_decode(labels, skip_special_tokens=True)
+        decoded_preds = self.tokenizer.batch_decode(
+            preds, skip_special_tokens=True
+        )
+        decoded_labels = self.tokenizer.batch_decode(
+            labels, skip_special_tokens=True
+        )
 
         for pred, label in zip(decoded_preds, decoded_labels):
             hypothesis = list(jieba.cut(pred))
@@ -54,7 +62,9 @@ class ComputeMetrics:
                 }
             else:
                 rouge = Rouge()
-                scores = rouge.get_scores(" ".join(hypothesis), " ".join(reference))
+                scores = rouge.get_scores(
+                    " ".join(hypothesis), " ".join(reference)
+                )
                 result = scores[0]
 
             for k, v in result.items():

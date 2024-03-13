@@ -13,7 +13,9 @@ class FinetuningArguments:
         default="sft",
         metadata={"help": "Which stage will be performed in training."},
     )
-    finetuning_type: Optional[Literal["lora", "freeze", "full", "none"]] = field(
+    finetuning_type: Optional[
+        Literal["lora", "freeze", "full", "none"]
+    ] = field(
         default="lora", metadata={"help": "Which fine-tuning method to use."}
     )
     num_layer_trainable: Optional[int] = field(
@@ -22,18 +24,18 @@ class FinetuningArguments:
             "help": "Number of trainable layers for partial-parameter (freeze) fine-tuning."
         },
     )
-    name_module_trainable: Optional[Literal["mlp", "self_attn", "self_attention"]] = (
-        field(
-            default="mlp",
-            metadata={
-                "help": 'Name of trainable modules for partial-parameter (freeze) fine-tuning. \
+    name_module_trainable: Optional[
+        Literal["mlp", "self_attn", "self_attention"]
+    ] = field(
+        default="mlp",
+        metadata={
+            "help": 'Name of trainable modules for partial-parameter (freeze) fine-tuning. \
                   LLaMA choices: ["mlp", "self_attn"], \
                   BLOOM & Falcon & ChatGLM2 choices: ["mlp", "self_attention"], \
                   Qwen choices: ["mlp", "attn"], \
                   Phi-1.5 choices: ["mlp", "mixer"], \
                   LLaMA-2, Baichuan, InternLM, XVERSE choices: the same as LLaMA.'
-            },
-        )
+        },
     )
     lora_rank: Optional[int] = field(
         default=8,
@@ -83,11 +85,15 @@ class FinetuningArguments:
     )
     ppo_logger: Optional[str] = field(
         default=None,
-        metadata={"help": "Log with either 'wandb' or 'tensorboard' in PPO training."},
+        metadata={
+            "help": "Log with either 'wandb' or 'tensorboard' in PPO training."
+        },
     )
     ppo_target: Optional[float] = field(
         default=6.0,
-        metadata={"help": "Target KL value for adaptive KL control in PPO training."},
+        metadata={
+            "help": "Target KL value for adaptive KL control in PPO training."
+        },
     )
     dpo_beta: Optional[float] = field(
         default=0.1, metadata={"help": "The beta parameter for the DPO loss."}

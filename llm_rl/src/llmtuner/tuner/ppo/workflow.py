@@ -39,9 +39,7 @@ def run_ppo(
         dataset, tokenizer, data_args, training_args, stage="ppo"
     )
 
-    tokenizer.padding_side = (
-        "left"  # use left-padding in generation while using right-padding in training
-    )
+    tokenizer.padding_side = "left"  # use left-padding in generation while using right-padding in training
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
     ppo_config = PPOConfig(

@@ -119,8 +119,12 @@ class ModelArguments:
                 "`split_special_tokens` is only supported for slow tokenizers."
             )
 
-        if self.checkpoint_dir is not None:  # support merging multiple lora weights
-            self.checkpoint_dir = [cd.strip() for cd in self.checkpoint_dir.split(",")]
+        if (
+            self.checkpoint_dir is not None
+        ):  # support merging multiple lora weights
+            self.checkpoint_dir = [
+                cd.strip() for cd in self.checkpoint_dir.split(",")
+            ]
 
         if self.quantization_bit is not None:
             assert self.quantization_bit in [

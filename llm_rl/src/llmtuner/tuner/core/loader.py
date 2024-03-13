@@ -120,7 +120,9 @@ def load_model_and_tokenizer(
     if model_args.rope_scaling is not None:
         if hasattr(config, "use_dynamic_ntk"):  # for Qwen models
             if is_trainable:
-                logger.warning("Qwen model does not support RoPE scaling in training.")
+                logger.warning(
+                    "Qwen model does not support RoPE scaling in training."
+                )
             else:
                 setattr(config, "use_dynamic_ntk", True)
                 setattr(config, "use_logn_attn", True)
@@ -134,13 +136,17 @@ def load_model_and_tokenizer(
                         "See: https://github.com/huggingface/transformers/pull/24653"
                     )
 
-                current_max_length = getattr(config, "max_position_embeddings", None)
+                current_max_length = getattr(
+                    config, "max_position_embeddings", None
+                )
                 if (
                     current_max_length
                     and model_args.model_max_length > current_max_length
                 ):
                     scaling_factor = float(
-                        math.ceil(model_args.model_max_length / current_max_length)
+                        math.ceil(
+                            model_args.model_max_length / current_max_length
+                        )
                     )
                 else:
                     logger.warning(
@@ -171,9 +177,13 @@ def load_model_and_tokenizer(
             LlamaModule.LlamaModel._prepare_decoder_attention_mask = (
                 LlamaPatches._prepare_decoder_attention_mask
             )
-            logger.info("Using FlashAttention-2 for faster training and inference.")
+            logger.info(
+                "Using FlashAttention-2 for faster training and inference."
+            )
         elif getattr(config, "model_type", None) == "qwen":
-            logger.info("Qwen models automatically enable FlashAttention if installed.")
+            logger.info(
+                "Qwen models automatically enable FlashAttention if installed."
+            )
         else:
             logger.warning("Current model does not support FlashAttention-2.")
     elif (
@@ -190,15 +200,21 @@ def load_model_and_tokenizer(
     if is_trainable and model_args.shift_attn:
         if getattr(config, "model_type", None) == "llama":
             setattr(config, "group_size_ratio", 0.25)
-            logger.info("Using shift short attention with group_size_ratio=1/4.")
+            logger.info(
+                "Using shift short attention with group_size_ratio=1/4."
+            )
         else:
-            logger.warning("Current model does not support shift short attention.")
+            logger.warning(
+                "Current model does not support shift short attention."
+            )
 
     # Quantization configurations (using bitsandbytes library).
     is_mergeable = True
     if model_args.quantization_bit is not None:
         if is_deepspeed_zero3_enabled():
-            raise ValueError("DeepSpeed ZeRO-3 is incompatible with quantization.")
+            raise ValueError(
+                "DeepSpeed ZeRO-3 is incompatible with quantization."
+            )
 
         if model_args.quantization_bit == 8:
             require_version(
@@ -206,7 +222,9 @@ def load_model_and_tokenizer(
                 "To fix: pip install bitsandbytes>=0.37.0",
             )
             config_kwargs["load_in_8bit"] = True
-            config_kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
+            config_kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_8bit=True
+            )
 
         elif model_args.quantization_bit == 4:
             require_version(
@@ -223,9 +241,13 @@ def load_model_and_tokenizer(
 
         is_mergeable = False
         config_kwargs["device_map"] = (
-            {"": int(os.environ.get("LOCAL_RANK", "0"))} if is_trainable else "auto"
+            {"": int(os.environ.get("LOCAL_RANK", "0"))}
+            if is_trainable
+            else "auto"
         )
-        logger.info("Quantizing model to {} bit.".format(model_args.quantization_bit))
+        logger.info(
+            "Quantizing model to {} bit.".format(model_args.quantization_bit)
+        )
 
     # Load and prepare pre-trained models (without valuehead).
     model = AutoModelForCausalLM.from_pretrained(
@@ -252,9 +274,9 @@ def load_model_and_tokenizer(
         config, "auto_map", {}
     ):
         config.__class__.register_for_auto_class()
-    if isinstance(model, PreTrainedModel) and "AutoModelForCausalLM" in getattr(
-        config, "auto_map", {}
-    ):
+    if isinstance(
+        model, PreTrainedModel
+    ) and "AutoModelForCausalLM" in getattr(config, "auto_map", {}):
         model.__class__.register_for_auto_class()
     if isinstance(
         tokenizer, PreTrainedTokenizerBase
@@ -263,11 +285,15 @@ def load_model_and_tokenizer(
 
     # Initialize adapters
     model = (
-        prepare_model_for_training(model=model, finetuning_args=finetuning_args)
+        prepare_model_for_training(
+            model=model, finetuning_args=finetuning_args
+        )
         if is_trainable
         else model
     )
-    model = init_adapter(model, model_args, finetuning_args, is_trainable, is_mergeable)
+    model = init_adapter(
+        model, model_args, finetuning_args, is_trainable, is_mergeable
+    )
     model = model.train() if is_trainable else model.eval()
 
     # Prepare model with valuehead for RLHF
@@ -291,9 +317,13 @@ def load_model_and_tokenizer(
                 )
 
         if stage == "ppo":  # load reward model
-            logger.info("Load reward model from {}".format(model_args.reward_model))
+            logger.info(
+                "Load reward model from {}".format(model_args.reward_model)
+            )
             if getattr(model, "is_peft_model", False):
-                model.pretrained_model.load_adapter(model_args.reward_model, "reward")
+                model.pretrained_model.load_adapter(
+                    model_args.reward_model, "reward"
+                )
             assert load_valuehead_params(
                 model, model_args.reward_model
             ), "Reward model is not correctly loaded."

@@ -31,4 +31,8 @@ class Manager:
         }
 
     def list_elems(self) -> List["Component"]:
-        return [elem for elems in self.all_elems.values() for elem in elems.values()]
+        return [
+            elem
+            for elems in self.all_elems.values()
+            for elem in elems.values()
+        ]

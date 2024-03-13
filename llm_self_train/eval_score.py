@@ -49,7 +49,9 @@ def gen_target_result_dict(envs: list, tag: str, target_model: str) -> dict:
             if eps[i].models[1] == target_model:  # target as agent 1
 
                 agent_id = eps[i].agents[0]
-                agent_profile = list(AgentProfile.find(AgentProfile.pk == agent_id))[0]
+                agent_profile = list(
+                    AgentProfile.find(AgentProfile.pk == agent_id)
+                )[0]
                 agent_first_name, agent_last_name = (
                     agent_profile.first_name,
                     agent_profile.last_name,
@@ -67,7 +69,9 @@ def gen_target_result_dict(envs: list, tag: str, target_model: str) -> dict:
 
             if eps[i].models[2] == target_model:
                 agent_id = eps[i].agents[1]
-                agent_profile = list(AgentProfile.find(AgentProfile.pk == agent_id))[0]
+                agent_profile = list(
+                    AgentProfile.find(AgentProfile.pk == agent_id)
+                )[0]
                 agent_first_name, agent_last_name = (
                     agent_profile.first_name,
                     agent_profile.last_name,
@@ -105,7 +109,11 @@ def eval_average(target_result_by_env: dict, tag: str) -> dict:
     for result_dict in target_result_by_env:
         for key in avg_dict:
             if (
-                len(result_dict["target_as_agent_1"]["agent_performance_by_profile"])
+                len(
+                    result_dict["target_as_agent_1"][
+                        "agent_performance_by_profile"
+                    ]
+                )
                 == 0
             ):
                 perf_as_agent_1 = 0
@@ -119,7 +127,11 @@ def eval_average(target_result_by_env: dict, tag: str) -> dict:
                     ]
                 )
             if (
-                len(result_dict["target_as_agent_2"]["agent_performance_by_profile"])
+                len(
+                    result_dict["target_as_agent_2"][
+                        "agent_performance_by_profile"
+                    ]
+                )
                 == 0
             ):
                 perf_as_agent_2 = 0

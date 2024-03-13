@@ -57,7 +57,9 @@ class ChatModel:
         generating_args.update(
             dict(
                 do_sample=(
-                    do_sample if do_sample is not None else generating_args["do_sample"]
+                    do_sample
+                    if do_sample is not None
+                    else generating_args["do_sample"]
                 ),
                 temperature=temperature or generating_args["temperature"],
                 top_p=top_p or generating_args["top_p"],
@@ -110,7 +112,9 @@ class ChatModel:
         )
         response_length = 0
         for i in range(len(response_ids)):
-            eos_index = (response_ids[i] == self.tokenizer.eos_token_id).nonzero()
+            eos_index = (
+                response_ids[i] == self.tokenizer.eos_token_id
+            ).nonzero()
             response_length += (
                 eos_index[0].item() if len(eos_index) else len(response_ids[i])
             )
@@ -125,7 +129,9 @@ class ChatModel:
         system: Optional[str] = None,
         **input_kwargs
     ) -> Generator[str, None, None]:
-        gen_kwargs, _ = self.process_args(query, history, system, **input_kwargs)
+        gen_kwargs, _ = self.process_args(
+            query, history, system, **input_kwargs
+        )
         streamer = TextIteratorStreamer(
             self.tokenizer,
             timeout=60.0,

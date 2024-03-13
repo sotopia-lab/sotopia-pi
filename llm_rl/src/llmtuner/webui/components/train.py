@@ -75,7 +75,9 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
 
     with gr.Row():
         batch_size = gr.Slider(value=4, minimum=1, maximum=512, step=1)
-        gradient_accumulation_steps = gr.Slider(value=4, minimum=1, maximum=512, step=1)
+        gradient_accumulation_steps = gr.Slider(
+            value=4, minimum=1, maximum=512, step=1
+        )
         lr_scheduler_type = gr.Dropdown(
             choices=[scheduler.value for scheduler in SchedulerType],
             value="cosine",
@@ -105,7 +107,9 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
     with gr.Accordion(label="Advanced config", open=False) as advanced_tab:
         with gr.Row():
             logging_steps = gr.Slider(value=5, minimum=5, maximum=1000, step=5)
-            save_steps = gr.Slider(value=100, minimum=10, maximum=5000, step=10)
+            save_steps = gr.Slider(
+                value=100, minimum=10, maximum=5000, step=10
+            )
             warmup_steps = gr.Slider(value=0, minimum=0, maximum=5000, step=1)
             neft_alpha = gr.Slider(value=0, minimum=0, maximum=10, step=0.1)
 
@@ -137,7 +141,9 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
 
     with gr.Accordion(label="LoRA config", open=False) as lora_tab:
         with gr.Row():
-            lora_rank = gr.Slider(value=8, minimum=1, maximum=1024, step=1, scale=1)
+            lora_rank = gr.Slider(
+                value=8, minimum=1, maximum=1024, step=1, scale=1
+            )
             lora_dropout = gr.Slider(
                 value=0.1, minimum=0, maximum=1, step=0.01, scale=1
             )
@@ -167,7 +173,9 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
 
     with gr.Accordion(label="RLHF config", open=False) as rlhf_tab:
         with gr.Row():
-            dpo_beta = gr.Slider(value=0.1, minimum=0, maximum=1, step=0.01, scale=1)
+            dpo_beta = gr.Slider(
+                value=0.1, minimum=0, maximum=1, step=0.01, scale=1
+            )
             reward_model = gr.Dropdown(scale=3)
             refresh_btn = gr.Button(scale=1)
 
@@ -202,7 +210,9 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
                 output_dir = gr.Textbox()
 
             with gr.Row():
-                resume_btn = gr.Checkbox(visible=False, interactive=False, value=False)
+                resume_btn = gr.Checkbox(
+                    visible=False, interactive=False, value=False
+                )
                 process_bar = gr.Slider(visible=False, interactive=False)
 
             with gr.Box():
@@ -214,7 +224,9 @@ def create_train_tab(engine: "Engine") -> Dict[str, "Component"]:
     input_elems.add(output_dir)
     output_elems = [output_box, process_bar]
 
-    cmd_preview_btn.click(engine.runner.preview_train, input_elems, output_elems)
+    cmd_preview_btn.click(
+        engine.runner.preview_train, input_elems, output_elems
+    )
     start_btn.click(engine.runner.run_train, input_elems, output_elems)
     stop_btn.click(engine.runner.set_abort, queue=False)
     resume_btn.change(engine.runner.monitor, outputs=output_elems)

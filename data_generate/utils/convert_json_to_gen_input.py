@@ -7,10 +7,14 @@ format_instruction = 'Your available action types are\n"none action speak non-ve
 
 def get_agent_info(agent1_pk, agent2_pk, env_pk, agent_dict, env_dict):
     agent1_name = (
-        agent_dict[agent1_pk]["first_name"] + " " + agent_dict[agent1_pk]["last_name"]
+        agent_dict[agent1_pk]["first_name"]
+        + " "
+        + agent_dict[agent1_pk]["last_name"]
     )
     agent2_name = (
-        agent_dict[agent2_pk]["first_name"] + " " + agent_dict[agent2_pk]["last_name"]
+        agent_dict[agent2_pk]["first_name"]
+        + " "
+        + agent_dict[agent2_pk]["last_name"]
     )
 
     agent1_age = agent_dict[agent1_pk]["age"]
@@ -37,8 +41,12 @@ def get_agent_info(agent1_pk, agent2_pk, env_pk, agent_dict, env_dict):
     agent1_public_info = agent_dict[agent1_pk]["public_info"]
     agent2_public_info = agent_dict[agent2_pk]["public_info"]
 
-    agent1_personality_and_values = agent_dict[agent1_pk]["personality_and_values"]
-    agent2_personality_and_values = agent_dict[agent2_pk]["personality_and_values"]
+    agent1_personality_and_values = agent_dict[agent1_pk][
+        "personality_and_values"
+    ]
+    agent2_personality_and_values = agent_dict[agent2_pk][
+        "personality_and_values"
+    ]
 
     agent1_secret = agent_dict[agent1_pk]["secret"]
     agent2_secret = agent_dict[agent2_pk]["secret"]
@@ -132,7 +140,9 @@ def fill_template(agent1_info, agent2_info, scenario):
         agent1_occupation=agent1_info["agent_occupation"],
         agent1_pronoun=agent1_pronoun,
         agent1_public_info=agent1_info["agent_public_info"],
-        agent1_personality_and_values=agent1_info["agent_personality_and_values"],
+        agent1_personality_and_values=agent1_info[
+            "agent_personality_and_values"
+        ],
         agent1_secret=agent1_info["agent_secret"],
         agent1_goal=agent1_info["agent_goal"],
         agent2_name=agent2_info["agent_name"],
@@ -141,7 +151,9 @@ def fill_template(agent1_info, agent2_info, scenario):
         agent2_occupation=agent2_info["agent_occupation"],
         agent2_pronoun=agent2_pronoun,
         agent2_public_info=agent2_info["agent_public_info"],
-        agent2_personality_and_values=agent2_info["agent_personality_and_values"],
+        agent2_personality_and_values=agent2_info[
+            "agent_personality_and_values"
+        ],
         scenario=scenario,
     )
 

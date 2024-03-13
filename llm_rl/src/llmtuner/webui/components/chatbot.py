@@ -38,7 +38,9 @@ def create_chat_box(
         show_progress=True,
     ).then(lambda: gr.update(value=""), outputs=[query])
 
-    clear_btn.click(lambda: ([], []), outputs=[chatbot, history], show_progress=True)
+    clear_btn.click(
+        lambda: ([], []), outputs=[chatbot, history], show_progress=True
+    )
 
     return (
         chat_box,

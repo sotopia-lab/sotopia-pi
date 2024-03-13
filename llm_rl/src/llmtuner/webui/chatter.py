@@ -21,7 +21,9 @@ if TYPE_CHECKING:
 
 
 class WebChatModel(ChatModel):
-    def __init__(self, manager: "Manager", lazy_init: Optional[bool] = True) -> None:
+    def __init__(
+        self, manager: "Manager", lazy_init: Optional[bool] = True
+    ) -> None:
         self.manager = manager
         self.model = None
         self.tokenizer = None
@@ -33,7 +35,9 @@ class WebChatModel(ChatModel):
     def loaded(self) -> bool:
         return self.model is not None
 
-    def load_model(self, data: Dict[Component, Any]) -> Generator[str, None, None]:
+    def load_model(
+        self, data: Dict[Component, Any]
+    ) -> Generator[str, None, None]:
         get = lambda name: data[self.manager.get_elem_by_name(name)]
         lang = get("top.lang")
         error = ""
@@ -85,7 +89,9 @@ class WebChatModel(ChatModel):
 
         yield ALERTS["info_loaded"][lang]
 
-    def unload_model(self, data: Dict[Component, Any]) -> Generator[str, None, None]:
+    def unload_model(
+        self, data: Dict[Component, Any]
+    ) -> Generator[str, None, None]:
         lang = data[self.manager.get_elem_by_name("top.lang")]
         yield ALERTS["info_unloading"][lang]
         self.model = None
@@ -102,7 +108,9 @@ class WebChatModel(ChatModel):
         max_new_tokens: int,
         top_p: float,
         temperature: float,
-    ) -> Generator[Tuple[List[Tuple[str, str]], List[Tuple[str, str]]], None, None]:
+    ) -> Generator[
+        Tuple[List[Tuple[str, str]], List[Tuple[str, str]]], None, None
+    ]:
         chatbot.append([query, ""])
         response = ""
         for new_text in self.stream_chat(

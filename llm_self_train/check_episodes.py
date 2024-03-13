@@ -18,7 +18,9 @@ def main():
 
     for env in envs:
         eps_per_env = list(
-            EpisodeLog.find(EpisodeLog.tag == args.tag, EpisodeLog.environment == env)
+            EpisodeLog.find(
+                EpisodeLog.tag == args.tag, EpisodeLog.environment == env
+            )
         )
         print(len(eps_per_env))
 

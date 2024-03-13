@@ -18,7 +18,9 @@ logger = get_logger(__name__)
 
 def is_first_node():
     world_rank = dist.get_rank() if torch.distributed.is_initialized() else 0
-    local_rank = int(os.environ["LOCAL_RANK"]) if "LOCAL_RANK" in os.environ else 0
+    local_rank = (
+        int(os.environ["LOCAL_RANK"]) if "LOCAL_RANK" in os.environ else 0
+    )
     return world_rank == local_rank == 0
 
 
@@ -30,7 +32,9 @@ def find_all_linear_modules(
     if quantization_bit is not None:
         import bitsandbytes as bnb
 
-        linear_cls = bnb.nn.Linear4bit if quantization_bit == 4 else bnb.nn.Linear8bitLt
+        linear_cls = (
+            bnb.nn.Linear4bit if quantization_bit == 4 else bnb.nn.Linear8bitLt
+        )
     else:
         linear_cls = torch.nn.Linear
 
@@ -61,7 +65,9 @@ def prepare_model_for_training(
     """
     if finetuning_args.upcast_layernorm:
         for name, param in model.named_parameters():
-            if param.ndim == 1 and any(ln_name in name for ln_name in layernorm_names):
+            if param.ndim == 1 and any(
+                ln_name in name for ln_name in layernorm_names
+            ):
                 param.data = param.data.to(torch.float32)
         logger.info("Upcasting weights in layernorm in float32.")
 
@@ -104,7 +110,9 @@ def prepare_model_for_training(
             ):
                 output.requires_grad_(True)
 
-            model.get_input_embeddings().register_forward_hook(make_inputs_require_grad)
+            model.get_input_embeddings().register_forward_hook(
+                make_inputs_require_grad
+            )
 
         model.gradient_checkpointing_enable()
         model.config.use_cache = (
@@ -112,7 +120,9 @@ def prepare_model_for_training(
         )
         logger.info("Gradient checkpointing enabled.")
 
-    if finetuning_args.finetuning_type != "full" and hasattr(model, output_layer_name):
+    if finetuning_args.finetuning_type != "full" and hasattr(
+        model, output_layer_name
+    ):
         output_layer = getattr(model, output_layer_name)
         if isinstance(output_layer, torch.nn.Linear):
 

@@ -79,9 +79,11 @@ def filter_episodes(
                 if ep.models[1] == agent_model:
                     score, pos = rewards[0][1][reward_metric], 1
                     if compare_gpt:
-                        if score > min(filter_threshold, gpt_avg) and rewards[1][1][
-                            reward_metric
-                        ] > min(filter_threshold, max(6, gpt_avg)):
+                        if score > min(filter_threshold, gpt_avg) and rewards[
+                            1
+                        ][1][reward_metric] > min(
+                            filter_threshold, max(6, gpt_avg)
+                        ):
                             eps_by_env_filtered[env].append((ep, pos))
                     else:
                         # if score > filter_threshold and rewards[1][1][reward_metric] > filter_threshold:
@@ -90,9 +92,11 @@ def filter_episodes(
                 if ep.models[2] == agent_model:
                     score, pos = rewards[1][1][reward_metric], 2
                     if compare_gpt:
-                        if score > min(filter_threshold, gpt_avg) and rewards[0][1][
-                            reward_metric
-                        ] > min(filter_threshold, max(6, gpt_avg)):
+                        if score > min(filter_threshold, gpt_avg) and rewards[
+                            0
+                        ][1][reward_metric] > min(
+                            filter_threshold, max(6, gpt_avg)
+                        ):
                             eps_by_env_filtered[env].append((ep, pos))
                     else:
                         # if score > filter_threshold and rewards[0][1][reward_metric] > filter_threshold:
@@ -106,9 +110,13 @@ def get_train_data_from_eps_list(eps_list: list, output_file: str):
     conv_list = []
     for ep in eps_list:
         if ep[1] == 1:  # target agent at position 1
-            conv = reverse_episode_log(ep[0], include_format=True, later_speak=False)
+            conv = reverse_episode_log(
+                ep[0], include_format=True, later_speak=False
+            )
         else:  # target agent at position 2
-            conv = reverse_episode_log(ep[0], include_format=True, later_speak=True)
+            conv = reverse_episode_log(
+                ep[0], include_format=True, later_speak=True
+            )
 
         for turn in conv:
             conv_list.append(
@@ -198,8 +206,12 @@ def filter_episodes_on_top_2_selfplay(eps_by_env: dict) -> dict:
                     )
                 )
 
-        best_1 = sorted(ep_reward_list_1, key=lambda x: (x[0], x[1]), reverse=True)[0]
-        best_2 = sorted(ep_reward_list_2, key=lambda x: (x[0], x[1]), reverse=True)[0]
+        best_1 = sorted(
+            ep_reward_list_1, key=lambda x: (x[0], x[1]), reverse=True
+        )[0]
+        best_2 = sorted(
+            ep_reward_list_2, key=lambda x: (x[0], x[1]), reverse=True
+        )[0]
         eps_by_env_filtered[env].append((best_1[2], 1))
         eps_by_env_filtered[env].append((best_2[2], 2))
 

@@ -20,7 +20,9 @@ def main():
 
     for improve_step in range(config["num_improve_steps"]):
         run_sft_completed = multiprocessing.Value("b", False)
-        output_dir = os.path.join(config["checkpoint_dir"], config["experiment_name"])
+        output_dir = os.path.join(
+            config["checkpoint_dir"], config["experiment_name"]
+        )
         sft_process = multiprocessing.Process(
             target=run_sft,
             args=(

@@ -38,7 +38,10 @@ def save_model(
     args = dict(
         model_name_or_path=model_path,
         checkpoint_dir=",".join(
-            [get_save_dir(model_name, finetuning_type, ckpt) for ckpt in checkpoints]
+            [
+                get_save_dir(model_name, finetuning_type, ckpt)
+                for ckpt in checkpoints
+            ]
         ),
         finetuning_type=finetuning_type,
         template=template,

@@ -36,9 +36,13 @@ def preprocess_dataset(
     template = get_template_and_fix_tokenizer(data_args.template, tokenizer)
 
     if data_args.train_on_prompt and template.efficient_eos:
-        raise ValueError("Current template does not support `train_on_prompt`.")
+        raise ValueError(
+            "Current template does not support `train_on_prompt`."
+        )
 
-    def construct_example(examples: Dict[str, List[Any]]) -> Generator[Any, None, None]:
+    def construct_example(
+        examples: Dict[str, List[Any]]
+    ) -> Generator[Any, None, None]:
         for i in range(len(examples["prompt"])):
             query, response = examples["prompt"][i], examples["response"][i]
             query = (
@@ -66,15 +70,21 @@ def preprocess_dataset(
 
         tokenized_examples = tokenizer(examples["prompt"], **kwargs)
         concatenated_examples = {
-            k: list(chain(*tokenized_examples[k])) for k in tokenized_examples.keys()
+            k: list(chain(*tokenized_examples[k]))
+            for k in tokenized_examples.keys()
         }
-        total_length = len(concatenated_examples[list(concatenated_examples.keys())[0]])
+        total_length = len(
+            concatenated_examples[list(concatenated_examples.keys())[0]]
+        )
         block_size = data_args.cutoff_len
         # we drop the small remainder, and if the total_length < block_size, we exclude this batch
         total_length = (total_length // block_size) * block_size
         # split by chunks of cutoff_len
         result = {
-            k: [t[i : i + block_size] for i in range(0, total_length, block_size)]
+            k: [
+                t[i : i + block_size]
+                for i in range(0, total_length, block_size)
+            ]
             for k, t in concatenated_examples.items()
         }
         return result
@@ -97,7 +107,9 @@ def preprocess_dataset(
 
             input_ids, labels = [], []
             for turn_idx, (source_ids, target_ids) in enumerate(
-                template.encode_multiturn(tokenizer, query, response, history, system)
+                template.encode_multiturn(
+                    tokenizer, query, response, history, system
+                )
             ):
                 total_len = len(source_ids) + len(target_ids)
                 max_source_len = int(
@@ -155,7 +167,9 @@ def preprocess_dataset(
                 continue
 
             for turn_idx, (source_ids, target_ids) in enumerate(
-                template.encode_multiturn(tokenizer, query, response, history, system)
+                template.encode_multiturn(
+                    tokenizer, query, response, history, system
+                )
             ):
                 if data_args.train_on_prompt:
                     source_mask = source_ids
@@ -237,8 +251,12 @@ def preprocess_dataset(
                 chosen_ids += [tokenizer.eos_token_id]
                 rejected_ids += [tokenizer.eos_token_id]
 
-            total_len = len(prompt_ids) + max(len(chosen_ids), len(rejected_ids))
-            max_source_len = int(data_args.cutoff_len * (len(prompt_ids) / total_len))
+            total_len = len(prompt_ids) + max(
+                len(chosen_ids), len(rejected_ids)
+            )
+            max_source_len = int(
+                data_args.cutoff_len * (len(prompt_ids) / total_len)
+            )
             max_target_len = int(
                 data_args.cutoff_len
                 * (max(len(chosen_ids), len(rejected_ids)) / total_len)
@@ -257,18 +275,24 @@ def preprocess_dataset(
 
         return model_inputs
 
-    def print_supervised_dataset_example(example: Dict[str, List[int]]) -> None:
+    def print_supervised_dataset_example(
+        example: Dict[str, List[int]]
+    ) -> None:
         print("input_ids:\n{}".format(example["input_ids"]))
         print(
             "inputs:\n{}".format(
-                tokenizer.decode(example["input_ids"], skip_special_tokens=False)
+                tokenizer.decode(
+                    example["input_ids"], skip_special_tokens=False
+                )
             )
         )
         print("label_ids:\n{}".format(example["labels"]))
         print(
             "labels:\n{}".format(
                 tokenizer.decode(
-                    list(filter(lambda x: x != IGNORE_INDEX, example["labels"])),
+                    list(
+                        filter(lambda x: x != IGNORE_INDEX, example["labels"])
+                    ),
                     skip_special_tokens=False,
                 )
             )
@@ -278,27 +302,37 @@ def preprocess_dataset(
         print("prompt_ids:\n{}".format(example["prompt_ids"]))
         print(
             "prompt:\n{}".format(
-                tokenizer.decode(example["prompt_ids"], skip_special_tokens=False)
+                tokenizer.decode(
+                    example["prompt_ids"], skip_special_tokens=False
+                )
             )
         )
         print("chosen_ids:\n{}".format(example["chosen_ids"]))
         print(
             "chosen:\n{}".format(
-                tokenizer.decode(example["chosen_ids"], skip_special_tokens=False)
+                tokenizer.decode(
+                    example["chosen_ids"], skip_special_tokens=False
+                )
             )
         )
         print("rejected_ids:\n{}".format(example["rejected_ids"]))
         print(
             "rejected:\n{}".format(
-                tokenizer.decode(example["rejected_ids"], skip_special_tokens=False)
+                tokenizer.decode(
+                    example["rejected_ids"], skip_special_tokens=False
+                )
             )
         )
 
-    def print_unsupervised_dataset_example(example: Dict[str, List[int]]) -> None:
+    def print_unsupervised_dataset_example(
+        example: Dict[str, List[int]]
+    ) -> None:
         print("input_ids:\n{}".format(example["input_ids"]))
         print(
             "inputs:\n{}".format(
-                tokenizer.decode(example["input_ids"], skip_special_tokens=False)
+                tokenizer.decode(
+                    example["input_ids"], skip_special_tokens=False
+                )
             )
         )
 
@@ -319,8 +353,12 @@ def preprocess_dataset(
         preprocess_func = preprocess_unsupervised_dataset
         print_function = print_unsupervised_dataset_example
 
-    if data_args.cache_path is not None and os.path.exists(data_args.cache_path):
-        logger.warning("Loading dataset from disk will ignore other data arguments.")
+    if data_args.cache_path is not None and os.path.exists(
+        data_args.cache_path
+    ):
+        logger.warning(
+            "Loading dataset from disk will ignore other data arguments."
+        )
         return load_from_disk(data_args.cache_path)
 
     with training_args.main_process_first(desc="dataset map pre-processing"):
@@ -334,7 +372,10 @@ def preprocess_dataset(
             )
 
         dataset = dataset.map(
-            preprocess_func, batched=True, remove_columns=column_names, **kwargs
+            preprocess_func,
+            batched=True,
+            remove_columns=column_names,
+            **kwargs
         )
 
         if data_args.cache_path is not None and not os.path.exists(

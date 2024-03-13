@@ -21,9 +21,9 @@ def get_dataset(
     model_args: "ModelArguments", data_args: "DataArguments"
 ) -> Union["Dataset", "IterableDataset"]:
     max_samples = data_args.max_samples
-    all_datasets: List[Union["Dataset", "IterableDataset"]] = (
-        []
-    )  # support multiple datasets
+    all_datasets: List[
+        Union["Dataset", "IterableDataset"]
+    ] = []  # support multiple datasets
 
     for dataset_attr in data_args.dataset_list:
         logger.info("Loading dataset {}...".format(dataset_attr))
@@ -33,7 +33,9 @@ def get_dataset(
             data_name = dataset_attr.subset
             data_files = None
         elif dataset_attr.load_from == "script":
-            data_path = os.path.join(data_args.dataset_dir, dataset_attr.dataset_name)
+            data_path = os.path.join(
+                data_args.dataset_dir, dataset_attr.dataset_name
+            )
             data_name = dataset_attr.subset
             data_files = None
         elif dataset_attr.load_from == "file":
@@ -43,7 +45,9 @@ def get_dataset(
                 os.path.join(data_args.dataset_dir, dataset_attr.dataset_name)
             ):  # is directory
                 for file_name in os.listdir(
-                    os.path.join(data_args.dataset_dir, dataset_attr.dataset_name)
+                    os.path.join(
+                        data_args.dataset_dir, dataset_attr.dataset_name
+                    )
                 ):
                     data_files.append(
                         os.path.join(
@@ -53,7 +57,9 @@ def get_dataset(
                         )
                     )
                     if data_path is None:
-                        data_path = EXT2TYPE.get(file_name.split(".")[-1], None)
+                        data_path = EXT2TYPE.get(
+                            file_name.split(".")[-1], None
+                        )
                     else:
                         assert data_path == EXT2TYPE.get(
                             file_name.split(".")[-1], None
@@ -62,9 +68,13 @@ def get_dataset(
                 os.path.join(data_args.dataset_dir, dataset_attr.dataset_name)
             ):  # is file
                 data_files.append(
-                    os.path.join(data_args.dataset_dir, dataset_attr.dataset_name)
+                    os.path.join(
+                        data_args.dataset_dir, dataset_attr.dataset_name
+                    )
                 )
-                data_path = EXT2TYPE.get(dataset_attr.dataset_name.split(".")[-1], None)
+                data_path = EXT2TYPE.get(
+                    dataset_attr.dataset_name.split(".")[-1], None
+                )
             else:
                 raise ValueError("File not found.")
 
@@ -86,7 +96,9 @@ def get_dataset(
         if max_samples is not None:  # truncate dataset
             dataset = dataset.select(range(min(len(dataset), max_samples)))
 
-        def convert_format(examples: Dict[str, List[Any]]) -> Dict[str, List[Any]]:
+        def convert_format(
+            examples: Dict[str, List[Any]]
+        ) -> Dict[str, List[Any]]:
             # convert dataset from sharegpt format to alpaca format
             outputs = {
                 "prompt": [],
@@ -110,7 +122,8 @@ def get_dataset(
                     else:
                         if (
                             msg_list[idx][dataset_attr.role] != user_role
-                            or msg_list[idx + 1][dataset_attr.role] != assistant_role
+                            or msg_list[idx + 1][dataset_attr.role]
+                            != assistant_role
                         ):
                             raise ValueError(
                                 "Only accepts conversation in u/a/u/a/u/a order."
@@ -141,7 +154,10 @@ def get_dataset(
                 )
 
             dataset = dataset.map(
-                convert_format, batched=True, remove_columns=column_names, **kwargs
+                convert_format,
+                batched=True,
+                remove_columns=column_names,
+                **kwargs
             )
         else:
             for column_name in [
@@ -163,7 +179,9 @@ def get_dataset(
             if data_args.streaming:
                 dataset = dataset.map(lambda _: {"system": system_prompt})
             else:
-                dataset = dataset.add_column("system", [system_prompt] * len(dataset))
+                dataset = dataset.add_column(
+                    "system", [system_prompt] * len(dataset)
+                )
 
         all_datasets.append(dataset)
 

@@ -38,11 +38,15 @@ def run_exp(
         wandb.login(key=finetuning_args.wandb_token)
         wandb.init(
             project=finetuning_args.wandb_project,
-            tags=[*finetuning_args.wandb_tags] if finetuning_args.wandb_tags else None,
+            tags=[*finetuning_args.wandb_tags]
+            if finetuning_args.wandb_tags
+            else None,
         )
 
     if finetuning_args.stage == "pt":
-        run_pt(model_args, data_args, training_args, finetuning_args, callbacks)
+        run_pt(
+            model_args, data_args, training_args, finetuning_args, callbacks
+        )
     elif finetuning_args.stage == "sft":
         run_sft(
             model_args,
@@ -53,7 +57,9 @@ def run_exp(
             callbacks,
         )
     elif finetuning_args.stage == "rm":
-        run_rm(model_args, data_args, training_args, finetuning_args, callbacks)
+        run_rm(
+            model_args, data_args, training_args, finetuning_args, callbacks
+        )
     elif finetuning_args.stage == "ppo":
         run_ppo(
             model_args,
@@ -64,7 +70,9 @@ def run_exp(
             callbacks,
         )
     elif finetuning_args.stage == "dpo":
-        run_dpo(model_args, data_args, training_args, finetuning_args, callbacks)
+        run_dpo(
+            model_args, data_args, training_args, finetuning_args, callbacks
+        )
     else:
         raise ValueError("Unknown task.")
 
@@ -82,7 +90,9 @@ def export_model(
         tokenizer.init_kwargs["padding_side"] = "left"
         tokenizer.save_pretrained(model_args.export_dir)
     except:
-        logger.warning("Cannot save tokenizer, please copy the files manually.")
+        logger.warning(
+            "Cannot save tokenizer, please copy the files manually."
+        )
 
 
 if __name__ == "__main__":

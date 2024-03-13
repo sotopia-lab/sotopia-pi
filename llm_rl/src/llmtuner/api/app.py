@@ -33,7 +33,9 @@ async def lifespan(app: FastAPI):  # collects GPU memory
 
 def to_json(data: BaseModel) -> str:
     try:  # pydantic v2
-        return json.dumps(data.model_dump(exclude_unset=True), ensure_ascii=False)
+        return json.dumps(
+            data.model_dump(exclude_unset=True), ensure_ascii=False
+        )
     except:  # pydantic v1
         return data.json(exclude_unset=True, ensure_ascii=False)
 
@@ -94,7 +96,9 @@ def create_app(chat_model: ChatModel) -> FastAPI:
 
         if request.stream:
             generate = predict(query, history, system, request)
-            return EventSourceResponse(generate, media_type="text/event-stream")
+            return EventSourceResponse(
+                generate, media_type="text/event-stream"
+            )
 
         response, (prompt_length, response_length) = chat_model.chat(
             query,
@@ -122,7 +126,9 @@ def create_app(chat_model: ChatModel) -> FastAPI:
             for i, choice in enumerate(response)
         ]
 
-        return ChatCompletionResponse(model=request.model, choices=choices, usage=usage)
+        return ChatCompletionResponse(
+            model=request.model, choices=choices, usage=usage
+        )
 
     async def predict(
         query: str,
@@ -135,7 +141,9 @@ def create_app(chat_model: ChatModel) -> FastAPI:
             delta=DeltaMessage(role=Role.ASSISTANT),
             finish_reason=None,
         )
-        chunk = ChatCompletionStreamResponse(model=request.model, choices=[choice_data])
+        chunk = ChatCompletionStreamResponse(
+            model=request.model, choices=[choice_data]
+        )
         yield to_json(chunk)
 
         for new_text in chat_model.stream_chat(
@@ -163,7 +171,9 @@ def create_app(chat_model: ChatModel) -> FastAPI:
         choice_data = ChatCompletionResponseStreamChoice(
             index=0, delta=DeltaMessage(), finish_reason=Finish.STOP
         )
-        chunk = ChatCompletionStreamResponse(model=request.model, choices=[choice_data])
+        chunk = ChatCompletionStreamResponse(
+            model=request.model, choices=[choice_data]
+        )
         yield to_json(chunk)
         yield "[DONE]"
 

@@ -11,7 +11,9 @@ class PairwiseDataCollatorWithPadding(DataCollatorWithPadding):
     Data collator for pairwise data.
     """
 
-    def __call__(self, features: Sequence[Dict[str, Any]]) -> Dict[str, torch.Tensor]:
+    def __call__(
+        self, features: Sequence[Dict[str, Any]]
+    ) -> Dict[str, torch.Tensor]:
         r"""
         Pads batched data to the longest sequence in the batch.
 

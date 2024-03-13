@@ -65,7 +65,8 @@ def rewrite_gin_args(args: Sequence[str]) -> Sequence[str]:
             return arg
         if "=" not in arg:
             raise ValueError(
-                "Gin bindings must be of the form '--gin.<param>=<value>', got: " + arg
+                "Gin bindings must be of the form '--gin.<param>=<value>', got: "
+                + arg
             )
         # Strip '--gin.'
         arg = arg[6:]
@@ -81,7 +82,9 @@ def run(main: Any) -> None:
     """Wrapper for app.run that rewrites gin args before parsing."""
     app.run(
         main,
-        flags_parser=lambda args: app.parse_flags_with_usage(rewrite_gin_args(args)),
+        flags_parser=lambda args: app.parse_flags_with_usage(
+            rewrite_gin_args(args)
+        ),
     )
 
 

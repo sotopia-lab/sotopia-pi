@@ -27,7 +27,9 @@ from sotopia.samplers import ConstraintBasedSampler
 from tqdm import tqdm
 from utils.generate import generate_env_profile
 
-INSPIRE_PROMPT_FILE = os.getcwd() + "/data_generate/env_files/inspirational_prompt.csv"
+INSPIRE_PROMPT_FILE = (
+    os.getcwd() + "/data_generate/env_files/inspirational_prompt.csv"
+)
 USED_PROMPT_FILE = os.getcwd() + "/data_generate/env_files/used_prompt.csv"
 USED_ENV_FILE = os.getcwd() + "/data_generate/env_files/used_env.json"
 
@@ -77,13 +79,17 @@ def add_relationship_profile(**kwargs: dict[str, Any]) -> None:
     relationship_profile.save()
 
 
-def add_relationship_profiles(relationship_profiles: list[dict[str, Any]]) -> None:
+def add_relationship_profiles(
+    relationship_profiles: list[dict[str, Any]]
+) -> None:
     for relationship_profile in relationship_profiles:
         add_relationship_profile(**relationship_profile)
 
 
 def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
-    sampler = ConstraintBasedSampler[Observation, AgentAction](env_candidates=[env_id])
+    sampler = ConstraintBasedSampler[Observation, AgentAction](
+        env_candidates=[env_id]
+    )
     try:
         env_agent_combo_list = list(
             sampler.sample(agent_classes=[LLMAgent] * 2, replacement=False)
@@ -104,7 +110,8 @@ def sample_env_agent_combo_and_push_to_db(env_id: str) -> None:
 def sample_prompt_by_source(prompt_df, used_prompt, num, source):
     ins_prompts = prompt_df[prompt_df.source == source]
     prompts = [
-        prompt.strip().replace('"', "") for prompt in ins_prompts["prompt"].tolist()
+        prompt.strip().replace('"', "")
+        for prompt in ins_prompts["prompt"].tolist()
     ]
     # filter repeated prompts
     prompts = [prompt for prompt in prompts if prompt not in used_prompt]
@@ -116,7 +123,9 @@ def sample_prompt_by_source(prompt_df, used_prompt, num, source):
     return sampled_prompts
 
 
-def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo", temperature=0.5):
+def generate_newenv_profile(
+    target_num=500, gen_model="gpt-4-turbo", temperature=0.5
+):
     """
     Function to generate new environment profile
     Args:
@@ -129,7 +138,9 @@ def generate_newenv_profile(target_num=500, gen_model="gpt-4-turbo", temperature
     # 2. tracker for previously used prompts
     ins_prompts = pd.read_csv(INSPIRE_PROMPT_FILE)
     used_prompts = pd.read_csv(USED_PROMPT_FILE, sep="|")
-    used_prompts = used_prompts[used_prompts.model == gen_model].prompt.tolist()
+    used_prompts = used_prompts[
+        used_prompts.model == gen_model
+    ].prompt.tolist()
     # filter repeated prompts
     # randomly choose samples
     sampled_examples = []
@@ -262,6 +273,8 @@ if __name__ == "__main__":
     parser.add_argument("--gen_model", type=str, default="gpt-4-turbo")
     parser.add_argument("--temperature", type=float, default=0.5)
     args = parser.parse_args()
-    results = auto_generate_scenarios(args.num, args.gen_model, args.temperature)
+    results = auto_generate_scenarios(
+        args.num, args.gen_model, args.temperature
+    )
     print("generate newly {} scenarios".format(len(results)))
     # print(results)

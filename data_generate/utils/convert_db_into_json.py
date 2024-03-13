@@ -33,7 +33,9 @@ while cursor != 0:
             if json_value is not None:
                 all_json_data[key] = json_value
         else:
-            print(f"Key {key} is not of type ReJSON-RL, it's type is {key_type}")
+            print(
+                f"Key {key} is not of type ReJSON-RL, it's type is {key_type}"
+            )
 
 with open("redis_json_data.json", "w") as f:
     json.dump(all_json_data, f, indent=4)

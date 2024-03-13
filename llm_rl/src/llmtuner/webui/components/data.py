@@ -17,11 +17,17 @@ def prev_page(page_index: int) -> int:
 
 
 def next_page(page_index: int, total_num: int) -> int:
-    return page_index + 1 if (page_index + 1) * PAGE_SIZE < total_num else page_index
+    return (
+        page_index + 1
+        if (page_index + 1) * PAGE_SIZE < total_num
+        else page_index
+    )
 
 
 def can_preview(dataset_dir: str, dataset: list) -> Dict[str, Any]:
-    with open(os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8") as f:
+    with open(
+        os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8"
+    ) as f:
         dataset_info = json.load(f)
 
     if (
@@ -39,11 +45,15 @@ def can_preview(dataset_dir: str, dataset: list) -> Dict[str, Any]:
 def get_preview(
     dataset_dir: str, dataset: list, page_index: int
 ) -> Tuple[int, list, Dict[str, Any]]:
-    with open(os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8") as f:
+    with open(
+        os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8"
+    ) as f:
         dataset_info = json.load(f)
 
     data_file: str = dataset_info[dataset[0]]["file_name"]
-    with open(os.path.join(dataset_dir, data_file), "r", encoding="utf-8") as f:
+    with open(
+        os.path.join(dataset_dir, data_file), "r", encoding="utf-8"
+    ) as f:
         if data_file.endswith(".json"):
             data = json.load(f)
         elif data_file.endswith(".jsonl"):

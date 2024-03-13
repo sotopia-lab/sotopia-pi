@@ -39,7 +39,9 @@ class LlamaShiftShortAttention(LlamaAttention):
         output_attentions: bool = False,
         use_cache: bool = False,
         **kwargs
-    ) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]]:
+    ) -> Tuple[
+        torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]
+    ]:
         bsz, q_len, _ = hidden_states.size()
 
         query_states = self.q_proj(hidden_states)
@@ -75,11 +77,15 @@ class LlamaShiftShortAttention(LlamaAttention):
             key_states = repeat_kv(key_states, self.num_key_value_groups)
             value_states = repeat_kv(value_states, self.num_key_value_groups)
 
-        if getattr(self.config, "group_size_ratio", None) and self.training:  # shift
+        if (
+            getattr(self.config, "group_size_ratio", None) and self.training
+        ):  # shift
             groupsz = int(q_len * getattr(self.config, "group_size_ratio"))
             assert (
                 q_len % groupsz == 0
-            ), "q_len {} should be divisible by group size {}.".format(q_len, groupsz)
+            ), "q_len {} should be divisible by group size {}.".format(
+                q_len, groupsz
+            )
             num_groups = q_len // groupsz
 
             def shift(state: torch.Tensor) -> torch.Tensor:
@@ -89,7 +95,9 @@ class LlamaShiftShortAttention(LlamaAttention):
                 state = torch.cat(
                     (
                         state[:, :, : self.num_heads // 2],
-                        state[:, :, self.num_heads // 2 :].roll(-groupsz // 2, dims=1),
+                        state[:, :, self.num_heads // 2 :].roll(
+                            -groupsz // 2, dims=1
+                        ),
                     ),
                     dim=2,
                 )
@@ -103,9 +111,9 @@ class LlamaShiftShortAttention(LlamaAttention):
                 shift(value_states),
             )
             if attention_mask is not None:
-                attention_mask = attention_mask[:, :, :groupsz, :groupsz].repeat(
-                    num_groups, 1, 1, 1
-                )
+                attention_mask = attention_mask[
+                    :, :, :groupsz, :groupsz
+                ].repeat(num_groups, 1, 1, 1)
 
         attn_weights = torch.matmul(
             query_states, key_states.transpose(2, 3)
@@ -130,7 +138,9 @@ class LlamaShiftShortAttention(LlamaAttention):
             attn_output = torch.cat(
                 (
                     attn_output[:, :, : self.num_heads // 2],
-                    attn_output[:, :, self.num_heads // 2 :].roll(groupsz // 2, dims=1),
+                    attn_output[:, :, self.num_heads // 2 :].roll(
+                        groupsz // 2, dims=1
+                    ),
                 )
             )
 
@@ -153,7 +163,9 @@ class LlamaFlashAttention2(LlamaAttention):
         output_attentions: bool = False,
         use_cache: bool = False,
         **kwargs
-    ) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]]:
+    ) -> Tuple[
+        torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]
+    ]:
         # LlamaFlashAttention2 attention does not support output_attentions
         output_attentions = False
 
@@ -203,22 +215,34 @@ class LlamaFlashAttention2(LlamaAttention):
             key_states = repeat_kv(key_states, self.num_key_value_groups)
             value_states = repeat_kv(value_states, self.num_key_value_groups)
 
-        query_states = query_states.transpose(1, 2)  # (bsz, seq_len, n_heads, head_dim)
-        key_states = key_states.transpose(1, 2)  # (bsz, seq_len, n_heads, head_dim)
-        value_states = value_states.transpose(1, 2)  # (bsz, seq_len, n_heads, head_dim)
+        query_states = query_states.transpose(
+            1, 2
+        )  # (bsz, seq_len, n_heads, head_dim)
+        key_states = key_states.transpose(
+            1, 2
+        )  # (bsz, seq_len, n_heads, head_dim)
+        value_states = value_states.transpose(
+            1, 2
+        )  # (bsz, seq_len, n_heads, head_dim)
 
-        if getattr(self.config, "group_size_ratio", None) and self.training:  # shift
+        if (
+            getattr(self.config, "group_size_ratio", None) and self.training
+        ):  # shift
             groupsz = int(q_len * getattr(self.config, "group_size_ratio"))
             assert (
                 q_len % groupsz == 0
-            ), "q_len {} should be divisible by group size {}.".format(q_len, groupsz)
+            ), "q_len {} should be divisible by group size {}.".format(
+                q_len, groupsz
+            )
             num_groups = q_len // groupsz
 
             def shift(state: torch.Tensor) -> torch.Tensor:
                 state = torch.cat(
                     (
                         state[:, :, : self.num_heads // 2],
-                        state[:, :, self.num_heads // 2 :].roll(-groupsz // 2, dims=1),
+                        state[:, :, self.num_heads // 2 :].roll(
+                            -groupsz // 2, dims=1
+                        ),
                     ),
                     dim=2,
                 )
@@ -232,7 +256,9 @@ class LlamaFlashAttention2(LlamaAttention):
                 shift(value_states),
             )
             if attention_mask is not None:
-                attention_mask = attention_mask.reshape(bsz * num_groups, groupsz)
+                attention_mask = attention_mask.reshape(
+                    bsz * num_groups, groupsz
+                )
 
         if attention_mask is not None:
             logger.warning_once(
@@ -276,11 +302,15 @@ class LlamaFlashAttention2(LlamaAttention):
             attn_output = torch.cat(
                 (
                     attn_output[:, :, : self.num_heads // 2],
-                    attn_output[:, :, self.num_heads // 2 :].roll(groupsz // 2, dims=1),
+                    attn_output[:, :, self.num_heads // 2 :].roll(
+                        groupsz // 2, dims=1
+                    ),
                 )
             )
 
-        attn_output = attn_output.reshape(bsz, q_len, self.hidden_size).contiguous()
+        attn_output = attn_output.reshape(
+            bsz, q_len, self.hidden_size
+        ).contiguous()
         attn_output = self.o_proj(attn_output)
 
         if not output_attentions:
@@ -299,6 +329,8 @@ def _prepare_decoder_attention_mask(
     past_key_values_length: int,
 ) -> torch.Tensor:
     if attention_mask is not None and torch.all(attention_mask):
-        return None  # This uses the faster call when training with full samples
+        return (
+            None  # This uses the faster call when training with full samples
+        )
 
     return attention_mask

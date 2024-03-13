@@ -28,5 +28,7 @@ def preprocess_episodes(episodes):
 
 
 def preprocess_episodes_with_tag():
-    episodes = list(EpisodeLog.find(EpisodeLog.tag == config["redis_data_tag"]).all())
+    episodes = list(
+        EpisodeLog.find(EpisodeLog.tag == config["redis_data_tag"]).all()
+    )
     preprocess_episodes(episodes)

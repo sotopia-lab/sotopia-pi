@@ -66,7 +66,9 @@ class PairwiseTrainer(Trainer):
         for i in range(batch_size):
             chosen_length = chosen_attn_mask[i].nonzero()[-1] + 1
             rejected_length = rejected_attn_mask[i].nonzero()[-1] + 1
-            check_divergence = (chosen_input_ids[i] != rejected_input_ids[i]).nonzero()
+            check_divergence = (
+                chosen_input_ids[i] != rejected_input_ids[i]
+            ).nonzero()
 
             if len(check_divergence) == 0:
                 end_index = chosen_length
@@ -80,16 +82,18 @@ class PairwiseTrainer(Trainer):
             rejected_trunc_rewards = rejected_rewards[i, div_index:end_index]
             if return_outputs:  # use the score on the EOS token for inference
                 chosen_scores.append(chosen_rewards[i, chosen_length - 1])
-                rejected_scores.append(rejected_rewards[i, rejected_length - 1])
+                rejected_scores.append(
+                    rejected_rewards[i, rejected_length - 1]
+                )
             loss += -torch.nn.functional.logsigmoid(
                 chosen_trunc_rewards - rejected_trunc_rewards
             ).mean()
 
         loss = loss / batch_size
         if return_outputs:
-            chosen_scores, rejected_scores = torch.stack(chosen_scores), torch.stack(
-                rejected_scores
-            )
+            chosen_scores, rejected_scores = torch.stack(
+                chosen_scores
+            ), torch.stack(rejected_scores)
             return loss, [loss, chosen_scores, rejected_scores]
 
         return loss
