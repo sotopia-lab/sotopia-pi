@@ -1,16 +1,13 @@
-* # Sotopia-π: Interactive Learning of Socially Intelligent Language Agents
+# Sotopia-π: Interactive Learning of Socially Intelligent Language Agents
   [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3109/)
   [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
-  This is the official repo of the paper: [add arxiv link].
-  For highlights of the paper, please see our [website](https://sotopia-dev.vercel.app/projects/sotopia-pi).
+ [website](https://pi.sotopia.world/) | [arxiv link]() | [model checkpoint](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR) | [data](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main).
 
 
   ## 📢 Release
-
   [03/07] 🔥We released our model checkpoints (BC, SR, BC+SR) on huggingface ([BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC), [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR), [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)).
-
   [03/04] 📊We released our social converation data on huggingface ([here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)). 
 
   
