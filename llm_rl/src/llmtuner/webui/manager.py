@@ -5,7 +5,6 @@ if TYPE_CHECKING:
 
 
 class Manager:
-
     def __init__(self) -> None:
         self.all_elems: Dict[str, Dict[str, "Component"]] = {}
 
@@ -28,8 +27,12 @@ class Manager:
             self.all_elems["top"]["system_prompt"],
             self.all_elems["top"]["flash_attn"],
             self.all_elems["top"]["shift_attn"],
-            self.all_elems["top"]["rope_scaling"]
+            self.all_elems["top"]["rope_scaling"],
         }
 
     def list_elems(self) -> List["Component"]:
-        return [elem for elems in self.all_elems.values() for elem in elems.values()]
+        return [
+            elem
+            for elems in self.all_elems.values()
+            for elem in elems.values()
+        ]

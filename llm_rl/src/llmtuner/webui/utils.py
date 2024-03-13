@@ -1,11 +1,11 @@
-import os
 import json
+import os
+from datetime import datetime
+from typing import TYPE_CHECKING, Any, Dict
+
 import gradio as gr
 import matplotlib.figure
 import matplotlib.pyplot as plt
-from typing import TYPE_CHECKING, Any, Dict
-from datetime import datetime
-
 from llmtuner.extras.ploting import smooth
 from llmtuner.webui.common import get_save_dir
 
@@ -17,18 +17,22 @@ def update_process_bar(callback: "LogCallback") -> Dict[str, Any]:
     if not callback.max_steps:
         return gr.update(visible=False)
 
-    percentage = round(100 * callback.cur_steps / callback.max_steps, 0) if callback.max_steps != 0 else 100.0
+    percentage = (
+        round(100 * callback.cur_steps / callback.max_steps, 0)
+        if callback.max_steps != 0
+        else 100.0
+    )
     label = "Running {:d}/{:d}: {} < {}".format(
         callback.cur_steps,
         callback.max_steps,
         callback.elapsed_time,
-        callback.remaining_time
+        callback.remaining_time,
     )
     return gr.update(label=label, value=percentage, visible=True)
 
 
 def get_time() -> str:
-    return datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    return datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 
 def can_quantize(finetuning_type: str) -> Dict[str, Any]:
@@ -56,10 +60,14 @@ def get_eval_results(path: os.PathLike) -> str:
     return "```json\n{}\n```\n".format(result)
 
 
-def gen_plot(base_model: str, finetuning_type: str, output_dir: str) -> matplotlib.figure.Figure:
+def gen_plot(
+    base_model: str, finetuning_type: str, output_dir: str
+) -> matplotlib.figure.Figure:
     if not base_model:
         return
-    log_file = get_save_dir(base_model, finetuning_type, output_dir, "trainer_log.jsonl")
+    log_file = get_save_dir(
+        base_model, finetuning_type, output_dir, "trainer_log.jsonl"
+    )
     if not os.path.isfile(log_file):
         return
 

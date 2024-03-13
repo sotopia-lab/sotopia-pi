@@ -1,6 +1,6 @@
-import gradio as gr
 from typing import TYPE_CHECKING, Dict, Generator, List
 
+import gradio as gr
 from llmtuner.tuner import export_model
 from llmtuner.webui.common import get_save_dir
 from llmtuner.webui.locales import ALERTS
@@ -18,7 +18,7 @@ def save_model(
     finetuning_type: str,
     template: str,
     max_shard_size: int,
-    export_dir: str
+    export_dir: str,
 ) -> Generator[str, None, None]:
     error = ""
     if not model_name:
@@ -37,10 +37,15 @@ def save_model(
 
     args = dict(
         model_name_or_path=model_path,
-        checkpoint_dir=",".join([get_save_dir(model_name, finetuning_type, ckpt) for ckpt in checkpoints]),
+        checkpoint_dir=",".join(
+            [
+                get_save_dir(model_name, finetuning_type, ckpt)
+                for ckpt in checkpoints
+            ]
+        ),
         finetuning_type=finetuning_type,
         template=template,
-        export_dir=export_dir
+        export_dir=export_dir,
     )
 
     yield ALERTS["info_exporting"][lang]
@@ -66,14 +71,14 @@ def create_export_tab(engine: "Engine") -> Dict[str, "Component"]:
             engine.manager.get_elem_by_name("top.finetuning_type"),
             engine.manager.get_elem_by_name("top.template"),
             max_shard_size,
-            export_dir
+            export_dir,
         ],
-        [info_box]
+        [info_box],
     )
 
     return dict(
         export_dir=export_dir,
         max_shard_size=max_shard_size,
         export_btn=export_btn,
-        info_box=info_box
+        info_box=info_box,
     )

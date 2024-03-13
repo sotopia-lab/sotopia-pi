@@ -1,18 +1,22 @@
-import os
 import json
-import gradio as gr
+import os
 from typing import Any, Dict, Optional
-from transformers.utils import (
-    WEIGHTS_NAME,
-    WEIGHTS_INDEX_NAME,
-    SAFE_WEIGHTS_NAME,
-    SAFE_WEIGHTS_INDEX_NAME,
-    ADAPTER_WEIGHTS_NAME,
-    ADAPTER_SAFE_WEIGHTS_NAME
+
+import gradio as gr
+from llmtuner.extras.constants import (
+    DEFAULT_MODULE,
+    DEFAULT_TEMPLATE,
+    SUPPORTED_MODELS,
+    TRAINING_STAGES,
 )
-
-from llmtuner.extras.constants import DEFAULT_MODULE, DEFAULT_TEMPLATE, SUPPORTED_MODELS, TRAINING_STAGES
-
+from transformers.utils import (
+    ADAPTER_SAFE_WEIGHTS_NAME,
+    ADAPTER_WEIGHTS_NAME,
+    SAFE_WEIGHTS_INDEX_NAME,
+    SAFE_WEIGHTS_NAME,
+    WEIGHTS_INDEX_NAME,
+    WEIGHTS_NAME,
+)
 
 DEFAULT_CACHE_DIR = "cache"
 DEFAULT_DATA_DIR = "data"
@@ -25,7 +29,7 @@ CKPT_NAMES = [
     SAFE_WEIGHTS_NAME,
     SAFE_WEIGHTS_INDEX_NAME,
     ADAPTER_WEIGHTS_NAME,
-    ADAPTER_SAFE_WEIGHTS_NAME
+    ADAPTER_SAFE_WEIGHTS_NAME,
 ]
 
 
@@ -42,10 +46,19 @@ def load_config() -> Dict[str, Any]:
         with open(get_config_path(), "r", encoding="utf-8") as f:
             return json.load(f)
     except:
-        return {"lang": None, "last_model": None, "path_dict": {}, "cache_dir": None}
+        return {
+            "lang": None,
+            "last_model": None,
+            "path_dict": {},
+            "cache_dir": None,
+        }
 
 
-def save_config(lang: str, model_name: Optional[str] = None, model_path: Optional[str] = None) -> None:
+def save_config(
+    lang: str,
+    model_name: Optional[str] = None,
+    model_path: Optional[str] = None,
+) -> None:
     os.makedirs(DEFAULT_CACHE_DIR, exist_ok=True)
     user_config = load_config()
     user_config["lang"] = lang or user_config["lang"]
@@ -58,7 +71,9 @@ def save_config(lang: str, model_name: Optional[str] = None, model_path: Optiona
 
 def get_model_path(model_name: str) -> str:
     user_config = load_config()
-    return user_config["path_dict"].get(model_name, None) or SUPPORTED_MODELS.get(model_name, "")
+    return user_config["path_dict"].get(
+        model_name, None
+    ) or SUPPORTED_MODELS.get(model_name, "")
 
 
 def get_module(model_name: str) -> str:
@@ -66,7 +81,10 @@ def get_module(model_name: str) -> str:
 
 
 def get_template(model_name: str) -> str:
-    if model_name.endswith("Chat") and model_name.split("-")[0] in DEFAULT_TEMPLATE:
+    if (
+        model_name.endswith("Chat")
+        and model_name.split("-")[0] in DEFAULT_TEMPLATE
+    ):
         return DEFAULT_TEMPLATE[model_name.split("-")[0]]
     return "default"
 
@@ -77,9 +95,13 @@ def list_checkpoint(model_name: str, finetuning_type: str) -> Dict[str, Any]:
         save_dir = get_save_dir(model_name, finetuning_type)
         if save_dir and os.path.isdir(save_dir):
             for checkpoint in os.listdir(save_dir):
-                if (
-                    os.path.isdir(os.path.join(save_dir, checkpoint))
-                    and any([os.path.isfile(os.path.join(save_dir, checkpoint, name)) for name in CKPT_NAMES])
+                if os.path.isdir(os.path.join(save_dir, checkpoint)) and any(
+                    [
+                        os.path.isfile(
+                            os.path.join(save_dir, checkpoint, name)
+                        )
+                        for name in CKPT_NAMES
+                    ]
                 ):
                     checkpoints.append(checkpoint)
     return gr.update(value=[], choices=checkpoints)
@@ -87,7 +109,9 @@ def list_checkpoint(model_name: str, finetuning_type: str) -> Dict[str, Any]:
 
 def load_dataset_info(dataset_dir: str) -> Dict[str, Any]:
     try:
-        with open(os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8") as f:
+        with open(
+            os.path.join(dataset_dir, DATA_CONFIG), "r", encoding="utf-8"
+        ) as f:
             return json.load(f)
     except:
         print("Cannot find {} in {}.".format(DATA_CONFIG, dataset_dir))
@@ -95,9 +119,16 @@ def load_dataset_info(dataset_dir: str) -> Dict[str, Any]:
 
 
 def list_dataset(
-    dataset_dir: Optional[str] = None, training_stage: Optional[str] = list(TRAINING_STAGES.keys())[0]
+    dataset_dir: Optional[str] = None,
+    training_stage: Optional[str] = list(TRAINING_STAGES.keys())[0],
 ) -> Dict[str, Any]:
-    dataset_info = load_dataset_info(dataset_dir if dataset_dir is not None else DEFAULT_DATA_DIR)
+    dataset_info = load_dataset_info(
+        dataset_dir if dataset_dir is not None else DEFAULT_DATA_DIR
+    )
     ranking = TRAINING_STAGES[training_stage] in ["rm", "dpo"]
-    datasets = [k for k, v in dataset_info.items() if v.get("ranking", False) == ranking]
+    datasets = [
+        k
+        for k, v in dataset_info.items()
+        if v.get("ranking", False) == ranking
+    ]
     return gr.update(value=[], choices=datasets)

@@ -1,18 +1,18 @@
 # function to query redis and sample list of unused scenario pks
 import os
 import sys
+
 # this file is used to tranfer data from one redis to another, we do not expect to use it more than once
-os.environ[
-    "REDIS_OM_URL"
-] = "redis://:password@server_name:port_num"
+os.environ["REDIS_OM_URL"] = "redis://:password@server_name:port_num"
 
-from sotopia.database.logs import EpisodeLog
 import json
-from sotopia.database.persistent_profile import EnvironmentProfile
-
 import random
 
-def get_sotopia_scenarios(): 
+from sotopia.database.logs import EpisodeLog
+from sotopia.database.persistent_profile import EnvironmentProfile
+
+
+def get_sotopia_scenarios():
     """
     Function to get all sotopia scenario pk
     """
@@ -54,7 +54,7 @@ def sample_unused_scenarios(num, used_file, experiment_name=None):
 
     used_pks += sotopia_envs
     # retrieve from redis DB the number of scenarios
-    env_pks = set(EnvironmentProfile.all_pks()) 
+    env_pks = set(EnvironmentProfile.all_pks())
     # take un-overlapping portion
     candidates = list(set(used_pks) ^ env_pks)
     samples = random.sample(candidates, num)

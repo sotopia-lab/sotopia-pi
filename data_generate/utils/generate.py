@@ -23,9 +23,11 @@ from langchain.schema import (
 from pydantic import BaseModel, Field, validator
 from rich import print
 from rich.logging import RichHandler
-from typing_extensions import Literal
-
 from sotopia.database import EnvironmentProfile, RelationshipProfile
+from sotopia.generation_utils.langchain_callback_handler import (
+    LoggingCallbackHandler,
+)
+from sotopia.generation_utils.llama2 import Llama2
 from sotopia.messages import (
     ActionType,
     AgentAction,
@@ -33,9 +35,7 @@ from sotopia.messages import (
     ScriptEnvironmentResponse,
 )
 from sotopia.utils import format_docstring
-
-from sotopia.generation_utils.langchain_callback_handler import LoggingCallbackHandler
-from sotopia.generation_utils.llama2 import Llama2
+from typing_extensions import Literal
 
 log = logging.getLogger("generate")
 logging_handler = LoggingCallbackHandler("langchain")
@@ -199,7 +199,7 @@ def _return_fixed_model_version(
     return {
         "gpt-3.5-turbo": "gpt-3.5-turbo-0613",
         "gpt-4": "gpt-4-0613",
-        "gpt-4-turbo": "gpt-4-1106-preview"
+        "gpt-4-turbo": "gpt-4-1106-preview",
     }[model_name]
 
 
@@ -365,9 +365,13 @@ async def agenerate(
         input_values[
             "format_instructions"
         ] = output_parser.get_format_instructions()
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
     result = await chain.apredict([logging_handler], **input_values)
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
     prompt = logging_handler.retrive_prompt()
     try:
         parsed_result = output_parser.parse(result)
@@ -430,7 +434,7 @@ async def agenerate_env_profile(
         Examples:
         {examples}
         Generate creative scenarios and social goals based on one or more inspirational prompt listed below. The scenario and social goal should be related to at least one of those inspirational prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
-        Inspirational prompt: 
+        Inspirational prompt:
         {inspiration_prompt}
         Please use the following format and follow that format strictly:
         {format_instructions}
@@ -557,6 +561,7 @@ def generate_action(
     except:
         return AgentAction(action_type="none", argument="")
 
+
 @gin.configurable
 @beartype
 def generate_env_profile(
@@ -574,7 +579,7 @@ def generate_env_profile(
         Examples:
         {examples}
         Generate creative scenarios and social goals based on one or more inspirational prompt listed below. The scenario and social goal should be related to at least one of those inspirational prompts, when creating the goals, try to find one point that both sides may not agree upon initially and need to collaboratively resolve it.
-        Inspirational prompt: 
+        Inspirational prompt:
         {inspiration_prompt}
         Please use the following format and follow that format strictly:
         {format_instructions}

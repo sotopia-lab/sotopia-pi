@@ -1,20 +1,28 @@
 # Inspired by:
 # https://github.com/CarperAI/trlx/blob/main/examples/summarize_rlhf/reward_model/train_reward_model_gptj.py
 
-from typing import TYPE_CHECKING, Optional, List
-from transformers import Seq2SeqTrainingArguments
+from typing import TYPE_CHECKING, List, Optional
 
-from llmtuner.dsets import get_dataset, preprocess_dataset, split_dataset
+from llmtuner.dsets import (
+    get_dataset,
+    preprocess_dataset,
+    split_dataset,
+)
 from llmtuner.extras.callbacks import SavePeftModelCallback
 from llmtuner.extras.ploting import plot_loss
 from llmtuner.tuner.core import load_model_and_tokenizer
-from llmtuner.tuner.rm.metric import compute_accuracy
 from llmtuner.tuner.rm.collator import PairwiseDataCollatorWithPadding
+from llmtuner.tuner.rm.metric import compute_accuracy
 from llmtuner.tuner.rm.trainer import PairwiseTrainer
+from transformers import Seq2SeqTrainingArguments
 
 if TYPE_CHECKING:
+    from llmtuner.hparams import (
+        DataArguments,
+        FinetuningArguments,
+        ModelArguments,
+    )
     from transformers import TrainerCallback
-    from llmtuner.hparams import ModelArguments, DataArguments, FinetuningArguments
 
 
 def run_rm(
@@ -22,15 +30,23 @@ def run_rm(
     data_args: "DataArguments",
     training_args: "Seq2SeqTrainingArguments",
     finetuning_args: "FinetuningArguments",
-    callbacks: Optional[List["TrainerCallback"]] = None
+    callbacks: Optional[List["TrainerCallback"]] = None,
 ):
     dataset = get_dataset(model_args, data_args)
-    model, tokenizer = load_model_and_tokenizer(model_args, finetuning_args, training_args.do_train, stage="rm")
-    dataset = preprocess_dataset(dataset, tokenizer, data_args, training_args, stage="rm")
-    data_collator = PairwiseDataCollatorWithPadding(tokenizer, pad_to_multiple_of=4)
+    model, tokenizer = load_model_and_tokenizer(
+        model_args, finetuning_args, training_args.do_train, stage="rm"
+    )
+    dataset = preprocess_dataset(
+        dataset, tokenizer, data_args, training_args, stage="rm"
+    )
+    data_collator = PairwiseDataCollatorWithPadding(
+        tokenizer, pad_to_multiple_of=4
+    )
 
     training_args_dict = training_args.to_dict()
-    training_args_dict.update(dict(remove_unused_columns=False)) # important for pairwise dataset
+    training_args_dict.update(
+        dict(remove_unused_columns=False)
+    )  # important for pairwise dataset
     training_args = Seq2SeqTrainingArguments(**training_args_dict)
 
     # Initialize our Trainer

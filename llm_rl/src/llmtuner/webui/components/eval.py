@@ -1,7 +1,7 @@
-import gradio as gr
 from typing import TYPE_CHECKING, Dict
 
-from llmtuner.webui.common import list_dataset, DEFAULT_DATA_DIR
+import gradio as gr
+from llmtuner.webui.common import DEFAULT_DATA_DIR, list_dataset
 from llmtuner.webui.components.data import create_preview_box
 
 if TYPE_CHECKING:
@@ -21,7 +21,9 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
     dataset_dir.change(list_dataset, [dataset_dir], [dataset], queue=False)
 
     input_elems.update({dataset_dir, dataset})
-    elem_dict.update(dict(dataset_dir=dataset_dir, dataset=dataset, **preview_elems))
+    elem_dict.update(
+        dict(dataset_dir=dataset_dir, dataset=dataset, **preview_elems)
+    )
 
     with gr.Row():
         cutoff_len = gr.Slider(value=1024, minimum=4, maximum=8192, step=1)
@@ -30,9 +32,14 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
         predict = gr.Checkbox(value=True)
 
     input_elems.update({cutoff_len, max_samples, batch_size, predict})
-    elem_dict.update(dict(
-        cutoff_len=cutoff_len, max_samples=max_samples, batch_size=batch_size, predict=predict
-    ))
+    elem_dict.update(
+        dict(
+            cutoff_len=cutoff_len,
+            max_samples=max_samples,
+            batch_size=batch_size,
+            predict=predict,
+        )
+    )
 
     with gr.Row():
         max_new_tokens = gr.Slider(10, 2048, value=128, step=1)
@@ -40,9 +47,11 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
         temperature = gr.Slider(0.01, 1.5, value=0.95, step=0.01)
 
     input_elems.update({max_new_tokens, top_p, temperature})
-    elem_dict.update(dict(
-        max_new_tokens=max_new_tokens, top_p=top_p, temperature=temperature
-    ))
+    elem_dict.update(
+        dict(
+            max_new_tokens=max_new_tokens, top_p=top_p, temperature=temperature
+        )
+    )
 
     with gr.Row():
         cmd_preview_btn = gr.Button()
@@ -57,12 +66,20 @@ def create_eval_tab(engine: "Engine") -> Dict[str, "Component"]:
         output_box = gr.Markdown()
 
     output_elems = [output_box, process_bar]
-    elem_dict.update(dict(
-        cmd_preview_btn=cmd_preview_btn, start_btn=start_btn, stop_btn=stop_btn,
-        resume_btn=resume_btn, process_bar=process_bar, output_box=output_box
-    ))
+    elem_dict.update(
+        dict(
+            cmd_preview_btn=cmd_preview_btn,
+            start_btn=start_btn,
+            stop_btn=stop_btn,
+            resume_btn=resume_btn,
+            process_bar=process_bar,
+            output_box=output_box,
+        )
+    )
 
-    cmd_preview_btn.click(engine.runner.preview_eval, input_elems, output_elems)
+    cmd_preview_btn.click(
+        engine.runner.preview_eval, input_elems, output_elems
+    )
     start_btn.click(engine.runner.run_eval, input_elems, output_elems)
     stop_btn.click(engine.runner.set_abort, queue=False)
     resume_btn.change(engine.runner.monitor, outputs=output_elems)

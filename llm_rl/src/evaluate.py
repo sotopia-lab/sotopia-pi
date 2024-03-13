@@ -4,19 +4,19 @@
 #                           --task ceval --split validation --lang zh --n_shot 5 --batch_size 4 --save_name result
 # Inspired by: https://github.com/hendrycks/test/blob/master/evaluate_flan.py
 
-import os
-import fire
 import json
-import torch
-import numpy as np
-import transformers
+import os
 from collections import Counter
-from datasets import load_dataset
 from dataclasses import dataclass
-from tqdm import tqdm, trange
 from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Tuple
 
+import fire
+import numpy as np
+import torch
+import transformers
+from datasets import load_dataset
 from llmtuner import ChatModel
+from tqdm import tqdm, trange
 
 if TYPE_CHECKING:
     from datasets import Dataset
@@ -33,26 +33,35 @@ class EvalTemplate:
     answer: str
     prefix: str
 
-    def parse_example(
-        self,
-        example: Dict[str, str]
-    ) -> Tuple[str, str]:
-        candidates = [self.choice.format(choice=ch, content=example[ch]) for ch in choices if ch in example]
-        return "".join([example["question"]] + candidates + [self.answer]), example["answer"]
+    def parse_example(self, example: Dict[str, str]) -> Tuple[str, str]:
+        candidates = [
+            self.choice.format(choice=ch, content=example[ch])
+            for ch in choices
+            if ch in example
+        ]
+        return (
+            "".join([example["question"]] + candidates + [self.answer]),
+            example["answer"],
+        )
 
     def format_example(
         self,
         target_data: Dict[str, str],
         support_set: "Dataset",
         subject_name: str,
-        use_history: bool
+        use_history: bool,
     ) -> Tuple[str, str, List[Tuple[str, str]]]:
         query, resp = self.parse_example(target_data)
-        history = [self.parse_example(support_set[k]) for k in range(len(support_set))]
+        history = [
+            self.parse_example(support_set[k]) for k in range(len(support_set))
+        ]
 
         if len(history):
             temp = history.pop(0)
-            history.insert(0, (self.system.format(subject=subject_name) + temp[0], temp[1]))
+            history.insert(
+                0,
+                (self.system.format(subject=subject_name) + temp[0], temp[1]),
+            )
         else:
             query = self.system.format(subject=subject_name) + query
 
@@ -67,14 +76,14 @@ eval_templates = {
         system="The following are multiple choice questions (with answers) about {subject}.\n\n",
         choice="\n{choice}. {content}",
         answer="\nAnswer: ",
-        prefix=" "
+        prefix=" ",
     ),
     "zh": EvalTemplate(
         system="以下是中国关于{subject}考试的单项选择题，请选出其中的正确答案。\n\n",
         choice="\n{choice}. {content}",
         answer="\n答案：",
-        prefix="\n"
-    )
+        prefix="\n",
+    ),
 }
 
 
@@ -82,22 +91,31 @@ eval_templates = {
 def batch_inference(
     chat_model: ChatModel,
     batch_input: Dict[str, torch.Tensor],
-    prefix_char: str
+    prefix_char: str,
 ) -> List[str]:
     logits = chat_model.model(**batch_input).logits
     lengths = torch.sum(batch_input["attention_mask"], dim=-1)
-    nextword_logits = torch.stack([logits[i, lengths[i] - 1] for i in range(len(lengths))], dim=0)
+    nextword_logits = torch.stack(
+        [logits[i, lengths[i] - 1] for i in range(len(lengths))], dim=0
+    )
     probs = torch.nn.functional.softmax(
         torch.stack(
             [
-                nextword_logits[:, chat_model.tokenizer.encode(prefix_char + choice, add_special_tokens=False)[-1]]
+                nextword_logits[
+                    :,
+                    chat_model.tokenizer.encode(
+                        prefix_char + choice, add_special_tokens=False
+                    )[-1],
+                ]
                 for choice in choices
             ],
-            dim=-1
+            dim=-1,
         ),
-        dim=-1
+        dim=-1,
     ).detach()
-    return [chr(ord("A") + offset.item()) for offset in torch.argmax(probs, dim=-1)]
+    return [
+        chr(ord("A") + offset.item()) for offset in torch.argmax(probs, dim=-1)
+    ]
 
 
 def evaluate(
@@ -113,23 +131,36 @@ def evaluate(
     n_avg: Optional[int] = 1,
     batch_size: Optional[int] = 4,
     save_name: Optional[str] = None,
-    seed: Optional[int] = 42
+    seed: Optional[int] = 42,
 ):
-    with open(os.path.join(dataset_dir, task, "mapping.json"), "r", encoding="utf-8") as f:
+    with open(
+        os.path.join(dataset_dir, task, "mapping.json"), "r", encoding="utf-8"
+    ) as f:
         categorys: Dict[str, Dict[str, str]] = json.load(f)
 
     transformers.set_seed(seed)
-    chat_model = ChatModel(dict(
-        model_name_or_path=model_name_or_path,
-        finetuning_type=finetuning_type,
-        checkpoint_dir=checkpoint_dir,
-        template=template
-    ))
-    chat_model.tokenizer.padding_side = "right" # avoid overflow issue in batched inference for llama2
+    chat_model = ChatModel(
+        dict(
+            model_name_or_path=model_name_or_path,
+            finetuning_type=finetuning_type,
+            checkpoint_dir=checkpoint_dir,
+            template=template,
+        )
+    )
+    chat_model.tokenizer.padding_side = (
+        "right"  # avoid overflow issue in batched inference for llama2
+    )
     eval_template = eval_templates[lang]
 
     category_corrects: Dict[str, np.ndarray] = {
-        subj: np.array([], dtype="bool") for subj in ["Average", "STEM", "Social Sciences", "Humanities", "Other"]
+        subj: np.array([], dtype="bool")
+        for subj in [
+            "Average",
+            "STEM",
+            "Social Sciences",
+            "Humanities",
+            "Other",
+        ]
     }
     pbar = tqdm(categorys.keys(), desc="Processing subjects", position=0)
     results = {}
@@ -137,28 +168,58 @@ def evaluate(
         dataset = load_dataset(os.path.join(dataset_dir, task), subject)
         labels, answers, all_outputs = [], [], []
         for epoch in range(n_avg):
-            pbar.set_postfix_str("{} Trial: {}".format(categorys[subject]["name"], epoch))
+            pbar.set_postfix_str(
+                "{} Trial: {}".format(categorys[subject]["name"], epoch)
+            )
             inputs, outputs = [], []
-            for i in trange(len(dataset[split]), desc="Formatting batches", position=1, leave=False):
-                support_set = dataset["train"].shuffle().select(range(min(n_shot, len(dataset["train"]))))
+            for i in trange(
+                len(dataset[split]),
+                desc="Formatting batches",
+                position=1,
+                leave=False,
+            ):
+                support_set = (
+                    dataset["train"]
+                    .shuffle()
+                    .select(range(min(n_shot, len(dataset["train"]))))
+                )
                 query, resp, history = eval_template.format_example(
                     target_data=dataset[split][i],
                     support_set=support_set,
                     subject_name=categorys[subject]["name"],
-                    use_history=chat_model.template.use_history
+                    use_history=chat_model.template.use_history,
                 )
                 input_ids, _ = chat_model.template.encode_oneturn(
-                    tokenizer=chat_model.tokenizer, query=query, resp=resp, history=history
+                    tokenizer=chat_model.tokenizer,
+                    query=query,
+                    resp=resp,
+                    history=history,
                 )
-                inputs.append({"input_ids": input_ids, "attention_mask": [1] * len(input_ids)})
+                inputs.append(
+                    {
+                        "input_ids": input_ids,
+                        "attention_mask": [1] * len(input_ids),
+                    }
+                )
                 if epoch == 0:
                     labels.append(resp)
 
-            for i in trange(0, len(inputs), batch_size, desc="Predicting batches", position=1, leave=False):
+            for i in trange(
+                0,
+                len(inputs),
+                batch_size,
+                desc="Predicting batches",
+                position=1,
+                leave=False,
+            ):
                 batch_input = chat_model.tokenizer.pad(
-                    inputs[i : i + batch_size], return_attention_mask=True, return_tensors="pt"
+                    inputs[i : i + batch_size],
+                    return_attention_mask=True,
+                    return_tensors="pt",
                 ).to(chat_model.model.device)
-                preds = batch_inference(chat_model, batch_input, eval_template.prefix)
+                preds = batch_inference(
+                    chat_model, batch_input, eval_template.prefix
+                )
                 outputs += preds
             all_outputs.append(outputs)
 
@@ -166,23 +227,36 @@ def evaluate(
             count = Counter([all_outputs[epoch][i] for epoch in range(n_avg)])
             answers.append(count.most_common(1)[0][0])
 
-        corrects = (np.array(answers) == np.array(labels))
+        corrects = np.array(answers) == np.array(labels)
         category_name = categorys[subject]["category"]
-        category_corrects[category_name] = np.concatenate([category_corrects[category_name], corrects], axis=0)
-        category_corrects["Average"] = np.concatenate([category_corrects["Average"], corrects], axis=0)
+        category_corrects[category_name] = np.concatenate(
+            [category_corrects[category_name], corrects], axis=0
+        )
+        category_corrects["Average"] = np.concatenate(
+            [category_corrects["Average"], corrects], axis=0
+        )
         results[subject] = {str(i): answers[i] for i in range(len(answers))}
 
-    score_info = "\n".join([
-        "{:>15}: {:.2f}".format(category_name, 100 * np.mean(category_correct))
-        for category_name, category_correct in category_corrects.items() if len(category_correct)
-    ])
+    score_info = "\n".join(
+        [
+            "{:>15}: {:.2f}".format(
+                category_name, 100 * np.mean(category_correct)
+            )
+            for category_name, category_correct in category_corrects.items()
+            if len(category_correct)
+        ]
+    )
 
     print(score_info)
     if save_name is not None:
-        with open(save_name + ".json", "w", encoding="utf-8", newline="\n") as f:
+        with open(
+            save_name + ".json", "w", encoding="utf-8", newline="\n"
+        ) as f:
             json.dump(results, f, indent=2)
 
-        with open(save_name + ".log", "w", encoding="utf-8", newline="\n") as f:
+        with open(
+            save_name + ".log", "w", encoding="utf-8", newline="\n"
+        ) as f:
             f.write(score_info)
 
 
