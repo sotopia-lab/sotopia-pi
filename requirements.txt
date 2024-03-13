@@ -1,6 +1,7 @@
 packaging
 wheel
 torch>=1.13.1
+deepspeed
 transformers>=4.36.0
 datasets>=2.12.0
 accelerate>=0.21.0
@@ -21,7 +22,6 @@ fastapi
 sse-starlette
 matplotlib
 py-cpuinfo
-deepspeed
 bitsandbytes>=0.39.0
 wandb
 pandas
