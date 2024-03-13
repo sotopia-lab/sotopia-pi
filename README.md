@@ -3,10 +3,9 @@
   [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
-  This is the official repo of the paper: [add arxiv link]. 
+  This is the official repo of the paper: [add arxiv link].
   For highlights of the paper, please see our [website](https://sotopia-dev.vercel.app/projects/sotopia-pi).
 
-  
 
   ## 📢 Release
 
