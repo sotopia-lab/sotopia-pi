@@ -4,14 +4,37 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
-This is the official repo of the paper: [add arxiv link].
+This is the official repo of the paper: [add arxiv link]. 
 For highlights of the paper, please see our [website](https://sotopia-dev.vercel.app/projects/sotopia-pi).
+
+
+
+## 📢Release
+
+[03/07] 🔥We released our model checkpoints (BC, SR, BC+SR) on huggingface ([BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC), [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR), [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)).
+
+[03/04] 📊We released our social converation data on huggingface ([here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)). 
+
+
+
+  # 📌 Table of Contents
+- [Introduction](#-introduction)
+- [Step 0: Preparations](#-Step 0: Preparations)
+- [Step 1: Social Task Generation](#-Step 1: Social Task Generation)
+- [Step 2: Training Data Collection](#-Step 2: Training Data Collection)
+- [Step 3: Agent Policy Update](#-Step 3: Agent Policy Update)
+- [Step 4a: Automatic Evaluation](#-Step 4a: Automatic Evaluation)
+- [Step 4b: Human Evaluation](#-Step 4b: Human Evaluation)
+
+
+
+## Introduction
 
 ![title](imgs/acl2024_teaser.png)
 
 We introduce Sotopia-π, a method that improves the social intelligence of large language models (LLMs) through social interaction. The method involves three steps: (1) automatically generates new social tasks, (2) collects data from both expert policy and agent policy for training, and (3) updates agent policy based on positive data rated by GPT-4. The training and evaluation environment is based on the [Sotopia](https://github.com/XuhuiZhou/sotopia) framework.
 
-## Preparations
+## Step0: Preparations
 - Install dependencies:
   ```bash
   pip install -r requirements.txt
@@ -46,17 +69,11 @@ This step requires (1) filter the collected conversation data based on GPT-4 rat
 - We filter data following [this pipeline](https://github.com/sotopia-lab/sotopia-pi/tree/main/data_process#data-processing-pipeline) and reformat data into training format.
 - We fine-tune the model based on [Llama Factory](https://github.com/hiyouga/LLaMA-Factory). Please follow [this section](https://github.com/sotopia-lab/sotopia-pi/tree/main/llm_self_train#training-bc-andor-sr-pipeline) to implement QLoRA fine-tuning.
 
-## Automatic Evaluation
+## Step 4a: Automatic Evaluation
 - We first deploy the trained model on a server and inference the model via OpenAI API. See [this section](https://github.com/sotopia-lab/sotopia-pi/tree/main/llm_deploy#llm-deployment-pipeline) for detailed instructions of deploying a model via [FastChat](https://github.com/lm-sys/FastChat/tree/main) and [vllm](https://github.com/vllm-project/vllm).
 - Then we evaluate our model based on the Sotopia framework. Please refer to [this section](https://github.com/sotopia-lab/sotopia-pi/tree/main/llm_deploy#llm-deployment-pipeline) and the [Sotopia](https://github.com/XuhuiZhou/sotopia) repo for more details.
 
-## Human Evaluation
+## Step 4b: Human Evaluation
 
 * We develop a personalized project based on oTree and release the human evaluation project via Prolific.
 * Detailed instruction on reproducing human evaluation is mentioned [here](https://github.com/sotopia-lab/sotopia-pi/tree/main/human_eval).
-
-## Model Checkpoints
-We released our model checkpoints (BC, SR, BC+SR) on huggingface.
-- [BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC)
-- [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR)
-- [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)
