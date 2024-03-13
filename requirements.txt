@@ -23,7 +23,7 @@ matplotlib
 py-cpuinfo
 deepspeed
 bitsandbytes>=0.39.0
-flash-attn
+#flash-attn
 wandb
 pandas
 openai
