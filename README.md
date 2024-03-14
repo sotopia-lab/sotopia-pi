@@ -3,7 +3,7 @@
   [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
- [website](https://pi.sotopia.world/) | [paper link]() | [model checkpoint](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR) | [social conversation data](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)
+ [website](https://pi.sotopia.world/) | [paper](https://arxiv.org/pdf/2403.08715.pdf) | [model checkpoint](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR) | [social conversation dataset](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)
 
 
   ## 📢 Release
