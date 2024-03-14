@@ -4,7 +4,7 @@ The first step of Sotopia-pi is **generating social tasks**. We sample keywords 
 The second step of Sotopia-pi is **collecting training data**. Based on the generated social tasks, we generate conversations between two LLM agents role-playing different characters under the [Sotopia environment](https://github.com/XuhuiZhou/sotopia).
 
 ## Social Task Generation
-We first sample keywords (inspirational prompts) from three datasets. Running the following code will clean and merge inspirational prompts to `env_files/inspirational_prompt.csv`
+We first sample keywords (inspirational prompts) from three datasets. Running the following code will clean and merge inspirational prompts to `env_files/inspirational_prompt.csv` (available [here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/blob/main/inspirational_prompt.csv))
 ```python
 python3 generate_inspirational_prompts.py
 ```
