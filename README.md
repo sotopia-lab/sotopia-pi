@@ -7,6 +7,8 @@
 
 
   ## 📢 Release
+  [03/14] 🎆We released our paper on [arXiv](https://arxiv.org/abs/2403.08715) on 3/14 PI day and the paper was reported by AK on twitter ([here](https://twitter.com/_akhaliq/status/1768118035770974262)).
+  
   [03/07] 🔥We released our model checkpoints (BC, SR, BC+SR) on huggingface ([BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC), [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR), [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)).
 
   [03/04] 📊We released our social converation data on huggingface ([here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)).
