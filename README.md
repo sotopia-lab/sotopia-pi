@@ -23,6 +23,7 @@
   - [Step 3 - Agent Policy Update](#step-3---agent-policy-update)
   - [Step 4a - Automatic Evaluation](#step-4a---automatic-evaluation)
   - [Step 4b - Human Evaluation](#step-4b---human-evaluation)
+  - [Citation](#citation)
 
 
 
@@ -76,3 +77,16 @@
 
   * We develop a personalized project based on oTree and release the human evaluation project via Prolific.
   * Detailed instruction on reproducing human evaluation is mentioned [here](https://github.com/sotopia-lab/sotopia-pi/tree/main/human_eval).
+
+  ## Citation
+
+  ```
+@misc{wang2024sotopiapi,
+  title={SOTOPIA-$\pi$: Interactive Learning of Socially Intelligent Language Agents},
+  author={Ruiyi Wang and Haofei Yu and Wenxin Zhang and Zhengyang Qi and Maarten Sap and Graham Neubig and Yonatan Bisk and Hao Zhu},
+  year={2024},
+  eprint={2403.08715},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
+  ```
