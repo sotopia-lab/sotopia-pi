@@ -1,17 +1,19 @@
 import argparse
-import json
 import os
 from collections import defaultdict
 from typing import Any, Dict, List, Tuple, Union, cast
 
-import numpy as np
 import pandas as pd
 import rich
-from prompt_reverse_engineering import parse_prompt_to_json
 from rich.console import Console
 from rich.terminal_theme import MONOKAI
+
 from sotopia.database.logs import EpisodeLog
 from sotopia.database.persistent_profile import EnvironmentProfile
+from prompt_reverse_engineering import parse_prompt_to_json
+import numpy as np
+import json
+
 
 OVERALL_REWARD_FILTER = 3.2
 GOAL_AVG_THRESHOLD = 7
@@ -77,6 +79,13 @@ def get_generated_scenarios(exclude):
     return [pk for pk in env_pks if pk not in exclude]
 
 
+def get_used_env(use_file, roundname):
+    # Opening JSON file
+    f = open(use_file)
+    used_env = json.load(f)
+    return used_env[roundname]
+
+
 def get_episode_by_env(tag, all_sotopia, all_gen, selected_env=[]):
     # function to select episodes base on environment/scenario pk, as well as tag
     if not selected_env:
@@ -96,9 +105,7 @@ def get_episode_by_env(tag, all_sotopia, all_gen, selected_env=[]):
     for env in selected_env:
         env_episodes = EpisodeLog.find(EpisodeLog.environment == env).all()
         if tag:
-            env_episodes = [
-                episode for episode in env_episodes if episode.tag == tag
-            ]
+            env_episodes = [episode for episode in env_episodes if episode.tag == tag]
         if len(env_episodes) > 0:
             selected_episodes[env] = env_episodes
 
@@ -156,21 +163,17 @@ def goal_reward_by_env_agent(
             )
             if agent1_len != agent2_len:
                 target_length = min(agent1_len, agent2_len)
-                to_reduce_agent = (
-                    "agent1" if agent1_len > target_length else "agent2"
-                )
+                to_reduce_agent = "agent1" if agent1_len > target_length else "agent2"
                 # reduce agent
-                to_reduce_agent_rank = np.argsort(goal_score[to_reduce_agent])[
-                    ::-1
-                ]
+                to_reduce_agent_rank = np.argsort(goal_score[to_reduce_agent])[::-1]
                 to_keep_index = to_reduce_agent_rank[:target_length]
 
                 to_keep_score = np.array(goal_score[to_reduce_agent])[
                     to_keep_index
                 ].tolist()
-                to_keep_episode = np.array(
-                    env_filter_episodes[to_reduce_agent]
-                )[to_keep_index].tolist()
+                to_keep_episode = np.array(env_filter_episodes[to_reduce_agent])[
+                    to_keep_index
+                ].tolist()
                 goal_score[to_reduce_agent] = to_keep_score
                 env_filter_episodes[to_reduce_agent] = to_keep_episode
 
@@ -194,9 +197,7 @@ def filter_pks_to_prompts(filter_env_pks, save_dir, include_format=False):
                 episode = EpisodeLog.get(pk=pk)
                 print("This is the episode")
                 print(episode)
-                parse_prompt_to_json(
-                    episode, save_dir, agent_idx, include_format
-                )
+                parse_prompt_to_json(episode, save_dir, agent_idx, include_format)
 
 
 def get_env_mean_var(env_reward_dic):
@@ -207,11 +208,7 @@ def get_env_mean_var(env_reward_dic):
         for agent, scores in agent_scores.items():
             env_var = np.var(scores)
             env_mean = np.mean(scores)
-            agent_dic[agent] = {
-                "mean": env_mean,
-                "var": env_var,
-                "count": len(scores),
-            }
+            agent_dic[agent] = {"mean": env_mean, "var": env_var, "count": len(scores)}
 
         env_var_dic[env] = agent_dic
 
@@ -234,13 +231,9 @@ def get_threshold_by_keep_rate(env_rewards, keeprate_, balance=True):
     )
 
 
-def get_threshold_by_variance(env_rewards, var_limit, balance=True):
-    # function to generate threshold that could use to control the variance
-
-    return
-
-
-def goal_filter_per_env_agent(episodes, apply_filter=True):
+def goal_filter_per_env_agent(
+    episodes, apply_filter=True, filter_threshold=GOAL_AVG_THRESHOLD
+):
     # function to AUTOMATICALLY filter using goal reward scores for each agent position given scenario
     goal_score = {"agent1": [], "agent2": []}
     env_tpls = []
@@ -266,11 +259,11 @@ def goal_filter_per_env_agent(episodes, apply_filter=True):
             env_tpls.append((episodes[agent1_rank[i]], 0))
             env_tpls.append((episodes[agent2_rank[i]], 1))
         else:
+            # we need >= for first a usually first has a distribution lower than second
             if goal_score["agent1"][agent1_rank[i]] >= min(
-                GOAL_KEEP_THRESHOD, agent1_avg
+                filter_threshold, agent1_avg
             ) and (
-                goal_score["agent2"][agent2_rank[i]]
-                > min(GOAL_KEEP_THRESHOD, agent2_avg)
+                goal_score["agent2"][agent2_rank[i]] > min(filter_threshold, agent2_avg)
             ):
                 env_tpls.append((episodes[agent1_rank[i]], 0))
                 env_tpls.append((episodes[agent1_rank[i]], 1))
@@ -278,18 +271,22 @@ def goal_filter_per_env_agent(episodes, apply_filter=True):
     return env_tpls
 
 
-def goal_filter_all_env_agent(env_episode_dic, apply_filter=True):
+def goal_filter_all_env_agent(
+    env_episode_dic, apply_filter=True, filter_threshold=GOAL_AVG_THRESHOLD
+):
     # aggregate function to AUTOMATICALLY apply filters on all env and episodes in env
     filter_env_dic = {}
     for env, episodes in env_episode_dic.items():
-        env_agent_episode = goal_filter_per_env_agent(episodes, apply_filter)
+        env_agent_episode = goal_filter_per_env_agent(
+            episodes, apply_filter, filter_threshold
+        )
         filter_env_dic[env] = env_agent_episode
 
     return filter_env_dic
 
 
 def run_filtered_episodes_to_prompt(
-    filter_env_agent_episodes, json_dir, level="Easy", include_format=False
+    filter_env_agent_episodes, json_dir, include_format=True
 ):
     # function to convert selected episode into prompt completion format and save to json
     # use for Sotopia Scenario
@@ -297,10 +294,8 @@ def run_filtered_episodes_to_prompt(
         os.makedirs(json_dir)
     parse_count = 0
     for env, tpls in filter_env_agent_episodes.items():
-        if (level == "Easy" and env in HARD_SCENARIO) or (
-            level == "Hard" and env not in HARD_SCENARIO
-        ):
-            continue
+        # if (level == 'Easy' and env in HARD_SCENARIO) or (level == 'Hard' and env not in HARD_SCENARIO):
+        #     continue
         for tpl in tpls:
             parse_prompt_to_json(tpl[0], json_dir, tpl[1], include_format)
             parse_count += 1
@@ -314,9 +309,5 @@ def filter_episodes_to_prompt_main(selected_tag):
     concat_epilist = sum(episode_by_tag.values(), [])
     dic_epi_env = align_episode_by_env(concat_epilist)
     filter_agent_episodes = goal_filter_all_env_agent(dic_epi_env)
-    run_filtered_episodes_to_prompt(
-        filter_agent_episodes, r"GPT4-4_Redis_Easy"
-    )
-    run_filtered_episodes_to_prompt(
-        filter_agent_episodes, r"GPT4-4_Redis_Hard", "Hard"
-    )
+    run_filtered_episodes_to_prompt(filter_agent_episodes, r"GPT4-4_Redis_Easy")
+    run_filtered_episodes_to_prompt(filter_agent_episodes, r"GPT4-4_Redis_Hard", "Hard")
