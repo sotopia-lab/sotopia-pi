@@ -3,7 +3,7 @@
   [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
- [website](https://pi.sotopia.world/) | [paper](https://arxiv.org/pdf/2403.08715.pdf) | [model checkpoint](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR) | [social conversation dataset](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)
+ [website](https://pi.sotopia.world/) | [paper](https://arxiv.org/pdf/2403.08715.pdf) | [model checkpoint](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR) | [social conversation dataset](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main) | [tweet thread](https://x.com/RuiyiWang153/status/1768340167717458283?s=20)
 
 
   ## 📢 Release
@@ -43,7 +43,7 @@
     ```bash
     conda env config vars set OPENAI_API_KEY=api_key
     ```
-  - A Redis database needs to be set up prior to running this repo. For detailed instructions of setting up Redis database, please refer to [this tutorial]([https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate](https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate#setting-up-redis-database)). Make sure to set up Redis OM url in conda environment
+  - A Redis database needs to be set up prior to running this repo. For detailed instructions of setting up Redis database, please refer to [this tutorial](https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate#setting-up-redis-database). Make sure to set up Redis OM url in conda environment
     ```bash
     conda env config vars set REDIS_OM_URL="redis://user:password@host:port"
     ```
