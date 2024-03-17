@@ -43,7 +43,7 @@
     ```bash
     conda env config vars set OPENAI_API_KEY=api_key
     ```
-  - A Redis database needs to be set up prior to running this repo. For detailed instructions of setting up Redis database, please refer to [this tutorial]([https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate](https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate#setting-up-redis-database)). Make sure to set up Redis OM url in conda environment
+  - A Redis database needs to be set up prior to running this repo. For detailed instructions of setting up Redis database, please refer to [this tutorial](https://github.com/sotopia-lab/sotopia-pi/tree/main/data_generate#setting-up-redis-database). Make sure to set up Redis OM url in conda environment
     ```bash
     conda env config vars set REDIS_OM_URL="redis://user:password@host:port"
     ```
