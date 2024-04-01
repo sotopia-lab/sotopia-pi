@@ -1,30 +1,31 @@
 # code to prepare and select conversation for human eval
-import sys
 import os
+import sys
 
 os.environ["REDIS_OM_URL"] = "redis://:password@server_name:port_num"
 
 import json
-from tqdm.notebook import tqdm
+import random
+
+import numpy as np
+import pandas as pd
+from prompt_reverse_engineering import concat_episode_msg
+from redis_filtering import (
+    align_episode_by_env,
+    get_clean_episodes,
+    goal_filter_all_env_agent,
+)
+from redis_om import Migrator
+from sotopia.database.env_agent_combo_storage import (
+    EnvAgentComboStorage,
+)
+from sotopia.database.logs import EpisodeLog
 from sotopia.database.persistent_profile import (
     AgentProfile,
     EnvironmentProfile,
     RelationshipProfile,
 )
-from sotopia.database.logs import EpisodeLog
-from sotopia.database.env_agent_combo_storage import EnvAgentComboStorage
-from redis_om import Migrator
-import random
-import numpy as np
-import pandas as pd
-from redis_filtering import (
-    get_clean_episodes,
-    align_episode_by_env,
-    goal_filter_all_env_agent,
-)
-from sotopia.database.logs import EpisodeLog
-from sotopia.database.persistent_profile import EnvironmentProfile
-from prompt_reverse_engineering import concat_episode_msg
+from tqdm.notebook import tqdm
 
 SELECTED_TAG = ["sft-round-2_checkpoint_improve-0_epoch-20_gpt-3.5-turbo_test"]
 # ["gpt-4_gpt-3.5-turbo_v0.0.1_clean"]
@@ -132,7 +133,9 @@ def episode_to_json(filename, selected_episodes):
         messages = concat_episode_msg(episode)
         messages = messages.split("Conversation Starts:")[1]
         reward_prompt = episode.rewards_prompt
-        reward_prompt = reward_prompt.split("\nBased on previous interactions")[0]
+        reward_prompt = reward_prompt.split(
+            "\nBased on previous interactions"
+        )[0]
         require_manual = False
         if check_match_reward_prompts(episode):
             json_dict["rewards_prompt"] = reward_prompt
