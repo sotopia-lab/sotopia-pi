@@ -119,7 +119,7 @@ def computeFleissKappa(
     df = df.copy()
     df = df[[groupCol, col]]
     # Calculate the sum of squared ratings per category
-    # print(df)
+    #print(df)
     fleiss_table = create_fleiss_table(df, col, groupCol)
 
     # Calculate Fleiss' Kappa using the modified function
@@ -169,68 +169,45 @@ def computeAlpha(
 
 
 if __name__ == "__main__":
-    input_file_name = "human eval - mistral-instruct.csv"
-    eval_dim = [
-        "believability",
-        "relationship",
-        "knowledge",
-        "social_rules",
-        "secret",
-        "financial_and_material_benefits",
-        "goal",
-    ]
-
+    input_file_name = 'human eval - mistral-instruct.csv'
+    eval_dim = ['believability', 'relationship', 'knowledge', 'social_rules', 'secret', 'financial_and_material_benefits', 'goal']
+    
     results = []
 
-    for dim in eval_dim:
-        ppas = []
-        alphas = []
-        kappas = []
-        for i in range(1, 3):
-            df = pd.read_csv(input_file_name)
-            col = f"{dim}_{i}"
-            df = df[["pk", "prolific_id", col]]
-            df.rename(
-                columns={"pk": "id", "prolific_id": "raterId", col: "rating"},
-                inplace=True,
-            )
-            longDf = df.copy()
-            # if NaN replace with 0
-            longDf["ratingBinary"] = (
-                longDf["rating"] / longDf["rating"].abs().max()
-            ).round(0)
-            longDf["ratingBinary"] = longDf["ratingBinary"].fillna(0)
-            scores = computeAlpha(longDf, "ratingBinary", groupCol="id")
-            ppa = scores["ppa"]
-            alpha = scores["alpha"]
-            kappa = computeFleissKappa(
-                longDf, "ratingBinary", "id", 2, "randolf"
-            )
-            ppas.append(ppa)
-            alphas.append(alpha)
-            kappas.append(kappa)
-        mean_ppa = np.mean(ppas)
-        mean_alpha = np.mean(alphas)
-        mean_kappa = np.mean(kappas)
 
-        # Collecting results and keep four decimal places
-        results.append(
-            {
-                "Dimension": dim,
-                "Pairwise Agreement": mean_ppa.round(4),
-                "Krippendorf's Alpha": mean_alpha.round(4),
-                "Randolf's Kappa": mean_kappa.round(4),
-            }
-        )
+    for dim in eval_dim:
+        dataframes = []  # List to hold each processed DataFrame
+        for input_file_name in ['human eval - BC-self-train-round1.csv', 'human eval - mistral-instruct.csv', 'human eval - gpt4-new.csv', 'human eval - gpt3.5.csv']:
+            for i in range(1, 3):
+                df = pd.read_csv(input_file_name)
+                col = f'{dim}_{i}'
+                df['pk'] = df['pk'].astype(str) + '_' + str(i)
+                df = df[['pk', 'prolific_id', col]]
+                df.rename(columns={'pk': 'id', 'prolific_id': 'raterId', col: 'rating'}, inplace=True)
+                dataframes.append(df)  # Append the processed DataFrame to the list
+
+        # Combine all DataFrames into one
+        longDf = pd.concat(dataframes, ignore_index=True)
+        longDf["ratingBinary"] = (longDf["rating"] / longDf["rating"].abs().max()).round(0)
+        longDf["ratingBinary"] = longDf["ratingBinary"].fillna(0)
+        scores = computeAlpha(longDf, "ratingBinary", groupCol="id")
+        ppa = scores['ppa']
+        alpha = scores['alpha']
+        kappa = computeFleissKappa(longDf, "ratingBinary", "id", 2, "randolf")
+        results.append({
+            'Dimension': dim,
+            'Pairwise Agreement': round(ppa, 4),
+            'Krippendorf\'s Alpha': round(alpha, 4),
+            'Randolph\'s Kappa': round(kappa, 4)
+        })
 
     # Convert the list of dictionaries into a DataFrame
     results_df = pd.DataFrame(results)
 
-    import pdb
-
-    pdb.set_trace()
     # Specify your output file name
-    output_file_name = "BC_agreement_results.csv"
+    output_file_name = 'BC_agreement_results.csv'
 
     # Save the DataFrame to a CSV file
     results_df.to_csv(output_file_name, index=False)
+
+        
