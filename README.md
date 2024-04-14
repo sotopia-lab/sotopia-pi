@@ -2,19 +2,15 @@
 
 # Sotopia-π: Interactive Learning of Socially Intelligent Language Agents
 
-  [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3109/)
-  [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
-  <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-
- [website](https://pi.sotopia.world/) | [paper](https://arxiv.org/pdf/2403.08715.pdf) | [model checkpoint](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR) | [social conversation dataset](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main) | [tweet thread](https://x.com/RuiyiWang153/status/1768340167717458283?s=20)
-
+[![Project Page](https://img.shields.io/badge/Project-Page-green.svg)](https://pi.sotopia.world/) [![Paper PDF](https://img.shields.io/badge/Paper-PDF-red.svg)](https://arxiv.org/pdf/2403.08715.pdf) [![huggingface](https://img.shields.io/badge/%F0%9F%A4%97-Data-yellow)](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main) [![huggingface](https://img.shields.io/badge/%F0%9F%A4%97-Model-orange)](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR) [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3109/)  [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>[![twitter](https://img.shields.io/badge/Twitter-Thread-cyan)](https://x.com/RuiyiWang153/status/1768340167717458283?s=20)
 
   ## 📢 Release
-  [03/14] 🎆We released our paper on [arXiv](https://arxiv.org/abs/2403.08715) on 3/14 PI day and the paper was reported by AK on twitter ([here](https://twitter.com/_akhaliq/status/1768118035770974262)).
 
-  [03/07] 🔥We released our model checkpoints (BC, SR, BC+SR) on huggingface ([BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC), [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR), [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)).
+* [03/14] 🎆We released our paper on [arXiv](https://arxiv.org/abs/2403.08715) on 3/14 PI day and the paper was reported by AK on twitter ([here](https://twitter.com/_akhaliq/status/1768118035770974262)).
 
-  [03/04] 📊We released our social converation data on huggingface ([here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)).
+* [03/07] 🔥We released our model checkpoints (BC, SR, BC+SR) on huggingface ([BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC), [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR), [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)).
+
+* [03/04] 📊We released our social converation data on huggingface ([here](https://huggingface.co/datasets/cmu-lti/sotopia-pi/tree/main)).
 
 
 
