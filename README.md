@@ -14,7 +14,10 @@
 
 
 
+
+
   ## 📌 Table of Contents
+
   - [Introduction](#introduction)
   - [Step 0 - Preparations](#step-0---preparations)
   - [Step 1 - Social Task Generation](#step-1---social-task-generation)
