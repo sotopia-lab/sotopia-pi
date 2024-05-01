@@ -6,6 +6,8 @@
 
 ## 📢 Release
 
+* [05/01] 🎆Our custome model, Sotopia-Pi, is available for [demo](https://huggingface.co/spaces/cmu-lti/sotopia-space), thanks to Hugging Face ZeroGPU. 
+
 * [03/14] 🎆We released our paper on [arXiv](https://arxiv.org/abs/2403.08715) on 3/14 PI day and the paper was reported by AK on twitter ([here](https://twitter.com/_akhaliq/status/1768118035770974262)).
 
 * [03/07] 🔥We released our model checkpoints (BC, SR, BC+SR) on huggingface ([BC model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC), [SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-SR), [BC+SR model](https://huggingface.co/cmu-lti/sotopia-pi-mistral-7b-BC_SR)).
