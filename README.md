@@ -1,4 +1,4 @@
-![sotopia-pi](assets/sotopia-pi.png)
+![sotopia-pi](assets/title.png)
 
 # Sotopia-π: Interactive Learning of Socially Intelligent Language Agents
 
